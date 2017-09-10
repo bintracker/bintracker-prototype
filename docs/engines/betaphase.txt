@@ -1,0 +1,56 @@
+BetaPhase MDAL Configuration
+============================
+
+This MDAL config can be used to create music.asm files for the BetaPhase beeper
+engine. See
+https://github.com/utz82/ZX-Spectrum-1-Bit-Routines/tree/master/betaphase
+for details.
+
+
+Invocation
+==========
+
+CONFIG=BetaPhase
+
+
+General Parameters
+==================
+
+Minimum MDAL version:           0
+Set [LOOP] point in sequence:   allowed
+Use tables:                     no
+Use samples:                    no
+
+
+Global Constants
+================
+
+AUTHOR          Set the author of the tune
+TITLE           Set the tune's title.
+GSPD            Set global speed. (default: 0x10)
+
+
+Pattern Commands
+================
+
+A               Set note channel 1 (default: 0)
+B               Set note channel 2 (default: 0)
+C               Set note channel 3 (default: 0)
+PHA             Set phase offset channel 1 (default: 0)
+PHB             Set phase offset channel 2 (default: 0)
+MIXA            Set mixing mode channel 1 (xor|and|or|none, default: xor)
+MIXB            Set mixing mode channel 2 (xor|and|or|none, default: xor)
+DMOD1           En/disable duty modulation channel 1 (on|off, default: off)
+NOISE           Enable noise mode channel 1 (on|off, default: off, ATTN: must
+                also set PSCA=0 and PSCB=0 when enabled. A needs a suitable 
+		random seed, e.g. 0x235)
+PSCA1           Set scaler 1 channel 1 (up|down|none, default: none)
+PSCA2           Set scaler 2 channel 1 (up|down|none, default: none)
+DMOD2           Set duty modulator speed channel 2 speed (default: 0,max: 0xff)
+PSCB1           Set scaler 1 channel 2 (up|down|none, default: none)
+PSCB2           Set scaler 2 channel 2 (up|down|none, default: none)
+PSCC            Set scaler channel 3 (up|down|none, default: none)
+SLIDEDIR        Set channel 3 slide direction(up|down, default: down)
+SLIDESPD        Set channel 3 slide speed (default: 0)
+SPD             Set row speed (default: 0x10)
+

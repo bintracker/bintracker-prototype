@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mdalconfig version="1">
+	<description>PhaseSqueek is ZX Spectrum beeper music routine with a rather complex synth
+core based on an unholy fusion of Shiru's Phaser method with zilogat0r's
+Sqeeker method.
+
+The engine can be configured in different ways. In it's standard 
+configuration, it sports two channels, each using two operators coupled 
+together. However, the operators can also be decoupled and act as independent
+channels (so up to four-voice polyphony is possible). Or you can couple both
+standard channels together to form a single, all powerful voice.
+
+While operators are coupled, the following settings can be customized on each
+channel:
+
+- frequency (independent dividers for each operator)
+- duty cycles (independently for both ops)
+- operator phase 
+- coupling method (XOR|OR|AND - OR effectively decouples the operators)
+
+Additionally, channel 1 supports the following settings:
+
+- SID-style duty cycle modulation (independently for both ops)
+- Earth Shaker style duty cycle modulation (independently for both ops)
+
+Channel 2 instead offers a noise mode for operator 1.
+
+All settings can be updated not only between notes, but also on a per-tick 
+basis via effect tables.
+
+Last but not least, two interrupting click drums are also available.
+
+For further reference, see
+https://github.com/utz82/ZX-Spectrum-1-Bit-Routines/tree/master/phasesqueek.</description>
+	<global target="zxspectrum48" word_directive="dw" byte_directive="db" />
+	<sequence end="dw 0" label="mdseq">
+		<track from="Patterns" />
+		<loop type="label" label="loop" />
+	</sequence>
+	<commands>
+		<command id="AUTHOR" size="byte" default="unknown">
+			<description>Specify the track's author.</description>
+			<force_string />
+			<global_const />
+		</command>
+		<command id="TITLE" size="byte" default="untitled">
+			<description>Specify the track's title.</description>
+			<force_string />
+			<global_const />
+		</command>
+		<command id="GSPD" size="byte" default="$10">
+		<description>Set the global song speed. Higher value means slower tempo.</description>
+			<global_const />
+		</command>
+		<command id="SPD" size="byte">
+			<description>Set the current song speed. Higher value means slower tempo.</description>
+			<default_substitute from="GSPD" />
+			<force_repeat />
+		</command>
+		<command id="STOP" size="bool">
+			<description>Stop table execution. You must set either this or JUMP at the end of 
+each FxTable.</description>
+			<auto value="true" />
+		</command>
+		<command id="JUMP" size="word" default="fx0">
+			<description>Jump to another FxTable. You must set either this or STOP at the end of 
+each FxTable.</description>
+			<force_string />
+			<reference to="FxTables" />
+		</command>
+		<command id="DRUM" size="byte">
+			<description>Trigger a click drum (interrupts tone playback).</description>
+			<substitute key="kick" value="$40" />
+			<substitute key="hhat" value="$80" />
+		</command>
+		<command id="GMIX" size="byte" default="$b0">
+			<description>Set the global oscillator mixing method.</description>
+			<force_repeat />
+			<substitute key="or" value="$b0" />
+			<substitute key="xor" value="$a8" />
+			<substitute key="and" value="$a0" />
+		</command>
+		<command id="FX" size="word" default="fx0">
+			<description>Specify the FxTable to be used.</description>
+			<force_string />
+			<reference to="FxTables" />
+		</command>
+		<command id="A" size="word">
+			<description>Set the note for oscillator A.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="B" size="word">
+			<description>Set the note for oscillator B.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="MIXAB" size="byte" default="$b0">
+			<description>Set the mixing method for oscillators A and B.</description>
+			<use_last_set />
+			<substitute key="or" value="$b0" />
+			<substitute key="xor" value="$a8" />
+			<substitute key="and" value="$a0" />
+		</command>
+		<command id="DA" size="byte" default="$40">
+			<description>Set the duty for oscillator A.</description>
+			<use_last_set />
+		</command>
+		<command id="DB" size="byte" default="$40">
+			<description>Set the duty for oscillator B.</description>
+			<use_last_set />
+		</command>
+		<command id="SIDA" size="byte" default="$c6">
+			<description>En/disable SID-style duty sweep on oscillator A.</description>
+			<use_last_set />
+			<substitute key="off" value="$c6" />
+			<substitute key="on" value="$ce" />
+		</command>
+		<command id="SIDB" size="byte" default="$c6">
+			<description>En/disable SID-style duty sweep on oscillator B.</description>
+			<use_last_set />
+			<substitute key="off" value="$c6" />
+			<substitute key="on" value="$ce" />
+		</command>
+		<command id="ESA" size="byte">
+			<description>Set Earth Shaker effect strength on oscillator A (0 = off).</description>
+			<use_last_set />
+		</command>
+		<command id="ESB" size="byte">
+			<description>Set Earth Shaker effect strength on oscillator B (0 = off).</description>
+			<use_last_set />
+		</command>
+		<command id="PAB" size="word">
+			<description>Set the phase offset between oscillators A and B.</description>
+			<use_last_set />
+		</command>
+		<command id="C" size="word">
+			<description>Set the note for oscillator C.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="D" size="word">
+			<description>Set the note for oscillator D.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="MIXCD" size="byte" default="$b0">
+			<description>Set the mixing method for oscillators C and D.</description>
+			<use_last_set />
+			<substitute key="or" value="$b0" />
+			<substitute key="xor" value="$a8" />
+			<substitute key="and" value="$a0" />
+		</command>
+		<command id="DC" size="byte" default="$40">
+			<description>Set the duty for oscillator C.</description>
+			<use_last_set />
+		</command>
+		<command id="DD" size="byte" default="$40">
+			<description>Set the duty for oscillator D.</description>
+			<use_last_set />
+		</command>
+		<command id="NC" size="bool">
+			<description>En/disable noise mode on oscillator C.</description>
+			<use_last_set />
+			<substitute key="off" value="false" />
+			<substitute key="on" value="true" />
+		</command>
+		<command id="PCD" size="word">
+			<description>Set the phase offset between oscillators C and D.</description>
+			<use_last_set />
+		</command>
+	</commands>
+	<blocktype id="Patterns" type="pattern" end="db $40">
+		<field size="word">
+			<required_seq_begin />
+			<required />
+			<set_if if="!(A+B+DA+DB+SIDA+SIDB+ESA+ESB+PAB+C+D+DC+DD+NC+PCD+MIXAB+MIXCD)" value="4" />
+			<set_if if="!FX" value="1" />
+			<set_if if="!(A+B+DA+DB+SIDA+SIDB+ESA+ESB+PAB+MIXAB)" value="$80" />
+			<set_hi from="GMIX" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<set from="FX" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="A|B|DA|DB|SIDA|SIDB|ESA|ESB|PAB|MIXAB" />
+			<set_if if="!(A+B)" value="1" />
+			<set_if if="!(SIDA+SIDB+ESA+ESB)" value="4" />
+			<set_if if="!(DA+DB)" value="$40" />
+			<set_if if="!PAB" value="$80" />
+			<set_hi from="MIXAB" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="B" />
+			<set from="A" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="A" />
+			<set from="B" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<set_hi from="DA" />
+			<set_lo from="DB" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="SIDB|ESB" />
+			<set_hi from="ESA" />
+			<set_lo from="SIDA" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="SIDA|ESA" />
+			<set_hi from="ESB" />
+			<set_lo from="SIDB" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<set from="PAB" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="A|B|DA|DB|SIDA|SIDB|ESA|ESB|PAB|MIXAB|C|D|DC|DD|NC|PCD|MIXCD" />
+			<set_if if="!(C+D)" value="1" />
+			<set_if if="!(DC+DD)" value="$40" />
+			<set_if if="!PCD" value="$80" />
+			<set_hi from="MIXCD" />
+			<set_bits from="NC" value="4" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="D" />
+			<set from="C" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="C" />
+			<set from="D" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<set_hi from="DC" />
+			<set_lo from="DD" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<set from="PCD" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required />
+			<set_hi from="SPD" />
+			<set_lo from="DRUM" />
+		</field>
+	</blocktype>
+	<blocktype id="FxTables" type="table">
+		<field size="word">
+			<required />
+			<set_if if="!(A+B+DA+DB+SIDA+SIDB+ESA+ESB+PAB+C+D+DC+DD+NC+PCD+MIXAB+MIXCD)" value="4" />
+			<set_if if="!(A+B+DA+DB+SIDA+SIDB+ESA+ESB+PAB+MIXAB)" value="$80" />
+			<set_hi from="GMIX" />
+			<set_if if="JUMP" value="1" clear="all" />
+			<set_bits from="STOP" value="$40" clear="all" />	
+		</field>
+		<field size="word">
+			<set from="JUMP" />
+		</field>
+		<field size="word">
+			<required if="A|B|DA|DB|SIDA|SIDB|ESA|ESB|PAB|MIXAB" />
+			<set_if if="!(A+B)" value="1" />
+			<set_if if="!(SIDA+SIDB+ESA+ESB)" value="4" />
+			<set_if if="!(DA+DB)" value="$40" />
+			<set_if if="!PAB" value="$80" />
+			<set_hi from="MIXAB" />
+		</field>
+		<field size="word">
+			<required if="B" />
+			<set from="A" />
+		</field>
+		<field size="word">
+			<required if="A" />
+			<set from="B" />
+		</field>
+		<field size="word">
+			<set_hi from="DA" />
+			<set_lo from="DB" />
+		</field>
+		<field size="word">
+			<set_hi from="ESA" />
+			<set_lo from="SIDA" />
+		</field>
+		<field size="word">
+			<set_hi from="ESB" />
+			<set_lo from="SIDB" />
+		</field>
+		<field size="word">
+			<set from="PAB" />
+		</field>
+		<field size="word">
+			<required if="A|B|DA|DB|SIDA|SIDB|ESA|ESB|PAB|MIXAB|C|D|DC|DD|NC|PCD|MIXCD" />
+			<set_if if="!(C+D)" value="1" />
+			<set_if if="!(DC+DD)" value="$40" />
+			<set_if if="!PCD" value="$80" />
+			<set_hi from="MIXCD" />
+			<set_bits from="NC" value="4" />
+		</field>
+		<field size="word">
+			<required if="D" />
+			<set from="C" />
+		</field>
+		<field size="word">
+			<required if="C" />
+			<set from="D" />
+		</field>
+		<field size="word">
+			<set_hi from="DC" />
+			<set_lo from="DD" />
+		</field>
+		<field size="word">
+			<set from="PCD" />
+		</field>
+	</blocktype>
+</mdalconfig>

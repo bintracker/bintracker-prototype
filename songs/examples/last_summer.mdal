@@ -1,0 +1,1095 @@
+CONFIG=PhaserX
+AUTHOR="utz"
+TITLE="the last summer on earth"
+GSPD=16
+:SEQUENCE
+	pattern00
+	blk0
+	blk24
+	blk1
+	blk2
+	blk4
+	blk6
+	blk23
+	blk3
+	blk5
+	blk7
+	blk8
+	blk9
+	blk10
+	[LOOP]
+	blk11
+	blk12
+	blk11
+	blk13
+	blk14
+	blk15
+	blk18
+	blk19
+	blk20
+	blk20
+	blk20
+	blk21
+	blk22
+:pattern00
+	SPD=8, A=b3, SIDA=on
+	A=a3
+	A=g3
+	A=a3
+	A=g3
+	A=d3
+:blk0
+	SPD=4, DRUM=kick, A=e2, SIDA=on, DMODA=64, DUTYA=16, B1=e1, B2=e1+1, MIXB=xor, DMODB1=64, DUTYB1=16, DMODB2=16, DUTYB2=128
+	.
+	.
+	.
+	.
+	A=rest
+	A=e1, B1=e1, PHB=1024
+	A=rest, B1=rest
+	A=e1, B1=e1, PHB=1024
+	A=rest, B1=rest
+	DRUM=kick, A=e1, B1=e1
+	DRUM=kick, A=rest, B1=rest
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64, B1=e2
+	DUTYA=32
+	DUTYA=16
+	.
+	DUTYA=8
+	A=rest, NOISE=off
+	A=e1, SIDA=on, DUTYA=16, B1=e1
+	A=rest, B1=rest
+	A=e1, B1=e1
+	A=rest, B1=rest
+	DRUM=kick, A=e1, B1=e1
+	A=rest, B1=rest
+	DRUM=kick, A=e2, B1=e1
+	.
+	.
+	.
+	.
+	A=rest
+	A=e1, B1=e1
+	A=rest, B1=rest
+	A=e1, B1=e1
+	A=rest, B1=rest
+	DRUM=kick, A=e1, B1=e1
+	DRUM=kick, A=rest, B1=rest
+	DRUM=kick, A=g2, B1=g1, B2=g1+1
+	.
+	A=e2, B1=e1, B2=e1+1
+	.
+	DRUM=kick, A=g2, B1=g1, B2=g1+1
+	.
+	DRUM=hhat, A=b2, B1=b1, B2=b1+1
+	.
+	A=a2, B1=a1, B2=a1+1
+	.
+	DRUM=kick, A=g2, B1=g1, B2=g1+1
+	.
+:blk24
+	SPD=4, DRUM=kick, A=e2, SIDA=on, DMODA=64, DUTYA=16, B1=e1, B2=e1+1, MIXB=xor, DMODB1=64, DUTYB1=16, DMODB2=16, DUTYB2=128
+	.
+	.
+	.
+	.
+	A=rest
+	A=e1, B1=e1, PHB=1024
+	A=rest, B1=rest
+	A=e1, B1=e1, PHB=1024
+	A=rest, B1=rest
+	DRUM=kick, A=e1, B1=e1
+	DRUM=kick, A=rest, B1=rest
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64, B1=e2
+	DUTYA=32
+	DUTYA=16
+	.
+	DUTYA=8
+	A=rest, NOISE=off
+	A=e1, SIDA=on, DUTYA=16, B1=e1
+	A=rest, B1=rest
+	A=e1, B1=e1
+	A=rest, B1=rest
+	DRUM=kick, A=e1, B1=e1
+	A=rest, B1=rest
+	DRUM=kick, A=e2, B1=e1
+	.
+	.
+	.
+	.
+	A=rest
+	A=e1, B1=e1
+	A=rest, B1=rest
+	A=e1, B1=e1
+	A=rest, B1=rest
+	DRUM=kick, A=e1, B1=e1
+	DRUM=kick, A=rest, B1=rest
+	DRUM=kick, A=g2, B1=g1, B2=g1+1
+	.
+	A=e2, B1=e1, B2=e1+1
+	.
+	DRUM=kick, A=g2, B1=g1, B2=g1+1
+	.
+	DRUM=hhat, A=b2, B1=b1, B2=b1+1
+	.
+	DRUM=hhat, A=a2, B1=a1, B2=a1+1
+	.
+	DRUM=hhat, A=g2, B1=g1, B2=g1+1
+	.
+:blk1
+	SPD=4, DRUM=kick, A=a2, SIDA=on, DMODA=64, B1=a1, B2=a1+1, MIXB=xor, DMODB1=64, DUTYB1=16, DMODB2=16, DUTYB2=128
+	.
+	.
+	.
+	.
+	A=rest
+	A=a1, B1=a1, PHB=1024
+	A=rest, B1=rest
+	A=a1, B1=a1, PHB=1024
+	A=rest, B1=rest
+	DRUM=kick, A=a1, B1=a1
+	DRUM=kick, A=rest, B1=rest
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DMODA=0, DUTYA=64, B1=a1
+	DUTYA=32
+	DUTYA=16
+	.
+	DUTYA=8
+	A=rest, NOISE=off
+	A=a1, SIDA=on, DMODA=64, DUTYA=16, B1=a1
+	A=rest, B1=rest
+	A=a1, B1=a1
+	A=rest, B1=rest
+	DRUM=kick, A=a1, B1=a1
+	A=rest, B1=rest
+	DRUM=kick, A=a2, B1=a1, B2=a1+1
+	.
+	.
+	.
+	.
+	A=rest
+	A=a1, B1=a1
+	A=rest, B1=rest
+	A=a1, B1=a1
+	A=rest, B1=rest
+	DRUM=kick, A=a1, B1=a1
+	DRUM=kick, A=rest, B1=rest
+	DRUM=kick, A=a2, B1=a1, B2=a1+1
+	.
+	A=g2, B1=g1, B2=g1+1
+	.
+	DRUM=kick, A=a2, B1=a1, B2=a1+1
+	.
+	DRUM=hhat, A=b2, B1=b1, B2=b1+1
+	.
+	A=a2, B1=a1, B2=a1+1
+	.
+	DRUM=kick, A=g2, B1=g1, B2=g1+1
+	.
+:blk2
+	SPD=4, DRUM=kick, A=a2, SIDA=on, DMODA=64, B1=a1, B2=a1+1, MIXB=xor, DMODB1=64, DUTYB1=16, DMODB2=16, DUTYB2=128
+	.
+	.
+	.
+	.
+	A=rest
+	A=a1, B1=a1, PHB=1024
+	A=rest, B1=rest
+	A=a1, B1=a1, PHB=1024
+	A=rest, B1=rest
+	DRUM=kick, A=a1, B1=a1
+	DRUM=kick, A=rest, B1=rest
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64, B1=a1
+	DUTYA=32
+	DUTYA=16
+	.
+	DUTYA=8
+	A=rest, NOISE=off
+	A=a1, SIDA=on, DUTYA=16, B1=a1
+	A=rest, B1=rest
+	A=a1, B1=a1
+	A=rest, B1=rest
+	DRUM=kick, A=a1, B1=a1
+	A=rest, B1=rest
+	DRUM=kick, A=b2, B1=b1, B2=b1+1
+	.
+	.
+	.
+	.
+	A=rest
+	A=b1, B1=b1
+	A=rest, B1=rest
+	A=b1, B1=b1
+	A=rest, B1=rest
+	DRUM=kick, A=b1, B1=b1
+	A=rest, B1=rest
+	DRUM=kick, A=b2, B1=b1, B2=b1+1
+	DRUM=kick
+	DRUM=kick, A=a2, B1=a1, B2=a1+1
+	DRUM=kick
+	DRUM=kick, A=g2, B1=g1, B2=g1+1
+	DRUM=kick
+	DRUM=kick, A=b2, B1=b1, B2=b1+1
+	DRUM=kick
+	DRUM=kick, A=a2, B1=a1, B2=a1+1
+	DRUM=kick
+	DRUM=kick, A=g2, B1=g1, B2=g1+1
+	DRUM=kick
+:blk4
+	SPD=4, DRUM=kick, A=e1, SIDA=on, DMODA=128, DUTYA=64, B1=b4, B2=b3+1, PHB=1024, MIXB=xor, DMODB1=32, DUTYB1=16, DMODB2=64, DUTYB2=16
+	.
+	.
+	.
+	.
+	.
+	DRUM=hhat, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	DRUM=kick, A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1, B1=e4, B2=e3+1
+	.
+	DRUM=kick, A=e1, B1=a4, B2=a3+1
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	DRUM=kick, A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	.
+	DRUM=kick, A=e1
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	.
+	DRUM=kick, A=e1
+	.
+	B1=fis4, B2=fis3+1
+	.
+	DRUM=kick, B1=g4, B2=g3+1
+	.
+	DRUM=kick, A=gis4, NOISE=on, DUTYA=64, B1=a4, B2=a3+1
+	DUTYA=32
+	DRUM=kick, A=e1, NOISE=off, DUTYA=64, B1=g4, B2=g3+1
+	.
+	DRUM=kick, B1=fis4, B2=fis3+1
+	.
+:blk6
+	SPD=4, DRUM=kick, A=e1, SIDA=on, DMODA=128, DUTYA=64, B1=g4, B2=g3+2, PHB=1024, MIXB=xor, DMODB1=32, DUTYB1=16, DMODB2=64, DUTYB2=16
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1, B1=fis4, B2=fis3+2
+	DRUM=kick
+	DRUM=kick, A=e1, B1=e4, B2=e3+2
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	DRUM=kick, A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	.
+	DRUM=kick, A=g1
+	.
+	DRUM=kick, A=fis3, B1=e2, B2=fis3, MIXB=or, DUTYB1=192, DUTYB2=240
+	.
+	DRUM=kick, A=g3, B1=g2, B2=g3
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, B1=b2, B2=b3
+	DUTYA=32
+	DRUM=kick, A=g3, SIDA=on, NOISE=off, DUTYA=64, B1=a2, B2=g3
+	DRUM=kick
+	DRUM=kick, A=fis3, B1=g2, B2=fis3
+	.
+:blk23
+	SPD=4, DRUM=kick, A=e1, SIDA=on, DMODA=128, DUTYA=64, B1=b4, B2=b3+1, PHB=1024, MIXB=xor, DMODB1=32, DUTYB1=16, DMODB2=64, DUTYB2=16
+	.
+	.
+	.
+	.
+	.
+	DRUM=hhat, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	DRUM=kick, A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1, B1=e4, B2=e3+1
+	.
+	DRUM=kick, A=e1, B1=a4, B2=a3+1
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	.
+	DRUM=kick, A=e1
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	.
+	DRUM=kick, A=e1
+	.
+	B1=fis4, B2=fis3+1
+	.
+	DRUM=kick, B1=g4, B2=g3+1
+	.
+	DRUM=kick, A=gis4, NOISE=on, DUTYA=64, B1=a4, B2=a3+1
+	DUTYA=32
+	DRUM=kick, A=e1, NOISE=off, DUTYA=64, B1=g4, B2=g3+1
+	DRUM=kick
+	DRUM=kick, B1=fis4, B2=fis3+1
+	.
+:blk3
+	SPD=4, DRUM=kick, A=e1, SIDA=on, DMODA=128, DUTYA=32, B1=g4, B2=g3+2, PHB=1024, MIXB=xor, DMODB1=32, DUTYB1=16, DMODB2=64, DUTYB2=16
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	DRUM=kick, A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	.
+	DRUM=kick, A=e1
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	DRUM=kick, A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	.
+	DRUM=kick, A=g1
+	.
+	DRUM=kick, A=fis3, B1=e2, B2=fis3, MIXB=or, DUTYB1=192, DUTYB2=240
+	.
+	DRUM=kick, A=g3, B1=g2, B2=g3
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, B1=b2, B2=b3
+	DRUM=kick, DUTYA=32
+	DRUM=kick, A=g3, SIDA=on, NOISE=off, DUTYA=64, B1=a2, B2=g3
+	.
+	DRUM=kick, A=fis3, B1=g2, B2=fis3
+	.
+:blk5
+	SPD=4, DRUM=kick, A=a1, SIDA=on, DMODA=128, DUTYA=64, B1=c5, B2=c4+1, PHB=1024, MIXB=xor, DMODB1=32, DUTYB1=16, DMODB2=64, DUTYB2=16
+	.
+	.
+	.
+	.
+	.
+	DRUM=hhat, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	DRUM=kick, A=a1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=a1, B1=b4, B2=b3+1
+	.
+	DRUM=kick, A=a1, B1=a4, B2=a3+2
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	DRUM=kick, A=a1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=a1
+	.
+	DRUM=kick, A=a1
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	A=a1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=a1
+	DRUM=kick
+	DRUM=kick, A=a1
+	.
+	B1=fis4, B2=fis3+1
+	.
+	DRUM=kick, B1=g4, B2=g3+1
+	.
+	DRUM=kick, A=gis4, NOISE=on, DUTYA=64, B1=a4, B2=a3+1
+	DUTYA=32
+	DRUM=kick, A=a1, NOISE=off, DUTYA=64, B1=g4, B2=g3+1
+	.
+	DRUM=kick, B1=fis4, B2=fis3+1
+	.
+:blk7
+	SPD=4, DRUM=kick, A=a1, SIDA=on, DMODA=128, DUTYA=64, B1=c5, B2=c4+1, PHB=1024, MIXB=xor, DMODB1=32, DUTYB1=16, DMODB2=64, DUTYB2=16
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	A=a1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=a1
+	DRUM=kick
+	DRUM=kick, A=a1
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	DRUM=kick, A=a1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	A=a1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=a1
+	.
+	DRUM=kick, A=g1, B1=e5, B2=e4
+	.
+	DRUM=kick, A=fis3, B1=d5, B2=d4
+	.
+	DRUM=kick, A=g3, B1=c5, B2=c4
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, B1=d5, B2=d4
+	DUTYA=32
+	DRUM=kick, A=g3, SIDA=on, NOISE=off, DUTYA=64, B1=c5, B2=c4
+	DRUM=kick
+	DRUM=kick, A=fis3, B1=d4, B2=d3
+	.
+:blk8
+	SPD=4, DRUM=kick, A=e1, SIDA=on, DMODA=128, DUTYA=64, B1=b4, B2=b3+1, PHB=1024, MIXB=xor, DMODB1=32, DUTYB1=16, DMODB2=64, DUTYB2=16
+	.
+	.
+	.
+	.
+	.
+	DRUM=hhat, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	DRUM=kick, A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1, B1=a4, B2=a3+1
+	.
+	DRUM=kick, A=e1, B1=g4, B2=g3+2
+	.
+	.
+	.
+	.
+	.
+	DRUM=hhat, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	DRUM=kick, A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	.
+	DRUM=kick, A=e1
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64
+	DUTYA=32
+	A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	.
+	DRUM=kick, A=e1
+	.
+	B1=fis4, B2=fis3+1
+	.
+	DRUM=kick, B1=g4, B2=g3+1
+	.
+	DRUM=kick, A=gis4, NOISE=on, DUTYA=64, B1=a4, B2=a3+1
+	DUTYA=32
+	DRUM=kick, A=e1, NOISE=off, DUTYA=64, B1=g4, B2=g3+1
+	.
+	DRUM=kick, B1=fis4, B2=fis3+1
+	.
+:blk9
+	SPD=4, DRUM=kick, A=e1, SIDA=on, DMODA=128, DUTYA=64, B1=b4, B2=b3+1, PHB=1024, MIXB=xor, DMODB1=32, DUTYB1=16, DMODB2=64, DUTYB2=16
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	DRUM=kick
+	DRUM=kick, A=e1
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	DRUM=kick, A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	.
+	.
+	.
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on
+	DUTYA=32
+	A=e1, SIDA=on, NOISE=off, DUTYA=64
+	.
+	DRUM=kick, A=e1
+	.
+	DRUM=kick, A=g1, B1=e5, B2=e4
+	.
+	DRUM=kick, A=fis3, B1=d5, B2=d4
+	.
+	DRUM=kick, A=g3, B1=c5, B2=c4
+	.
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, B1=d5, B2=d4
+	DUTYA=32
+	DRUM=kick, A=g3, SIDA=on, NOISE=off, DUTYA=64, B1=c5, B2=c4
+	DRUM=kick
+	DRUM=kick, A=fis3, B1=d4, B2=d3
+	.
+:blk10
+	SPD=4, DRUM=kick, A=gis4, SIDA=off, NOISE=on, DMODA=0, DUTYA=96, B1=e3, B2=e3+1, MIXB=and, DMODB1=4, DUTYB1=8, DUTYB2=8
+	DUTYA=64
+	DUTYA=32
+	DUTYA=16
+	.
+	DUTYA=8
+	.
+	.
+	.
+	DUTYA=4
+	.
+	.
+	B1=b3, B2=b3+1
+	DUTYA=2
+	.
+	.
+	.
+	DUTYA=1
+	.
+	.
+	.
+	.
+	A=rest
+	.
+	B1=ais3, B2=ais3+1
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	B1=fis3, B2=fis3+1
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+:blk11
+	SPD=4, DRUM=kick, A=e1, SIDA=on, DMODA=128, DUTYA=32, B1=e4, B2=e3+1, MIXB=and, DMODB1=64, DUTYB1=16, DMODB2=64, DUTYB2=8
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, A=b1, B1=b4, B2=b3+1
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, A=ais1, B1=ais4, B2=ais3+1
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, A=fis1, B1=fis4, B2=fis3+1
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+:blk12
+	SPD=4, DRUM=kick, A=g1, SIDA=on, DMODA=128, DUTYA=32, B1=g4, B2=g3+1, MIXB=and, DMODB1=64, DUTYB1=16, DMODB2=64, DUTYB2=8
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, B1=fis4, B2=fis3+1
+	.
+	DRUM=kick, B1=g4, B2=g3+1
+	.
+	DRUM=kick, B1=a4, B2=a3+1
+	DRUM=kick
+	DRUM=kick, B1=g4, B2=g3+1
+	.
+	DRUM=kick, B1=fis4, B2=fis3+1
+	.
+:blk13
+	SPD=4, DRUM=kick, A=g1, SIDA=on, DMODA=128, DUTYA=32, B1=b4, B2=g3+1, MIXB=and, DMODB1=64, DUTYB1=16, DMODB2=64, DUTYB2=8
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, B1=a4, B2=fis3+1
+	.
+	DRUM=kick, B1=b4, B2=g3+1
+	.
+	DRUM=kick, B1=c5, B2=a3+1
+	.
+	DRUM=kick, B1=b4, B2=g3+1
+	DRUM=kick
+	DRUM=kick, B1=a4, B2=fis3+1
+	.
+:blk14
+	SPD=4, DRUM=kick, A=e1, SIDA=on, DMODA=128, DUTYA=32, B1=g4, B2=e4+1, MIXB=and, DMODB1=64, DUTYB1=16, DMODB2=64, DUTYB2=8
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, A=b1, B1=b4, B2=g4+1
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, A=ais1, B1=ais4, B2=fis4+1
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, A=fis1, B1=fis4, B2=dis4+1
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+:blk15
+	SPD=4, DRUM=kick, A=g1, SIDA=on, DMODA=128, DUTYA=32, B1=g4, B2=e4+1, MIXB=and, DMODB1=64, DUTYB1=16, DMODB2=64, DUTYB2=8
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, B1=a4, B2=fis3+1
+	.
+	DRUM=kick, B1=b4, B2=g3+1
+	.
+	DRUM=kick, B1=c5, B2=a3+1
+	DRUM=kick
+	DRUM=kick, B1=b4, B2=g3+1
+	.
+	DRUM=kick, B1=a4, B2=fis3+1
+	.
+:blk18
+	SPD=4, DRUM=kick, A=e1, SIDA=on, DMODA=128, DUTYA=32, B1=e5, B2=e3+1, MIXB=and, DMODB1=64, DUTYB1=16, DMODB2=64, DUTYB2=8
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, A=b1, B1=b5, B2=b3+1
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, A=ais1, B1=ais5, B2=ais3+1
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, A=fis1, B1=fis5, B2=fis3+1
+	DRUM=kick
+	DRUM=kick
+	.
+	.
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+:blk19
+	SPD=4, DRUM=kick, A=g1, SIDA=on, DMODA=128, DUTYA=32, B1=g5, B2=b3+1, MIXB=and, DMODB1=64, DUTYB1=16, DMODB2=64, DUTYB2=8
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	DRUM=kick, B1=fis5, B2=fis3+1
+	.
+	DRUM=kick, B1=g5, B2=g3+1
+	.
+	DRUM=kick, B1=a5, B2=a3+1
+	DRUM=kick
+	DRUM=kick, A=fis1, B1=g5, B2=g3+1
+	.
+	DRUM=kick, A=f1, B1=fis5, B2=fis3+1
+	.
+:blk20
+	SPD=4, DRUM=kick, A=e2, SIDA=on, DMODA=64, DUTYA=16, B1=e3, B2=e1+1, MIXB=xor, DMODB1=64, DUTYB1=16, DMODB2=16, DUTYB2=128
+	.
+	.
+	.
+	.
+	A=rest
+	A=e1, B1=e1, PHB=1024
+	A=rest, B1=rest
+	A=e1, B1=e1, PHB=1024
+	A=rest, B1=rest
+	DRUM=kick, A=e1, B1=e1
+	DRUM=kick, A=rest, B1=rest
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DUTYA=64, B1=e2
+	DUTYA=32
+	DUTYA=16
+	.
+	DUTYA=8
+	A=rest, NOISE=off
+	A=e1, SIDA=on, DUTYA=16, B1=e1
+	A=rest, B1=rest
+	A=e1, B1=e1
+	A=rest, B1=rest
+	A=e1, B1=e1
+	A=rest, B1=rest
+:blk21
+	SPD=4, DRUM=kick, A=e2, SIDA=on, DMODA=64, DUTYA=16, B1=e3, B2=e1+1, MIXB=xor, DMODB1=64, DUTYB1=16, DMODB2=16, DUTYB2=128
+	.
+	.
+	.
+	.
+	A=rest
+	A=e1, B1=e1, PHB=1024
+	A=rest, B1=rest
+	A=e1, B1=e1, PHB=1024
+	A=rest, B1=rest
+	DRUM=kick, A=e1, B1=e1
+	DRUM=kick, A=rest
+	DRUM=kick, A=b1, B1=b5, B2=b3+1, MIXB=and, DMODB2=64, DUTYB2=8
+	.
+	A=a1, B1=a5, B2=a3+1
+	.
+	A=g1, B1=g5, B2=g3+1
+	.
+	A=a1, B1=a5, B2=a3+1
+	.
+	A=g1, B1=g5, B2=g3+1
+	.
+	A=d1, B1=d5, B2=d3+1
+	.
+:blk22
+	SPD=4, DRUM=kick, A=e1, SIDA=on, DMODA=64, DUTYA=16, B1=e1, B2=e1+1, MIXB=xor, DMODB1=64, DUTYB1=16, DMODB2=16, DUTYB2=128
+	.
+	.
+	.
+	.
+	A=rest, B2=rest
+	B1=rest
+	.
+	.
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick, A=gis4, SIDA=off, NOISE=on, DMODA=0, DUTYA=96, MIXB=and
+	DUTYA=64
+	DUTYA=32
+	.
+	DUTYA=16
+	.
+	DUTYA=8
+	DUTYA=4
+	DUTYA=2
+	DUTYA=1
+	A=rest
+	.

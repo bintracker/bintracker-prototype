@@ -1,0 +1,187 @@
+CONFIG=PhaserX
+AUTHOR=utz
+TITLE="PhaserX Demo"
+
+:SEQUENCE
+
+	ptn1
+	ptn1
+	ptn1
+	ptn1
+	ptn2
+	ptn2
+	ptn2
+	ptn2
+	ptn3
+	ptn3
+	ptn3
+	ptn3a
+	[LOOP]
+	ptn4
+	ptn4
+	ptn4
+	ptn4a
+	ptn5
+	ptn5
+	ptn5
+	ptn5a	
+:ptn1
+	B1=a1, B2=a1+1, MIXB=or, DUTYB1=$20, DUTYB2=$20, SPD=6
+	.
+	B1=e2, B2=e2+1
+	.
+	B1=d2, B2=d2+1
+	.
+	B1=a1, B2=a1+1
+	.
+	B1=e2, B2=e2+1
+	.
+	B1=d2, B2=d2+1
+	.
+	B1=a1, B2=a1+1
+	.
+	B1=c2, B2=c2+1
+	.	
+:ptn2
+	B1=a2, B2=a2+1, MIXB=or, DUTYB1=$20, DUTYB2=$20, DMODB2=$10, SPD=6, A=a1, DUTYA=$10, DMODA=$40, SIDA=on
+	.
+	B1=e3, B2=e3+1
+	.
+	B1=d3, B2=d3+1
+	.
+	B1=a2, B2=a2+1
+	.
+	B1=e3, B2=e3+1
+	.
+	B1=d3, B2=d3+1
+	.
+	B1=a2, B2=a2+1
+	.
+	B1=c3, B2=c3+1
+	.
+	
+:ptn2a
+	B1=a2, B2=a2+1, MIXB=or, DUTYB1=$20, DUTYB2=$20, DMODB2=$10, SPD=6, A=a1, DUTYA=$10, DMODA=$40, SIDA=on
+	.
+	B1=e3, B2=e3+1
+	.
+	B1=d3, B2=d3+1
+	.
+	B1=a2, B2=a2+1
+	.
+	B1=e3, B2=e3+1
+	.
+	B1=d3, B2=d3+1
+	.
+	B1=a2, B2=a2+1
+	A=gis1
+	B1=c3, B2=c3+1, A=g1
+	A=fis1
+	
+:ptn3
+	B1=a2, B2=a2+1, MIXB=or, DUTYB1=$20, DUTYB2=$20, DMODB2=$10, SPD=6, A=f1, DUTYA=$20, DMODA=$80, SIDA=on
+	.
+	B1=e3, B2=e3+1
+	.
+	B1=d3, B2=d3+1
+	.
+	B1=a2, B2=a2+1
+	.
+	B1=e3, B2=e3+1
+	.
+	B1=d3, B2=d3+1
+	.
+	B1=a2, B2=a2+1
+	.
+	B1=c3, B2=c3+1
+	.
+	
+:ptn3a
+	B1=a2, B2=a2+1, MIXB=or, DUTYB1=$20, DUTYB2=$20, DMODB2=$10, SPD=6, A=f1, DUTYA=$20, DMODA=$80, SIDA=on
+	.
+	B1=e3, B2=e3+1
+	.
+	B1=d3, B2=d3+1
+	.
+	B1=a2, B2=a2+1
+	.
+	B1=e3, B2=e3+1
+	.
+	B1=d3, B2=d3+1
+	.
+	B1=a2, B2=a2+1
+	A=fis1
+	B1=c3, B2=c3+1, A=g1
+	A=gis1
+	
+:ptn4
+	B1=a2, B2=a2+1, MIXB=or, DUTYB1=$20, DUTYB2=$20, DMODB2=$10, SPD=6, A=a1, DUTYA=$10, DMODA=$40, SIDA=on, DRUM=kick
+	.
+	B1=e3, B2=e3+1, DRUM=hhat
+	DRUM=hhat
+	B1=d3, B2=d3+1, DRUM=kick
+	.
+	B1=a2, B2=a2+1, DRUM=hhat
+	DRUM=hhat
+	B1=e3, B2=e3+1, DRUM=kick
+	.
+	B1=d3, B2=d3+1, DRUM=hhat
+	DRUM=hhat
+	B1=a2, B2=a2+1, DRUM=kick
+	.
+	B1=c3, B2=c3+1, DRUM=hhat
+	DRUM=hhat
+	
+:ptn4a
+	B1=a2, B2=a2+1, MIXB=or, DUTYB1=$20, DUTYB2=$20, DMODB2=$10, SPD=6, A=a1, DUTYA=$10, DMODA=$40, SIDA=on, DRUM=kick
+	.
+	B1=e3, B2=e3+1, DRUM=hhat
+	DRUM=hhat
+	B1=d3, B2=d3+1, DRUM=kick
+	.
+	B1=a2, B2=a2+1, DRUM=hhat
+	DRUM=hhat
+	B1=e3, B2=e3+1, DRUM=kick
+	.
+	B1=d3, B2=d3+1, DRUM=hhat
+	DRUM=hhat
+	B1=a2, B2=a2+1, DRUM=kick
+	A=gis1
+	B1=c3, B2=c3+1, DRUM=hhat, A=g1
+	DRUM=hhat, A=fis1
+
+:ptn5
+	B1=a2, B2=a2+1, MIXB=or, DUTYB1=$20, DUTYB2=$20, DMODB2=$10, SPD=6, A=f1, DUTYA=$20, DMODA=$80, SIDA=on, DRUM=kick
+	.
+	B1=e3, B2=e3+1, DRUM=hhat
+	DRUM=hhat
+	B1=d3, B2=d3+1, DRUM=kick
+	.
+	B1=a2, B2=a2+1, DRUM=hhat
+	DRUM=hhat
+	B1=e3, B2=e3+1, DRUM=kick
+	.
+	B1=d3, B2=d3+1, DRUM=hhat
+	DRUM=hhat
+	B1=a2, B2=a2+1, DRUM=kick
+	.
+	B1=c3, B2=c3+1, DRUM=hhat
+	DRUM=hhat
+
+:ptn5a
+	B1=a2, B2=a2+1, MIXB=xor, DUTYB1=$20, DUTYB2=$20, DMODB2=$10, PHB=$1000, SPD=6, A=f1, DUTYA=$20, DMODA=$80, SIDA=on, DRUM=kick
+	.
+	B1=e3, B2=e3+1, DRUM=hhat
+	DRUM=hhat
+	B1=d3, B2=d3+1, DRUM=kick
+	.
+	B1=a2, B2=a2+1, DRUM=hhat
+	DRUM=hhat
+	B1=e3, B2=e3+1, DRUM=kick
+	.
+	B1=d3, B2=d3+1, DRUM=hhat
+	DRUM=hhat
+	B1=a2, B2=a2+1, DRUM=kick
+	A=fis1
+	A=g1, B1=c3, B2=c3+1, DRUM=hhat
+	A=gis1, DRUM=hhat

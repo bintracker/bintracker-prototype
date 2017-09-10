@@ -1,0 +1,195 @@
+CONFIG=PhaseSqueek
+AUTHOR="utz"
+TITLE="PhaseSqueekDemo"
+
+:SEQUENCE
+	intro
+	intro
+	intro
+	intro 
+
+	pattern1
+	pattern1
+	pattern1
+	pattern1a
+	pattern1
+	pattern1
+	pattern1
+	pattern1a
+	pattern1
+	pattern1
+	pattern1
+	pattern1a
+	pattern1
+	pattern1
+	pattern1
+	pattern1b
+	[LOOP]
+	pattern2
+	pattern2x
+	pattern2y
+	pattern2a
+	pattern2
+	pattern2z
+	pattern2y
+	pattern2a1
+	pattern2
+	pattern2x
+	pattern2y
+	pattern2a
+	pattern2
+	pattern2z
+	pattern2y
+	pattern2b
+
+:intro
+	SPD=7, DRUM=kick
+	.
+	DRUM=hhat
+	.
+	C=noise, NC=on, FX=snare1
+	.
+	DRUM=hhat, C=0, NC=off, FX=fx0
+	.
+
+:pattern1
+	SPD=7, DRUM=kick,		A=rest, B=rest, SIDA=on, MIXAB=xor
+	.
+	DRUM=hhat,			A=c1, B=c1
+	.
+	C=noise, NC=on, FX=snare1,	A=rest, B=rest
+	.
+	DRUM=hhat, C=0, NC=off, FX=fx0, A=c1, B=c1
+	.
+					
+:pattern1a
+	SPD=7, DRUM=kick,		A=c1, B=c1
+					A=d1, B=d1
+					A=dis1, B=dis1
+	DRUM=kick,			A=f1, B=f1
+	C=noise, NC=on, FX=snare1,	A=c1, B=c1
+					A=d1, B=d1
+	DRUM=hhat, C=0, NC=off, FX=fx0, A=dis1, B=dis1
+					A=f1, B=f1
+
+:pattern1b
+	SPD=7, DRUM=kick,		A=g1, B=g1
+					A=f1, B=f1
+					A=dis1, B=dis1
+	DRUM=kick,			A=d1, B=d1
+	C=noise, NC=on, FX=snare1,	A=g1, B=g1
+					A=f1, B=f1
+	DRUM=hhat, C=0, NC=off, FX=fx0, A=dis1, B=dis1
+					A=d1, B=d1
+					
+:pattern2
+	SPD=7, DRUM=kick,		A=rest, B=rest, D=c3, DD=$10, PCD=0, PAB=0, FX=arp1, SIDA=off
+	.
+	DRUM=hhat,			A=c1, B=c1
+	.
+	C=noise, NC=on, FX=snare1,	A=rest, B=rest
+	.
+	DRUM=hhat, C=0, NC=off, FX=fx0, A=c1, B=c1
+	.
+	
+:pattern2x
+	SPD=7, DRUM=kick,		A=rest, B=rest, D=dis3, DD=$10, PCD=0, PAB=0, FX=arp2
+	.
+	DRUM=hhat,			A=c1, B=c1
+	.
+	C=noise, NC=on, FX=snare1,	A=rest, B=rest
+	.
+	DRUM=hhat, C=0, NC=off, FX=fx0, A=c1, B=c1
+	.
+	
+:pattern2y
+	SPD=7, DRUM=kick,		A=rest, B=rest, D=f3, DD=$10, PCD=0, PAB=0, FX=arp1
+	.
+	DRUM=hhat,			A=c1, B=c1
+	.
+	C=noise, NC=on, FX=snare1,	A=rest, B=rest
+	.
+	DRUM=hhat, C=0, NC=off, FX=fx0, A=c1, B=c1
+	.
+	
+:pattern2z
+	SPD=7, DRUM=kick,		A=rest, B=rest, D=ais2, DD=$10, PCD=0, PAB=0, FX=arp2
+	.
+	DRUM=hhat,			A=c1, B=c1
+	.
+	C=noise, NC=on, FX=snare1,	A=rest, B=rest
+	.
+	DRUM=hhat, C=0, NC=off, FX=fx0, A=c1, B=c1
+	.
+	
+:pattern2a
+	SPD=7, DRUM=kick,		A=rest, B=c1, D=dis3, DD=$10, PCD=0, FX=arp1
+					A=rest, B=d1
+					A=rest, B=dis1
+	DRUM=kick,			A=rest, B=f1
+	C=noise, NC=on, FX=snare1,	A=c1, B=c1
+					A=d1, B=d1
+	DRUM=hhat, C=0, NC=off, FX=fx0, A=dis1, B=dis1
+	DRUM=hhat,			A=f1, B=f1
+	
+:pattern2a1
+	SPD=7, DRUM=kick,		A=rest, B=c1, D=c3, DD=$10, PCD=0, FX=arp1
+					A=rest, B=d1
+					A=rest, B=dis1
+	DRUM=kick,			A=rest, B=f1
+	C=noise, NC=on, FX=snare1,	A=c1, B=c1
+					A=d1, B=d1
+	DRUM=hhat, C=0, NC=off, FX=fx0, A=dis1, B=dis1
+	DRUM=hhat,			A=f1, B=f1
+					
+:pattern2b
+	SPD=7, DRUM=kick,		A=rest, B=g1, D=c3, DD=$10, PCD=0, FX=arp1
+					A=rest, B=f1
+					A=rest, B=dis1
+	DRUM=kick,			A=rest, B=d1
+	C=noise, NC=on, FX=snare1,	A=g1, B=g1
+					A=f1, B=f1
+	DRUM=hhat, C=0, NC=off, FX=fx0, A=dis1, B=dis1
+	DRUM=hhat,			A=d1, B=d1	
+	
+	
+:fx0
+	STOP
+	
+:snare1
+	DC=$40, DD=$10, NC=on
+	.
+	DC=$30
+	.
+	DC=$20
+	.
+	.
+	.
+	DC=$18
+	.
+	.
+	.
+	DC=$10
+	.
+	DC=$8
+	DC=$4
+	STOP
+	
+:arp1
+	D=c3
+	D=c3
+	D=dis3
+	D=dis3
+	D=g3
+	D=g3
+	JUMP=arp1
+	
+:arp2
+	D=c3
+	D=c3
+	D=dis3
+	D=dis3
+	D=f3
+	D=f3
+	JUMP=arp2
+

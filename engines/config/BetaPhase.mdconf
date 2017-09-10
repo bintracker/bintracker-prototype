@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mdalconfig version="1">
+	<description>An experimental, phaser-type engine with 3 tone channels.
+Channels A and B use dual, linked oscillators.
+Channel A supports noise, channel C supports slides.
+For further reference, see
+https://github.com/utz82/ZX-Spectrum-1-Bit-Routines/tree/master/betaphase.</description>
+	<global target="zxspectrum48" word_directive="dw" byte_directive="db" />
+	<sequence end="dw 0">
+		<track from="Patterns" />
+		<loop type="label" label="mloop" />
+	</sequence>
+	<commands>
+		<command id="AUTHOR" size="byte" default="unknown">
+			<description>Specify the track's author.</description>
+			<force_string />
+			<global_const />
+		</command>
+		<command id="TITLE" size="byte" default="untitled">
+			<description>Specify the track's title.</description>
+			<force_string />
+			<global_const />
+		</command>
+		<command id="GSPD" size="byte" default="$10">
+			<description>Set the global song speed. Higher value means slower tempo.</description>
+			<global_const />
+		</command>
+		<command id="SPD" size="byte">
+			<description>Set the current song speed. Higher value means slower tempo.</description>
+			<default_substitute from="GSPD" />
+			<force_repeat />
+		</command>
+		<command id="A" size="word">
+			<description>Set the note for channel A.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="PHA" size="word">
+			<description>Set the oscillator phase offset for channel A.</description>
+			<use_last_set />
+		</command>
+		<command id="DMODA" size="bool">
+			<description>En/disable duty modulation for channel A.</description>
+			<use_last_set />
+			<substitute key="off" value="false" />
+			<substitute key="on" value="true" />
+		</command>
+		<command id="PSCA1" size="byte">
+			<description>Set the first prescaler for channel A.</description>
+			<use_last_set />
+			<substitute key="down" value="$0f" />
+			<substitute key="up" value="$07" />
+			<substitute key="none" value="0" />
+		</command>
+		<command id="PSCA2" size="byte">
+			<description>Set the second prescaler for channel A.</description>
+			<use_last_set />
+			<substitute key="down" value="$0f" />
+			<substitute key="up" value="$07" />
+			<substitute key="none" value="0" />
+		</command>
+		<command id="NOISE" size="bool">
+			<description>En/disable noise mode for channel A.</description>
+			<use_last_set />
+			<substitute key="off" value="false" />
+			<substitute key="on" value="true" />
+		</command>
+		<command id="MIXA" size="byte" default="$b4">
+			<description>Set the oscillator mixing method for the channel A.</description>
+			<use_last_set />
+			<substitute key="xor" value="$ac" />
+			<substitute key="and" value="$a4" />
+			<substitute key="or" value="$b4" />
+			<substitute key="none" value="$b7" />
+		</command>
+		<command id="B" size="word">
+			<description>Set the note for channel B.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="PHB" size="word">
+			<description>Set the oscillator phase offset for channel B.</description>
+			<use_last_set />
+		</command>
+		<command id="DMODB" size="byte">
+			<description>En/disable duty modulation for channel B.</description>
+			<use_last_set />
+		</command>
+		<command id="PSCB1" size="byte">
+			<description>Set the first prescaler for channel B.</description>
+			<use_last_set />
+			<substitute key="down" value="$0f" />
+			<substitute key="up" value="$07" />
+			<substitute key="none" value="0" />
+		</command>
+		<command id="PSCB2" size="byte">
+			<description>Set the second prescaler for channel B.</description>
+			<use_last_set />
+			<substitute key="down" value="$0f" />
+			<substitute key="up" value="$07" />
+			<substitute key="none" value="0" />
+		</command>
+		<command id="MIXB" size="byte" default="$b4">
+			<description>Set the oscillator mixing method for the channel A.</description>
+			<use_last_set />
+			<substitute key="xor" value="$ac" />
+			<substitute key="and" value="$a4" />
+			<substitute key="or" value="$b4" />
+			<substitute key="none" value="$b7" />
+		</command>
+		<command id="C" size="word">
+			<description>Set the note for channel C.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="PSCC" size="byte">
+			<description>Set the prescaler for channel C.</description>
+			<use_last_set />
+			<substitute key="down" value="$0f" />
+			<substitute key="up" value="$07" />
+			<substitute key="none" value="0" />
+		</command>
+		<command id="SLDIR" size="bool">
+			<description>Set the slide direction for channel C.</description>
+			<use_last_set />
+			<substitute key="down" value="false" />
+			<substitute key="up" value="true" />
+		</command>
+		<command id="SLSPD" size="byte">
+			<description>Set the slide speed for channel C (0 = no slide).</description>
+			<use_last_set />
+		</command>		
+	</commands>	
+	<blocktype id="Patterns" type="pattern" end="db $40">
+		<init_defaults />
+		<field size="word">
+			<required_seq_begin />
+			<required />
+			<set_hi from="SPD" />
+			<set_if if="!(A+PHA+DMODA+PSCA1+PSCA2+MIXA+NOISE)" value="1" />
+			<set_if if="!(B+PHB+MIXB+PSCB1+PSCB2+DMODB)" value="4" />
+			<set_if if="!(C+SLDIR+SLSPD+PSCC)" value="$80" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="A|PHA|DMODA|PSCA1|PSCA2|MIXA|NOISE" />
+			<set_hi from="PSCA1" />
+			<set_if if="PHA" value="1" />
+			<set_bits from="DMODA" value="$40" />
+			<set_bits from="NOISE" value="$cb00" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<set from="PHA" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="A|PHA|DMODA|PSCA1" />
+			<set_hi from="MIXA" />
+			<set_lo from="PSCA2" />
+			<set_bits from="NOISE" value="2" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="PHA|DMODA|PSCA1|PSCA2|MIXA|NOISE" />
+			<set from="A" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="B|PHB|PSCB1|PSCB2|DMODB" />
+			<set_hi from="MIXB" />
+			<set_if if="PHB" value="1" />
+			<set_if if="DMODB" value="$40" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<set from="PHB" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<set_hi from="DMODB" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="B|PHB|MIXB|DMODB" />
+			<set_lo from="PSCB1" />
+			<set_hi from="PSCB2" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="PHB|PSCB1|PSCB2|MIXB|DMODB" />
+			<set from="B" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="C" />
+			<set_hi from="PSCC" />
+			<set_lo from="SLSPD" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="PSCC|SLSPD" />
+			<set from="C" />
+			<set_bits from="SLDIR" value="$8000" />
+		</field>
+	</blocktype>	
+</mdalconfig>

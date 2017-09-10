@@ -1,0 +1,98 @@
+BetaPhase MDAL Configuration
+============================
+
+This MDAL config can be used to create music.asm files for the PhaseSqueek
+beeper engine. See
+https://github.com/utz82/ZX-Spectrum-1-Bit-Routines/tree/master/phasesqueek
+for details.
+
+
+Invocation
+==========
+
+CONFIG=PhaseSqueek
+
+
+General Parameters
+==================
+
+Minimum MDAL version:           0
+Set [LOOP] point in sequence:   allowed
+Use tables:                     yes
+Use samples:                    no
+
+
+Global Constants
+================
+
+AUTHOR          Set the author of the tune
+TITLE           Set the tune's title.
+GSPD            Set global speed. (default: 0x10)
+
+
+Pattern Commands
+================
+
+A               Set note ch1 op1 (default: 0)
+B               Set note ch1 op2 (default: 0)
+C               Set note ch2 op1 (default: 0)
+D               Set note ch2 op2 (default: 0)
+PAB             Phase reset/Set phase offset ch1 (default: 0)
+PCD             Phase reset/Set phase offset ch2 (default: 0)
+MIXAB           Set mixing mode ch1 (xor|or|and, default: or)
+MIXCD           Set mixing mode ch2 (xor|or|and, default: or)
+GMIX            Set global mixing mode (xor|or|and, default: or)
+DA              Set duty ch1 op1 (default: 0x40)
+DB              Set duty ch1 op2 (default: 0x40)
+DC              Set duty ch2 op1 (default: 0x40)
+DD              Set duty ch2 op2 (default: 0x40)
+SIDA            En/disable SID style duty sweep ch1 op1 (on|off, default: off)
+SIDB            En/disable SID style duty sweep ch1 op2 (on|off, default: off)
+ESA             Set ES style duty modulation ch1 op1 (default: 0)
+ESB             Set ES style duty modulation ch1 op2 (default: 0)
+NC              En/disable Noise mode ch2 op1 (on|off, default: off)
+FX              Set FX table pointer (default: "fx0");
+DRUM            Trigger click drum (kick|hhat)
+SPD             Set row speed in ticks (default: 0x10);
+
+
+Table Commands
+==============
+
+A               Set note ch1 op1 (default: 0)
+B               Set note ch1 op2 (default: 0)
+C               Set note ch2 op1 (default: 0)
+D               Set note ch2 op2 (default: 0)
+PAB             Phase reset/Set phase offset ch1 (default: 0)
+PCD             Phase reset/Set phase offset ch2 (default: 0)
+MIXAB           Set mixing mode ch1 (xor|or|and, default: or)
+MIXCD           Set mixing mode ch2 (xor|or|and, default: or)
+GMIX            Set global mixing mode (xor|or|and, default: or)
+DA              Set duty ch1 op1 (default: 0x40)
+DB              Set duty ch1 op2 (default: 0x40)
+DC              Set duty ch2 op1 (default: 0x40)
+DD              Set duty ch2 op2 (default: 0x40)
+SIDA            En/disable SID style duty sweep ch1 op1 (on|off, default: off)
+SIDB            En/disable SID style duty sweep ch1 op2 (on|off, default: off)
+ESA             Set ES style duty modulation ch1 op1 (default: 0)
+ESB             Set ES style duty modulation ch1 op2 (default: 0)
+NC              En/disable Noise mode ch2 op1 (on|off, default: off)
+JUMP            Set jump to another fx table (default: "fx0");
+STOP            Stop fx table execution (automatic, no parameter required);
+
+Note: 
+
+- Each table must end with either a JUMP or a STOP command.
+- Channel operators depend on each other, so you should initialize the other 
+  channel operator once for the table. Eg.
+  
+:pattern1
+   A=a2, B=c1, FX=fxtable1
+   .
+  
+:fxtable1
+   A=a2         //bad, B will be reset to 0 (rest)
+   A=a3, B=c1   //good, B is initialized
+   A=c4
+   FXJUMP=fxtable1
+   

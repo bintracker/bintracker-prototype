@@ -1,0 +1,200 @@
+CONFIG=Pytha
+AUTHOR="unknown"
+TITLE="untitled"
+GSPD=8
+:SEQUENCE
+	ptn0
+	ptn0
+	ptn0
+	ptn0
+	[LOOP]
+	blk0
+	blk0
+	blk1
+	blk2
+	blk0
+	blk0
+	blk1
+	blk2
+	blk3
+	blk3
+	blk4
+	blk5
+	blk0
+	blk0
+	blk6
+	blk7
+	blk8
+	blk8
+	blk8
+	blk8
+:ptn0
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+:blk0
+	A=c3, B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+:blk1
+	A=g3, B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	A=f3, B=dis1
+	A=dis3, B=f1
+:blk2
+	A=f3, B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+:blk3
+	A=gis3, B=f1
+	B=g1
+	B=gis1
+	B=ais1
+	B=f1
+	B=g1
+	B=gis1
+	B=ais1
+	B=f1
+	B=g1
+	B=gis1
+	B=ais1
+	B=f1
+	B=g1
+	B=gis1
+	B=ais1
+:blk4
+	A=c4, B=f1
+	B=g1
+	B=gis1
+	B=ais1
+	B=f1
+	B=g1
+	B=gis1
+	B=ais1
+	B=f1
+	B=g1
+	B=gis1
+	B=ais1
+	B=f1
+	B=g1
+	A=ais3, B=gis1
+	A=gis3, B=ais1
+:blk5
+	A=ais3, B=f1
+	B=g1
+	B=gis1
+	B=ais1
+	B=f1
+	B=g1
+	B=gis1
+	B=ais1
+	B=f1
+	B=g1
+	B=gis1
+	B=ais1
+	B=f1
+	B=g1
+	B=gis1
+	B=ais1
+:blk6
+	A=c3, MODA=on, B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+:blk7
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+:blk8
+	B=c1, WAVEB=saw, MODB=on
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1
+	B=c1
+	B=d1
+	B=dis1
+	B=f1

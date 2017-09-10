@@ -1,0 +1,48 @@
+BetaPhase MDAL Configuration
+============================
+
+This MDAL config can be used to create music.asm files for the Pytha beeper
+engine. See
+https://github.com/utz82/ZX-Spectrum-1-Bit-Routines/tree/master/pytha
+for details.
+
+
+Invocation
+==========
+
+CONFIG=Pytha
+
+
+General Parameters
+==================
+
+Minimum MDAL version:           0
+Set [LOOP] point in sequence:   allowed
+Use tables:                     no
+Use samples:                    no
+
+
+Global Constants
+================
+
+AUTHOR          Set the author of the tune
+TITLE           Set the tune's title.
+GSPD            Set global speed. (default: 0x10)
+
+
+Pattern Commands
+================
+
+SPD             Set row speed (default substituted from GSPD)
+DRUM            Trigger a click drum (kd1..7|sd|hh)
+DPAR            Set drum slide speed (kd) or drum volume (sd/hh) (default: 0x20)
+A               Set note channel 1 (default: 0)
+WAVEA           Set waveform ch1 (tri|rect|saw, default: tri)
+NOISA           En/disable noise mode ch1 (on|off, default: off)
+MODA            En/disable modulator ch1 (on|off, default: off)
+MOFSA           Set modulator offset ch1 (default: 0)
+B               Set note channel 2 (default: 0)
+WAVEB           Set waveform ch2 (tri|rect|saw, default: tri)
+NOISB           En/disable noise mode ch2 (on|off, default: off)
+MODB            En/disable modulator ch2 (on|off, default: off)
+MOFSB           Set modulator offset ch2 (default: 0)

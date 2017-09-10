@@ -1,0 +1,51 @@
+PhaserX MDAL Configuration
+==========================
+
+This MDAL config can be used to create music.asm files for the PhaserX beeper
+engine. 
+See https://github.com/utz82/ZX-Spectrum-1-Bit-Routines/tree/master/phaserX for 
+details.
+
+
+Invocation
+==========
+
+CONFIG=PhaserX
+
+
+General Parameters
+==================
+
+Minimum MDAL version:           0
+Set [LOOP] point in sequence:   allowed
+Use tables:                     no
+Use samples:                    no
+
+
+Global Constants
+================
+
+AUTHOR          Set the author of the tune
+TITLE           Set the tune's title.
+GSPD            Set global speed. (default: 0x10)
+
+
+Pattern Commands
+================
+
+A               Set note channel 1 (default: 0)
+DUTYA           Set duty channel 1 (default: 0x80)
+DMODA           Set duty modulation amount channel 1 (default: 0, requires
+                SIDA=on to be effective)
+SIDA            En/disable duty sweep channel 1 (on|off, default: off)
+NOISE           En/disable noise mode channel 1 (on|off, default: off)
+B1              Set note channel 2 osc 1 (default: 0)
+B2              Set note channel 2 osc 2 (default: 0)
+DUTYB1          Set duty channel 2 osc 1 (default: 0x80)
+DUTYB2          Set duty channel 2 osc 2 (default: 0x80)
+DMODB1          Set duty modulation amount channel 2 osc 1
+DMODB2          Set duty modulation amount channel 2 osc 2
+PHB             Set phase offset channel 2 (default: 0)
+MIXB            Set mixing mode channel 2 (xor|and|or|none, default: xor)
+DRUM            Trigger click drum (kick|hhat)
+SPD             Set row speed (default: 0x10)

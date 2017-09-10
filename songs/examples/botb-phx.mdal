@@ -1,0 +1,1774 @@
+CONFIG=PhaserX
+AUTHOR="utz"
+TITLE="Frozen Mohawk"
+// Frozen Mohawk
+// by irrlicht project 2017
+// for BotB Winter Chip XII
+
+:SEQUENCE
+	[LOOP]
+//	ptn2
+	intro
+	ptn3old
+	ptn3oldB
+// 	ptn8
+// 	ptnx
+	
+	ptn3
+	ptn3b
+
+	
+ 	ptn4a
+ 	ptn7a
+
+
+	ptn9
+	ptn11
+//	ptn9
+	trans9
+//	trans1
+	
+	ptn40
+//	ptn70
+	
+	ptn50
+	ptn5z	
+	ptn60
+	ptn6b
+	ptn60
+	ptn6a
+	
+	ptn70
+	ptn7a	
+//
+// 	ptn8
+// 	ptnz
+// 	ptn8
+// 	ptnx
+	ptny
+
+
+:intro
+	B1=a3, B2=a3+1, MIXB=xor, DUTYB1=$10, DUTYB2=$10, DMODB1=$20, PHB=$0, DRUM=hhat, SPD=$7
+	B1=b3, B2=b3+1
+	B1=c4, B2=c4+1
+	B1=d4, B2=d4+1
+
+:trans9
+// 	A=a3, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+// 	DRUM=kick
+// 	DRUM=kick
+// 	B1=a2, B2=a0+1
+// 	.
+// 	.
+// 	DRUM=kick
+// 	DRUM=kick
+// 	DRUM=kick
+// 	.
+// 	DRUM=kick
+// 	DRUM=kick
+// 	DRUM=kick
+// 	.
+// 	DRUM=kick
+// 	.
+// 	A=a3, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+// 	DRUM=kick
+// 	DRUM=kick
+// 	B1=a2, B2=a0+1
+// 	.
+// 	.
+// 	DRUM=kick
+// 	DRUM=kick
+// 	DRUM=kick
+// 	.
+// 	DRUM=kick
+// 	DRUM=kick
+// 	DRUM=kick
+// 	.
+// 	DRUM=kick
+// 	.
+// 	A=a3, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+// 	DRUM=kick
+// 	DRUM=kick
+// 	B1=a2, B2=a0+1
+// 	.
+// 	.
+// 	DRUM=kick
+// 	DRUM=kick
+// 	DRUM=kick
+// 	.
+// 	DRUM=kick
+// 	DRUM=kick
+// 	DRUM=kick
+// 	.
+// 	DRUM=kick
+// 	.
+	
+	B1=a2, B2=a0+1, A=a3, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+
+
+
+:ptn9
+	A=a3, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	DRUM=kick
+	DRUM=kick
+	B1=a2, B2=a0+1
+	.
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	A=a3, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	DRUM=kick
+	DRUM=kick
+	B1=a2, B2=a0+1
+	.
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	A=a3, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	DRUM=kick
+	DRUM=kick
+	B1=a2, B2=a0+1
+	.
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	DRUM=kick
+	DRUM=kick
+	.
+	DRUM=kick
+	.
+	
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+
+:ptn11	
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, SPD=6
+	A=b3
+	A=c4
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	A=b3, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=b3, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=b3, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=b3, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	A=d4, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4
+	A=d4
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=d4, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=d4, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=d4, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1
+	A=d4,		DRUM=kick
+	A=c4, B1=ais2, B2=ais0+1, DRUM=hhat
+	A=b3, DRUM=hhat
+	
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=b3
+	A=c4
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=b3, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	A=b3, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	
+:ptnz
+	A=e4, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=a3, B1=a2, B2=a0+1
+	A=a4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3
+	A=g4
+	A=a3,		DRUM=kick
+	A=f4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	A=a3
+	A=g4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a4, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1
+	A=f4,		DRUM=kick
+	A=g4, B1=ais2, B2=ais0+1, DRUM=hhat
+	A=a4, DRUM=hhat
+	
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	A=a3, B1=a2, B2=a0+1
+	A=a4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3
+	A=g4
+	A=a3,		DRUM=kick
+	A=f4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	A=a3
+	A=g4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a4, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1
+	A=f3, DRUM=kick
+	A=g4, B1=gis2, B2=gis1+1, DRUM=hhat
+	A=a4
+	
+	
+	A=e4, B1=f2, B2=f1+1, DRUM=kick
+	A=d4, B1=f2, B2=f1+1
+	A=e4, B1=f2, B2=f1+1, DRUM=hhat
+	A=f4
+	A=e4
+	A=d4,		DRUM=kick
+	A=e4, B1=f2, B2=f1+1, DRUM=hhat
+	A=f4, B1=f2, B2=f1+1
+	A=e4, B1=f2, B2=f1+1, DRUM=kick
+	A=d4
+	A=e4, B1=f2, B2=f1+1, DRUM=hhat
+	A=f4, B1=f2, B2=f1+1
+	A=e4, B1=f2, B2=f1+1
+	A=d4,		DRUM=kick
+	A=e4, B1=f2, B2=f1, DRUM=hhat
+	A=f4, DRUM=hhat
+	
+	
+	A=d4, B1=g2, B2=g1+1, DRUM=kick
+	A=c4, DRUM=kick
+	A=d4, DRUM=hhat
+	A=e4, B1=g2, B2=g1+1, DRUM=kick
+	A=d4
+	A=c4, DRUM=kick
+	A=d4, B1=g2, B2=g1+1, DRUM=hhat
+	A=e4, B1=g2, B2=g1+1
+	A=d4, DRUM=kick
+	A=c4, B1=g2, B2=g1+1, DRUM=kick
+	A=d4, B1=g2, B2=g1+1, DRUM=hhat
+	A=e4, DRUM=kick
+	A=d4, B1=g2, B2=g1+1, DRUM=kick
+	A=c4
+	A=d4, B1=g2, B2=g1+1
+	A=g4, DRUM=hhat
+
+:ptn8
+	A=a4, DUTYA=$10, DMODA=$40, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=a4, B1=a2, B2=a0+1
+	A=a4, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	A=g4, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	DRUM=kick
+	A=f4, B1=gis2, B2=gis1+1, DRUM=hhat
+	.
+	
+	
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	A=d4, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=e4, B1=f2, B2=f1+1, DRUM=kick
+	A=d4, DRUM=kick
+	A=c4, DRUM=hhat
+	A=d4, B1=f2, B2=f1+1, DRUM=kick
+	A=e4
+	A=d4, DRUM=kick
+	A=c4, B1=f2, B2=f1+1, DRUM=kick
+	A=d4, B1=f2, B2=f1+1
+	A=e4, DRUM=kick
+	A=d4, B1=f2, B2=f1+1, DRUM=kick
+	A=c4, B1=e2, B2=e1+1
+	A=d4, DRUM=kick
+	A=e4, B1=e2, B2=e1+1, DRUM=hhat
+	A=d4
+	A=c4, B1=e2, B2=e1+1
+	A=d4, DRUM=hhat
+
+
+
+:ptny
+	A=e1, DUTYA=$10, SPD=$18
+	A=a4, DUTYA=$10, DMODA=$10, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=$9
+	A=e4, SPD=3
+	A=c4
+	A=a3
+	A=rest
+	.
+	B1=rest
+	.
+	B2=rest
+	.
+	SPD=$80
+	
+
+:ptnx
+	A=e4, DUTYA=$10, DMODA=$20, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=a3, B1=a2, B2=a0+1
+	A=a4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3
+	A=g4
+	A=a3,		DRUM=kick
+	A=f4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	A=a3
+	A=g4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a4, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1
+	A=f4,		DRUM=kick
+	A=g4, B1=ais2, B2=ais0+1, DRUM=hhat
+	A=a4, DRUM=hhat
+	
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	A=a3, B1=a2, B2=a0+1
+	A=a4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3
+	A=g4
+	A=a3,		DRUM=kick
+	A=f4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	A=a3
+	A=g4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a4, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1
+	A=f3, DRUM=kick
+	A=g4, B1=gis2, B2=gis1+1, DRUM=hhat
+	A=a4
+	
+	
+	A=e4, B1=e2, B2=e1+1, DRUM=kick
+	B1=e2, B2=e1+1
+	B1=e2, B2=e1+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=e2, B2=e1+1, DRUM=hhat
+	B1=e2, B2=e1+1
+	B1=e2, B2=e1+1, DRUM=kick
+	.
+	B1=e2, B2=e1+1, DRUM=hhat
+	B1=e2, B2=e1+1
+	B1=e2, B2=e2+1
+			DRUM=kick
+	A=d4, B1=e2, B2=e3, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=a4, DMODA=$10, B1=f2, B2=f1+1, DRUM=kick
+	DRUM=kick
+	DRUM=hhat
+	B1=f2, B2=f1+1, DRUM=kick
+	.
+	DRUM=kick
+	B1=f2, B2=f1+1, DRUM=hhat
+	B1=f2, B2=f1+1
+	DRUM=kick
+	B1=f2, B2=f1+1, DRUM=kick
+	B1=e2, B2=e1+1, DRUM=hhat
+	DRUM=kick
+	B1=e2, B2=e1+1, DRUM=kick
+	.
+	B1=e2, B2=e1+1
+	DRUM=hhat	
+
+
+:ptn7a
+	A=rest, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$40, SPD=$6
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	.
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	.
+	
+	B1=a2, B2=a0+1, DUTYB1=$8, DUTYB2=$20, DMODB1=$20
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	.
+	B1=gis2, B2=gis1+1, DRUM=hhat
+	.
+	
+	
+	B1=a2, B2=a0+1, DUTYB1=$4, DUTYB2=$20, DMODB1=$10
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	
+	
+	B1=f2, B2=f1+1, DUTYB1=$2, DUTYB2=$10, DMODB1=$8
+	.
+	DRUM=hhat
+	B1=f2, B2=f1+1
+	.
+	.
+	B1=f2, B2=f1+1, DRUM=hhat
+	B1=f2, B2=f1+1
+	.
+	B1=f2, B2=f1+1
+	B1=e2, B2=e1+1, DRUM=hhat
+	.
+	B1=e2, B2=e1+1
+	.
+	B1=e2, B2=e1+1, DRUM=hhat
+	.
+
+:ptn70
+	A=rest, B1=a2, B2=a1+1, MIXB=xor, DUTYB1=$20, DUTYB2=$20, DMODB1=$10, DMODB2=$80, SPD=6  
+	B1=a2, B2=a1+1
+	B1=a2, B2=a1+1, DRUM=hhat
+	.
+	.
+	.
+	B1=a2, B2=a1+1, DRUM=hhat
+	B1=a2, B2=a1+1
+	B1=a2, B2=a1+1
+	.
+	B1=a2, B2=a1+1, DRUM=hhat
+	B1=a2, B2=a1+1
+	B1=a2, B2=a1+1
+	.
+	B1=ais2, B2=ais1+1, DRUM=hhat
+	.
+	
+	B1=a2, B2=a1+1, DUTYB1=$20, DUTYB2=$10, DMODB1=$80
+	B1=a2, B2=a1+1
+	B1=a2, B2=a1+1, DRUM=hhat
+	.
+	.
+	.
+	B1=a2, B2=a1+1, DRUM=hhat
+	B1=a2, B2=a1+1
+	B1=a2, B2=a1+1
+	.
+	B1=a2, B2=a1+1, DRUM=hhat
+	B1=a2, B2=a1+1
+	B1=a2, B2=a1+1
+	.
+	B1=gis2, B2=gis1+1, DRUM=hhat
+	.
+	
+	
+	B1=a2, B2=a0+1, DUTYB1=$40
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	
+	
+	B1=f2, B2=f1+1, DUTYB1=$20, DMODB2=$80
+	.
+	DRUM=hhat
+	B1=f2, B2=f1+1
+	.
+	.
+	B1=f2, B2=f1+1, DRUM=hhat
+	B1=f2, B2=f1+1
+	.
+	B1=f2, B2=f1+1
+	B1=e2, B2=e1+1, DRUM=hhat
+	.
+	B1=e2, B2=e1+1
+	.
+	B1=e2, B2=e1+1, DRUM=hhat
+	.
+
+
+
+:ptn6b
+	A=d4, DUTYA=$10, DMODA=$80, SIDA=on, B1=d2, B2=d1+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1, DRUM=kick
+	.
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1
+			DRUM=kick
+	A=d4, B1=d2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=e4, B1=e2, B2=e1+1, DRUM=kick
+	A=e4, B1=e2, B2=e1+1
+	A=e4, B1=e2, B2=e1+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=e4, B1=e2, B2=e1+1, DRUM=hhat
+	A=e4, B1=e2, B2=e1+1
+	A=e4, B1=e2, B2=e1+1, DRUM=kick
+	
+	.
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1
+			DRUM=kick
+	A=d4, B1=d2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=c4, B1=a2, B2=a0+1, DRUM=kick
+	A=c4, B1=a2, B2=a0+1
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4
+	A=c4
+	A=c4,		DRUM=kick
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=c4, B1=a2, B2=a0+1, DRUM=kick
+	A=c4
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=c4, B1=a2, B2=a0+1
+	A=c4,		DRUM=kick
+	A=c4, B1=ais2, B2=ais0+1, DRUM=hhat
+	A=c4, DRUM=hhat
+	
+	
+	A=c4, B1=a2, B2=a0+1, DRUM=kick
+	A=a3, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3
+	A=d4
+	A=a3,		DRUM=kick
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=b3, B1=a2, B2=a0+1, DRUM=kick
+	A=a3
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=d4, B1=a2, B2=a0+1, DRUM=kick
+	A=a3,		DRUM=hhat
+	A=e4, B1=gis2, B2=gis1+1, DRUM=kick
+	A=a3, DRUM=kick
+
+:ptn6a
+	A=d4, DUTYA=$10, DMODA=$80, SIDA=on, B1=d2, B2=d1+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1, DRUM=kick
+	.
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1
+			DRUM=kick
+	A=d4, B1=d2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=e4, B1=e2, B2=e1+1, DRUM=kick
+	A=e4, B1=e2, B2=e1+1
+	A=e4, B1=e2, B2=e1+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=e4, B1=e2, B2=e1+1, DRUM=hhat
+	A=e4, B1=e2, B2=e1+1
+	A=e4, B1=e2, B2=e1+1, DRUM=kick
+	
+	.
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1
+			DRUM=kick
+	A=d4, B1=d2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=a3, B1=a2, B2=a0+1, DRUM=kick
+	A=a3, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1, DRUM=kick
+	.
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1
+			DRUM=kick
+	A=a3, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=a3, B1=a2, B2=a0+1, DRUM=kick
+	A=a3, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1, DRUM=kick
+	.
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1
+	DRUM=kick
+	A=ais2, B1=gis2, B2=gis1+1, DRUM=hhat
+	A=b2, DRUM=kick
+
+
+:ptn60
+	A=d4, DUTYA=$10, DMODA=$80, SIDA=on, B1=d2, B2=d1+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1, DRUM=kick
+	.
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1
+			DRUM=kick
+	A=d4, B1=d2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=e4, B1=e2, B2=e1+1, DRUM=kick
+	A=e4, B1=e2, B2=e1+1
+	A=e4, B1=e2, B2=e1+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=e4, B1=e2, B2=e1+1, DRUM=hhat
+	A=e4, B1=e2, B2=e1+1
+	A=e4, B1=e2, B2=e1+1, DRUM=kick
+	
+	.
+	A=d4, B1=d2, B2=d1+1, DRUM=hhat
+	A=d4, B1=d2, B2=d1+1
+	A=d4, B1=d2, B2=d1+1
+			DRUM=kick
+	A=d4, B1=d2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=c4, B1=a2, B2=a0+1, DRUM=kick
+	A=c4, B1=a2, B2=a0+1
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=c4, B1=a2, B2=a0+1, DRUM=kick
+	.
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=c4, B1=a2, B2=a0+1
+			DRUM=kick
+	A=b3, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=a3, B1=a2, B2=a0+1, DRUM=kick
+	A=a3, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1, DRUM=kick
+	.
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1
+	DRUM=kick
+	A=gis2, B1=gis2, B2=gis1+1, DRUM=hhat
+	DRUM=kick
+
+	
+:ptn50
+	A=c4, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=a3, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3
+	A=d4
+	A=a3,		DRUM=kick
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=b3, B1=a2, B2=a0+1, DRUM=kick
+	A=a3
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=d4, B1=a2, B2=a0+1
+	A=a3,		DRUM=kick
+	A=e4, B1=ais2, B2=ais0+1, DRUM=hhat
+	A=a3, DRUM=hhat
+	
+	
+	A=c4, B1=a2, B2=a0+1, DRUM=kick
+	A=a3, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3
+	A=d4
+	A=a3,		DRUM=kick
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=b3, B1=a2, B2=a0+1, DRUM=kick
+	A=a3
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=d4, B1=a2, B2=a0+1
+	A=a3, DRUM=kick
+	A=e4, B1=gis2, B2=gis1+1, DRUM=hhat
+	A=a3
+	
+	
+	A=b3, B1=f2, B2=f1+1, DRUM=kick
+	A=a3, B1=f2, B2=f1+1
+	A=d4, B1=f2, B2=f1+1, DRUM=hhat
+	A=a3
+	A=c4
+	A=a3,		DRUM=kick
+	A=b3, B1=f2, B2=f1+1, DRUM=hhat
+	A=a3, B1=f2, B2=f1+1
+	A=b3, B1=f2, B2=f1+1, DRUM=kick
+	A=a3
+	A=c4, B1=f2, B2=f1+1, DRUM=hhat
+	A=a3, B1=f2, B2=f1+1
+	A=d4, B1=f2, B2=f1+1
+	A=a3,		DRUM=kick
+	A=e4, B1=ais2, B2=ais0+1, DRUM=hhat
+	A=a3, DRUM=hhat
+	
+// 		A=b3, B1=e2, B2=e1+1, DRUM=kick
+// 	A=a3, B1=e2, B2=e1+1
+// 	A=d4, B1=e2, B2=e1+1, DRUM=hhat
+// 	A=a3
+// 	A=c4
+// 	A=a3,		DRUM=kick
+// 	A=b3, B1=e2, B2=e1+1, DRUM=hhat
+// 	A=a3, B1=e2, B2=e1+1
+// 	A=b3, B1=e2, B2=e1+1, DRUM=kick
+// 	A=a3
+// 	A=c4, B1=e2, B2=e1+1, DRUM=hhat
+// 	A=a3, B1=e2, B2=e1+1
+// 	A=d4, B1=e2, B2=e1+1
+// 	A=a3,		DRUM=kick
+// 	A=e4, B1=ais2, B2=ais0+1, DRUM=hhat
+// 	A=a3, DRUM=hhat
+	
+	
+	A=b3, B1=e2, B2=e1+1, DRUM=kick
+	A=b3, B1=e2, B2=e1+1
+	A=b3, B1=e2, B2=e1+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=b3, B1=e2, B2=e1+1, DRUM=hhat
+	A=b3, B1=e2, B2=e1+1
+	A=b3, B1=e2, B2=e1+1, DRUM=kick
+	.
+	A=b3, B1=e2, B2=e1+1, DRUM=hhat
+	A=b3, B1=e2, B2=e1+1
+	A=b3, B1=e2, B2=e1+1
+	DRUM=kick
+	A=b3, B1=e2, B2=e1, DRUM=hhat
+	.
+	
+	
+:ptn5z
+	A=c4, DUTYA=$10, DMODA=$80, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=a3, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3
+	A=d4
+	A=a3,		DRUM=kick
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=b3, B1=a2, B2=a0+1, DRUM=kick
+	A=a3
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=d4, B1=a2, B2=a0+1
+	A=a3,		DRUM=kick
+	A=e4, B1=ais2, B2=ais0+1, DRUM=hhat
+	A=a3, DRUM=hhat
+	
+	
+	A=c4, B1=a2, B2=a0+1, DRUM=kick
+	A=a3, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3
+	A=d4
+	A=a3,		DRUM=kick
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=b3, B1=a2, B2=a0+1, DRUM=kick
+	A=a3
+	A=c4, B1=a2, B2=a0+1, DRUM=hhat
+	A=a3, B1=a2, B2=a0+1
+	A=d4, B1=a2, B2=a0+1
+	A=a3, DRUM=kick
+	A=e4, B1=gis2, B2=gis1+1, DRUM=hhat
+	A=a3
+	
+	
+	A=b3, B1=f2, B2=f1+1, DRUM=kick
+	A=a3, B1=f2, B2=f1+1
+	A=d4, B1=f2, B2=f1+1, DRUM=hhat
+	A=a3
+	A=c4
+	A=a3,		DRUM=kick
+	A=b3, B1=f2, B2=f1+1, DRUM=hhat
+	A=a3, B1=f2, B2=f1+1
+	A=b3, B1=f2, B2=f1+1, DRUM=kick
+	A=a3
+	A=c4, B1=f2, B2=f1+1, DRUM=hhat
+	A=a3, B1=f2, B2=f1+1
+	A=d4, B1=f2, B2=f1+1
+	A=a3,		DRUM=kick
+	A=e4, B1=ais2, B2=ais0+1, DRUM=hhat
+	A=a3, DRUM=hhat	
+	
+	A=b3, B1=e2, B2=e1+1, DRUM=kick
+	A=b3, B1=e2, B2=e1+1
+	A=b3, B1=e2, B2=e1+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=b3, B1=e2, B2=e1+1, DRUM=hhat
+	A=b3, B1=e2, B2=e1+1
+	A=b3, B1=e2, B2=e1+1, DRUM=kick
+	.
+	A=b3, B1=e2, B2=e1+1, DRUM=hhat
+	A=b3, B1=e2, B2=e1+1, DRUM=kick
+	A=b3, B1=e2, B2=e1+1, DRUM=kick
+	DRUM=kick
+	A=b3, B1=e2, B2=e1, DRUM=kick
+	DRUM=kick	
+	
+	
+:ptn4a
+	A=a2, DUTYA=$10, DMODA=$20, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1, DRUM=kick
+	.
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1
+			DRUM=kick
+	A=ais2, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=a2, B1=a2, B2=a0+1, DRUM=kick
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1, DRUM=kick
+	.
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1
+	A=a2, DRUM=kick
+	A=gis2, B1=gis2, B2=gis1+1, DRUM=hhat
+	.
+	
+	
+	A=a2, B1=a2, B2=a0+1, DRUM=kick
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1, DRUM=kick
+	.
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1
+			DRUM=kick
+	A=ais2, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=a2, B1=a2, B2=a0+1, DRUM=kick
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1, DRUM=kick
+	.
+	A=a2, B1=a2, B2=a0+1, DRUM=hhat
+	A=a2, B1=a2, B2=a0+1
+	A=a2, B1=a2, B2=a0+1
+	DRUM=kick
+	A=gis2, B1=gis2, B2=gis1+1, DRUM=hhat
+	.
+
+	
+:ptn40
+	A=a2, DUTYA=$10, DMODA=$20, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	DRUM=kick
+	B1=gis2, B2=gis1+1, DRUM=hhat
+	.
+	
+	
+	B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	DRUM=kick
+	B1=gis2, B2=gis1+1, DRUM=hhat
+	.
+	
+
+	
+:ptn3b
+	A=e4, DUTYA=$10, DMODA=$30, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=c4, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4
+	A=e4
+	A=c4,		DRUM=kick
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	A=c4
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1
+	A=c4,		DRUM=kick
+	A=f4, B1=ais2, B2=ais0+1, DRUM=hhat
+	A=c4, DRUM=hhat
+	
+	A=g4, B1=a2, B2=a0+1, DRUM=kick
+	A=c4, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4
+	A=g4
+	A=c4,		DRUM=kick
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=g4, B1=a2, B2=a0+1, DRUM=kick
+	A=c4
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=g4, B1=a2, B2=a0+1
+	A=c4, DRUM=kick
+	A=f4, B1=gis2, B2=gis1+1, DRUM=kick
+	A=c4
+	
+	
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	A=d4, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=c4, B1=f2, B2=f1+1, DRUM=kick
+	DRUM=kick
+	DRUM=hhat
+	B1=f2, B2=f1+1, DRUM=kick
+	.
+	DRUM=kick
+	B1=f2, B2=f1+1, DRUM=hhat
+	B1=f2, B2=f1+1
+	DRUM=kick
+	B1=f2, B2=f1+1, DRUM=kick
+	B1=e2, B2=e1+1, DRUM=hhat
+	DRUM=kick
+	B1=e2, B2=e1+1, DRUM=kick
+	.
+	B1=e2, B2=e1+1
+	DRUM=hhat
+
+
+:ptn3
+	A=e4, DUTYA=$10, DMODA=$30, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	A=c4, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4
+	A=e4
+	A=c4,		DRUM=kick
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	A=c4
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=e4, B1=a2, B2=a0+1
+	A=c4,		DRUM=kick
+	A=f4, B1=ais2, B2=ais0+1, DRUM=hhat
+	A=c4, DRUM=hhat
+	
+	A=g4, B1=a2, B2=a0+1, DRUM=kick
+	A=c4, B1=a2, B2=a0+1
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4
+	A=g4
+	A=c4,		DRUM=kick
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=g4, B1=a2, B2=a0+1, DRUM=kick
+	A=c4
+	A=a3, B1=a2, B2=a0+1, DRUM=hhat
+	A=c4, B1=a2, B2=a0+1
+	A=g4, B1=a2, B2=a0+1
+	A=c4, DRUM=kick
+	A=f4, B1=gis2, B2=gis1+1, DRUM=hhat
+	A=c4, DRUM=kick
+	
+	
+	A=e4, B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	A=d4, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=c4, B1=f2, B2=f1+1, DRUM=kick
+	.//DRUM=kick
+	DRUM=hhat
+	B1=f2, B2=f1+1, DRUM=kick
+	.
+	DRUM=kick
+	B1=f2, B2=f1+1, DRUM=hhat
+	B1=f2, B2=f1+1
+	DRUM=kick
+	A=d4, B1=f2, B2=f1+1, DRUM=kick
+	B1=e2, B2=e1+1, DRUM=hhat
+	DRUM=kick
+	B1=e2, B2=e1+1, DRUM=kick
+	.
+	B1=e2, B2=e1+1
+	DRUM=hhat	
+	
+:ptn2
+	B1=a3, B2=a1+1, MIXB=or, DUTYB1=$80, DUTYB2=$40,  SPD=7	//DMODB1=$40,
+	B1=a3, B2=a1+1
+	B1=a3, B2=a1+1
+	B1=a3, B2=a1+1
+// 	B1=rest, B2=rest
+// 	.
+// 	.
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=rest, B2=rest
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=rest, B2=rest
+// 	B1=ais3, B2=ais1+1
+// 	B1=rest, B2=rest
+// 	
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=rest, B2=rest
+// 	.
+// 	.
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=rest, B2=rest
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=rest, B2=rest
+// 	B1=gis3, B2=gis1+1
+// 	B1=rest, B2=rest
+	
+	
+//	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=rest, B2=rest
+// 	.
+// 	.
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=rest, B2=rest
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=a3, B2=a1+1
+// 	B1=rest, B2=rest
+// 	B1=a3, B2=a1+1
+// 	B1=rest, B2=rest
+	
+	
+	B1=f3, B2=f1+1
+	.
+	.
+	B1=f3, B2=f1+1
+	.
+	.
+	B1=f3, B2=f1+1
+	B1=f3, B2=f1+1
+	.
+	B1=f3, B2=f1+1
+	B1=e3, B2=e1+1
+	.
+	B1=e3, B2=e1+1
+	.
+	B1=e3, B2=e1+1
+	.
+
+
+
+:ptn3old
+	A=e3, DUTYA=$10, DMODA=$0, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	A=f3, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+
+	
+	
+	A=g3, B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	DRUM=kick
+	A=f3, B1=gis2, B2=gis1+1, DRUM=hhat
+	DRUM=kick
+	
+	
+	A=e3, B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	A=d3, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=c3, B1=f2, B2=f1+1, DRUM=kick
+	.//DRUM=kick
+	DRUM=hhat
+	B1=f2, B2=f1+1, DRUM=kick
+	.
+	DRUM=kick
+	B1=f2, B2=f1+1, DRUM=kick
+	B1=f2, B2=f1+1
+	DRUM=kick
+	A=d3, B1=f2, B2=f1+1, DRUM=kick
+	B1=e2, B2=e1+1
+	DRUM=kick
+	B1=e2, B2=e1+1, DRUM=hhat
+	.
+	B1=e2, B2=e1+1
+	DRUM=hhat
+
+
+
+:ptn3oldB
+	A=e3, DUTYA=$10, DMODA=$0, SIDA=on, B1=a2, B2=a0+1, MIXB=xor, DUTYB1=$10, DUTYB2=$20, DMODB1=$80, DRUM=kick, SPD=6
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	A=f3, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=g3, B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+	DRUM=kick
+	A=f3, B1=gis2, B2=gis1+1, DRUM=kick
+	.
+	
+	
+	A=e3, B1=a2, B2=a0+1, DRUM=kick
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=hhat
+	.
+	.
+			DRUM=kick
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1, DRUM=kick
+	.
+	B1=a2, B2=a0+1, DRUM=hhat
+	B1=a2, B2=a0+1
+	B1=a2, B2=a0+1
+			DRUM=kick
+	A=d3, B1=ais2, B2=ais0+1, DRUM=hhat
+	DRUM=hhat
+	
+	
+	A=c3, B1=f2, B2=f1+1, DRUM=kick
+	DRUM=kick
+	DRUM=hhat
+	B1=f2, B2=f1+1, DRUM=kick
+	.
+	DRUM=kick
+	B1=f2, B2=f1+1, DRUM=kick
+	B1=f2, B2=f1+1
+	DRUM=kick
+	B1=f2, B2=f1+1, DRUM=kick
+	B1=e2, B2=e1+1
+	DRUM=kick
+	B1=e2, B2=e1+1, DRUM=hhat
+	.
+	B1=e2, B2=e1+1
+	DRUM=hhat
+	

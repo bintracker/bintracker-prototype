@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mdalconfig version="1">
+	<description>
+PhaserX is an experimental 2-channel beeper engine for the ZX Spectrum. It
+uses a new type of effect called "duty modulation". As the name suggests, 
+this effect modulates the duty cycle setting over time. Its operating speed 
+is synced to the affected tone generator, so despite the similarities with 
+the tone generation in engines like Earth Shaker, it does not affect pitch.
+
+Each of the two tone channels has a different set of effects. Channel 1 
+produces a simple square wave. In addition to the aforementioned duty 
+modulation, it features a SID-like duty cycle sweep effect, and can generate
+pseudo-white noise instead of square waves.
+
+Channel 2 uses two oscillators to produce Phaser-style sound. Each of the 
+oscillators can have it's own duty modulation settings. This allows for very
+complex timbres. Oscillator frequencies can of course be configured 
+independantly, and can run at different phases. The channel mixer supports 
+XOR (Phaser1 standard), OR, and AND mixing methods. When using the OR method,
+the oscillators can be decoupled and used as 2 independant channels, Squeeker
+style.
+
+For further reference, see
+https://github.com/utz82/ZX-Spectrum-1-Bit-Routines/tree/master/phaserX.</description>
+	<global target="zxspectrum48" word_directive="dw" byte_directive="db" />
+	<sequence end="dw 0">
+		<track from="Patterns" />
+		<loop type="label" label="loop" />
+	</sequence>
+	<commands>
+		<command id="AUTHOR" size="byte" default="unknown">
+			<description>Specify the track's author.</description>
+			<force_string />
+			<global_const />
+		</command>
+		<command id="TITLE" size="byte" default="untitled">
+			<description>Specify the track's title.</description>
+			<force_string />
+			<global_const />
+		</command>
+		<command id="GSPD" size="byte" default="$10">
+			<description>Set the global song speed. Higher value means slower tempo.</description>
+			<global_const />
+		</command>
+		<command id="SPD" size="byte">
+			<description>Set the current song speed. Higher value means slower tempo.</description>
+			<default_substitute from="GSPD" />
+			<force_repeat />
+		</command>
+		<command id="DRUM" size="byte">
+			<description>Trigger a click drum (interrupts tone playback).</description>
+			<substitute key="kick" value="1" />
+			<substitute key="hhat" value="$80" />
+		</command>
+		<command id="A" size="word">
+			<description>Set the note for channel A.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="SIDA" size="bool">
+			<description>En/disable SID-style duty modulation on channel A.</description>
+			<use_last_set />
+			<substitute key="off" value="false" />
+			<substitute key="on" value="true" />
+		</command>
+		<command id="NOISE" size="bool">
+			<description>En/disable noise mode on channel A.</description>
+			<use_last_set />
+			<substitute key="off" value="false" />
+			<substitute key="on" value="true" />
+		</command>
+		<command id="DMODA" size="byte">
+			<description>Set duty modulation strength for channel A.</description>
+			<use_last_set />
+		</command>
+		<command id="DUTYA" size="byte" default="$80">
+			<description>Set duty for channel A.</description>
+			<use_last_set />
+		</command>
+		<command id="B1" size="word">
+			<description>Set the note for channel B, first oscillator.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="B2" size="word">
+			<description>Set the note for channel B, second oscillator.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="PHB" size="word">
+			<description>Set phase offset for the channel 2 oscillators.</description>
+			<use_last_set />
+		</command>
+		<command id="MIXB" size="byte" default="$ac">
+			<description>Set mixing mode for the channel 2 oscillators.</description>
+			<use_last_set />
+			<substitute key="xor" value="$ac" />
+			<substitute key="and" value="$a4" />
+			<substitute key="or" value="$b4" />
+			<substitute key="none" value="0" />
+		</command>
+		<command id="DMODB1" size="byte">
+			<description>Set duty modulation strength for channel B, first oscillator.</description>
+			<use_last_set />
+		</command>
+		<command id="DUTYB1" size="byte" default="$80">
+			<description>Set duty for channel B, first oscillator.</description>
+			<use_last_set />
+		</command>
+		<command id="DMODB2" size="byte">
+			<description>Set duty modulation strength for channel B, second oscillator.</description>
+			<use_last_set />
+		</command>
+		<command id="DUTYB2" size="byte" default="$80">
+			<description>Set duty for channel B, second oscillator.</description>
+			<use_last_set />
+		</command>
+	</commands>
+	<blocktype id="Patterns" type="pattern" end="db $40">
+		<init_defaults />
+		<field size="word">
+			<required_seq_begin />
+			<required />
+			<set_hi from="SPD" />
+			<set_lo from="DRUM" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required />
+			<set_if if="!(A+DMODA+DUTYA+NOISE)" value="1" />
+			<set_if if="!(B1+B2+PHB+DMODB1+DMODB2+DUTYB1+DUTYB2)" value="$40" />
+			<set_hi from="MIXB" />
+			<set_bits from="SIDA" value="4" />
+			<set_bits from="NOISE" value="$80" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="A" />
+			<set_hi from="DMODA" />
+			<set_lo from="DUTYA" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="DMODA|DUTYA" />
+			<set from="A" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required_blk_begin />
+			<required if="B1|B2|DUTYB1|DUTYB2|PHB" />
+			<set_hi from="DMODB1" />
+			<set_lo from="DMODB2" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required_blk_begin />
+			<required if="B1|B2|DMODB1|DMODB2|PHB" />
+			<set_hi from="DUTYB1" />
+			<set_lo from="DUTYB2" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required_blk_begin />
+			<required if="DUTYB1|DUTYB2|DMODB1|DMODB2|PHB|B2" />
+			<set from="B1" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required_blk_begin />
+			<required if="DUTYB1|DUTYB2|DMODB1|DMODB2|PHB|B1" />
+			<set from="B2" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required_blk_begin />
+			<required if="DUTYB1|DUTYB2|DMODB1|DMODB2|B1|B2" />
+			<set from="PHB" />
+		</field>
+	</blocktype>
+</mdalconfig>

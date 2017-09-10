@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="bintracker" />
+		<Option pch_mode="2" />
+		<Option compiler="clang" />
+		<Build>
+			<Target title="Debug">
+				<Option output="./bintracker" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="clang" />
+				<Compiler>
+					<Add option="-fsanitize=address" />
+					<Add option="-pedantic" />
+					<Add option="-Weverything" />
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add option="-Wno-c++98-compat" />
+					<Add option="-Wno-c++98-compat-pedantic" />
+					<Add option="-Wno-reserved-id-macro" />
+					<Add option="-Wno-header-hygiene" />
+					<Add option="-Wno-padded" />
+					<Add option="-Wno-ignored-qualifiers" />
+					<Add option="-Wno-weak-vtables" />
+					<Add option="-Wno-global-constructors" />
+					<Add option="-Wno-exit-time-destructors" />
+					<Add option="-Wno-double-promotion" />
+					<Add option="-Wno-conversion" />
+					<Add option="-ffast-math" />
+					<Add option="-stdlib=libc++" />
+					<Add option="-fno-omit-frame-pointer" />
+				</Compiler>
+				<Linker>
+					<Add option="-fsanitize=address" />
+					<Add option="-stdlib=libc++" />
+					<Add option="-L/usr/lib" />
+					<Add option="-I. -I/usr/include/allegro5" />
+					<Add option="-lallegro" />
+					<Add option="-lallegro_image" />
+					<Add option="-lallegro_font" />
+					<Add option="-lallegro_primitives" />
+					<Add option="-lallegro_dialog" />
+					<Add option="-lallegro_audio" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="./bintracker" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="clang" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add option="-ffast-math" />
+					<Add option="-stdlib=libc++" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-stdlib=libc++" />
+					<Add option="-L/usr/lib" />
+					<Add option="-I. -I/usr/include/allegro5" />
+					<Add option="-lallegro" />
+					<Add option="-lallegro_image" />
+					<Add option="-lallegro_font" />
+					<Add option="-lallegro_primitives" />
+					<Add option="-lallegro_dialog" />
+					<Add option="-lallegro_audio" />
+				</Linker>
+			</Target>
+			<Target title="Release_win32">
+				<Option output="bintracker.exe" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release-win32" />
+				<Option type="1" />
+				<Option compiler="i686-w64-mingw32" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add option="-ffast-math" />
+					<Add option="-static" />
+					<Add option="-static-libstdc++" />
+					<Add option="-DALLEGRO_STATICLINK" />
+					<Add directory="liballeg_w32/allegro/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-static" />
+					<Add option="-static-libstdc++" />
+					<Add option="-Wl,--subsystem,windows" />
+					<Add option="-L//home/heinz/development/PROG/bintracker/liballeg_w32/allegro/lib" />
+					<Add option="-lallegro_dialog-static -lallegro-static \" />
+					<Add option="-lallegro_main-static" />
+					<Add option="-lallegro_image-static" />
+					<Add option="-lallegro_font-static" />
+					<Add option="-lallegro_primitives-static" />
+					<Add option="-lallegro_audio-static" />
+					<Add option="-ljpeg" />
+					<Add option="-L/usr/i686-w64-mingw32/lib" />
+					<Add option="-ldsound" />
+					<Add option="-lgdiplus" />
+					<Add option="-luuid" />
+					<Add option="-lkernel32" />
+					<Add option="-lwinmm" />
+					<Add option="-lpsapi" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add option="-luser32" />
+					<Add option="-lcomdlg32" />
+					<Add option="-lgdi32" />
+					<Add option="-lshell32" />
+					<Add option="-lole32" />
+					<Add option="-ladvapi32" />
+					<Add option="-lws2_32" />
+					<Add option="-lshlwapi" />
+					<Add option="-I. -I//home/heinz/development/PROG/bintracker/liballeg_w32/allegro/include" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="bintracker.cpp" />
+		<Unit filename="bintracker.h" />
+		<Unit filename="data_as/data_as.cpp" />
+		<Unit filename="data_as/mdatas.h" />
+		<Unit filename="engines/config/BetaPhase.mdconf">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="engines/config/PhaseSqueek.mdconf">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="engines/config/PhaserX.mdconf">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="engines/config/configlist">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="gui/elements.cpp" />
+		<Unit filename="gui/events.cpp" />
+		<Unit filename="gui/file_io.cpp" />
+		<Unit filename="gui/gui.cpp" />
+		<Unit filename="gui/gui.h" />
+		<Unit filename="gui/input.cpp" />
+		<Unit filename="gui/keyhandler.cpp" />
+		<Unit filename="gui/mousehandler.cpp" />
+		<Unit filename="gui/status.cpp" />
+		<Unit filename="gui/work_tune.cpp" />
+		<Unit filename="gui/worktune.h" />
+		<Unit filename="helper_func.cpp" />
+		<Unit filename="helper_func.h" />
+		<Unit filename="libmdal/blocks.cpp" />
+		<Unit filename="libmdal/command.cpp" />
+		<Unit filename="libmdal/config.cpp" />
+		<Unit filename="libmdal/field.cpp" />
+		<Unit filename="libmdal/mdal.h" />
+		<Unit filename="libmdal/module.cpp" />
+		<Unit filename="libmdal/pugixml.cpp" />
+		<Unit filename="libmdal/pugixml.hpp" />
+		<Unit filename="libmdal/sequence.cpp" />
+		<Unit filename="settings.ini">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="songs/examples/betaphase-demo.mdal">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="songs/examples/botb-phx.mdal">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="songs/examples/phaserx-demo.mdal">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="songs/examples/phasesqueek-demo.mdal">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="sound_emul/machines/CPU/z80.cpp" />
+		<Unit filename="sound_emul/machines/CPU/z80.h" />
+		<Unit filename="sound_emul/machines/CPU/z80instructions.cpp" />
+		<Unit filename="sound_emul/machines/vm.h" />
+		<Unit filename="sound_emul/machines/zxspectrum48.cpp" />
+		<Unit filename="sound_emul/machines/zxspectrum48.h" />
+		<Unit filename="sound_emul/sound_emul.cpp" />
+		<Unit filename="sound_emul/sound_emul.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

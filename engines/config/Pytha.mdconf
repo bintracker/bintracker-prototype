@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mdalconfig version="1">
+	<description>Pytha is a two-channel music routine for the ZX Spectrum beeper. It is the 
+first beeper engine to synthesize triangle waves without the use of 
+wavetables.
+
+Features:
+
+- supported waveforms: triangle, saw, rectangle with arbitrary duty cycle, 
+  noise
+- LFO-powered modulation effects
+- 3 customizable click drums (interrupting)
+- 16-bit frequency resolution, 8-bit speed resolution
+
+For further reference, see
+https://github.com/utz82/ZX-Spectrum-1-Bit-Routines/tree/master/pytha.</description>
+	<global target="zxspectrum48" word_directive="dw" byte_directive="db" />
+	<sequence end="dw 0">
+		<track from="Patterns" />
+		<loop type="label" label="mloop" />
+	</sequence>
+	<commands>
+		<command id="AUTHOR" size="byte" default="unknown">
+			<description>Specify the track's author.</description>
+			<force_string />
+			<global_const />
+		</command>
+		<command id="TITLE" size="byte" default="untitled">
+			<description>Specify the track's title.</description>
+			<force_string />
+			<global_const />
+		</command>
+		<command id="GSPD" size="byte" default="$10">
+			<description>Set the global song speed. Higher value means slower tempo.</description>
+			<global_const />
+		</command>
+		<command id="SPD" size="byte">
+			<description>Set the current song speed. Higher value means slower tempo.</description>
+			<default_substitute from="GSPD" />
+			<force_repeat />
+		</command>
+		<command id="DRUM" size="byte">
+			<description>Trigger a click drum (interrupts tone playback).</description>
+			<substitute key="kd1" value="$2" />
+			<substitute key="kd2" value="$4" />
+			<substitute key="kd3" value="$8" />
+			<substitute key="kd4" value="$10" />
+			<substitute key="kd5" value="$20" />
+			<substitute key="kd6" value="$40" />
+			<substitute key="kd7" value="$7f" />
+			<substitute key="sd" value="$c0" />
+			<substitute key="hh" value="$80" />	
+		</command>
+		<command id="DPAR" size="byte" default="$20">
+			<description>Set slide speed for "kd", or volume for "sd"/"hh" click drums.</description>
+			<use_last_set />
+		</command>
+		<command id="A" size="word">
+			<description>Set the note for channel A.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="WAVEA" size="word" default="$ac9f">
+			<description>Set the waveform for channel A.</description>
+			<use_last_set />
+			<substitute key="tri" value="$ac9f" />
+			<substitute key="rect" value="$009f" />
+			<substitute key="saw" value="$000f" />
+		</command>
+		<command id="NOISA" size="bool">
+			<description>En/disable noise mode for channel A.</description>
+			<use_last_set />
+			<substitute key="off" value="false" />
+			<substitute key="on" value="true" />
+		</command>
+		<command id="MODA" size="bool">
+			<description>En/disable modulation for channel A.</description>
+			<use_last_set />
+			<substitute key="off" value="false" />
+			<substitute key="on" value="true" />
+		</command>
+		<command id="MOFSA" size="byte">
+			<description>Set the initial modulator offset for channel A.</description>
+			<use_last_set />
+		</command>
+		<command id="B" size="word">
+			<description>Set the note for channel B.</description>
+			<use_last_set />
+			<use_note_names />
+			<allow_modifiers />
+		</command>
+		<command id="WAVEB" size="word" default="$ac9f">
+			<description>Set the waveform for channel B.</description>
+			<use_last_set />
+			<substitute key="tri" value="$ac9f" />
+			<substitute key="rect" value="$009f" />
+			<substitute key="saw" value="$000f" />
+		</command>
+		<command id="NOISB" size="bool">
+			<description>En/disable noise mode for channel B.</description>
+			<use_last_set />
+			<substitute key="off" value="false" />
+			<substitute key="on" value="true" />
+		</command>
+		<command id="MODB" size="bool">
+			<description>En/disable modulation for channel B.</description>
+			<use_last_set />
+			<substitute key="off" value="false" />
+			<substitute key="on" value="true" />
+		</command>
+		<command id="MOFSB" size="byte">
+			<description>Set the initial modulator offset for channel B.</description>
+			<use_last_set />
+		</command>		
+	</commands>	
+	<blocktype id="Patterns" type="pattern" end="db $80">
+		<init_defaults />
+		<field size="word">
+			<required_seq_begin />
+			<required />
+			<set_hi from="SPD" />
+			<set_if if="DRUM" value="4" />
+			<set_if if="!(A+WAVEA+NOISA+MODA+MOFSA)" value="$40" />
+			<set_if if="!(B+WAVEB+NOISB+MODB+MOFSB)" value="1" />
+		</field>
+		<field size="word">
+			<set_hi from="DRUM" />
+			<set_lo from="DPAR" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="A|WAVEA|NOISA|MODA|MOFSA" />
+			<set_if if="!(WAVEA+NOISA+MODA)" value="1" />
+			<!--<set_if if="!(WAVEA+NOISA+MODA+MOFSA)" value="1" /> -->
+			<set_bits from="NOISA" value="$4" />
+			<set_bits from="MODA" value="$40" />
+			<set_hi from="MOFSA" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="WAVEA|NOISA|MODA|MOFSA" />
+			<set from="WAVEA" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="WAVEA|NOISA|MODA|MOFSA" />
+			<set from="A" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="B|WAVEB|NOISB|MODB|MOFSB" />
+			<set_if if="!(WAVEB+NOISB+MODB)" value="1" />
+			<!--<set_if if="!(WAVEB+NOISB+MODB+MOFSB)" value="1" />-->
+			<set_hi from="MOFSB" />
+			<set_bits from="NOISB" value="$4" />
+			<set_bits from="MODB" value="$40" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="WAVEB|NOISB|MODB|MOFSB" />
+			<set from="WAVEB" />
+		</field>
+		<field size="word">
+			<required_seq_begin />
+			<required if="WAVEB|NOISB|MODB|MOFSB" />
+			<set from="B" />
+		</field>
+	</blocktype>	
+</mdalconfig>
