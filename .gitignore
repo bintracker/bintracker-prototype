@@ -3,6 +3,7 @@ liballeg_w32/
 libsamplerate/
 obj/
 _RELEASE/
+docs/data/raw
 docs/private
 *.cpb
 *.depend
