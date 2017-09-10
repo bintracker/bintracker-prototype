@@ -7,7 +7,7 @@ Currently, bintracker supports a number of modern 1-bit (beeper) music drivers f
 Bintracker is confirmed to run on Windows and Linux. It should also be possible to build it on MacOS, though this is untested.
 
 
-# downloads
+# download
 
 Source, win32 executable, and documentation are available on the [github release page](https://github.com/utz82/bintracker/releases/latest).
 
