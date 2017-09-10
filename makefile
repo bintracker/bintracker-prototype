@@ -1,6 +1,6 @@
 CC		= clang++
-CXXFLAGS	= -O2 -std=c++11 -ffast-math -no-pie
-LDFLAGS		= -L/usr/lib -lallegro -lallegro_image -lallegro_font -lallegro_primitives -lallegro_dialog -lallegro_audio
+CXXFLAGS	= -O2 -std=c++11 -ffast-math -stdlib=libc++
+LDFLAGS		= -stdlib=libc++ -L/usr/lib -lallegro -lallegro_image -lallegro_font -lallegro_primitives -lallegro_dialog -lallegro_audio
 INCLUDE		= -I. -I/usr/include/allegro5
 
 DEPS		= bintracker.h helper_func.h gui/gui.h gui/worktune.h libmdal/pugixml.hpp libmdal/mdal.h data_as/mdatas.h\
