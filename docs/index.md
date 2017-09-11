@@ -6,6 +6,8 @@ Bintracker is a free, open source, modular, cross-platform music editor for low-
 
 Currently, bintracker supports a number of modern 1-bit (beeper) music drivers for the Sinclair ZX Spectrum 48K home computer, including betaphase, PhaserX, PhaseSqueek, and Pytha. Additional drivers can easily be added via the MDAL configuration plug-in system.
 
+Bintracker is written in modern C++. It uses [Allegro5](http://liballeg.org/) for graphics display and sound driver abstraction, [libmdal](https://github.com/utz82/MDAL) for parsing MDAL modules, and [pugixml](https://pugixml.org/) for parsing MDAL configurations.
+
 Bintracker is confirmed to run on Windows and Linux. It should also be possible to build it on MacOS, though this is untested.
 
 
