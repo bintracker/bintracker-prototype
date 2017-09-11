@@ -409,6 +409,12 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
 				cout << "Warning: Invalid CHUNKSIZE specified in settings.ini." << endl;
 			}
 		}
+		else if (it.find("KEYREPEATDELAY=") != string::npos) {
+
+			tempstr = it.substr(15, string::npos);
+			if (!isNumber(tempstr)) cout << "Error: Invalid KEYREPEATDELAY argument in settings.ini." << endl;
+			else keyRepeatDelay = static_cast<unsigned>(strToNum(tempstr));
+		}
 	}
 
 

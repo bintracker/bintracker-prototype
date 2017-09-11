@@ -171,6 +171,7 @@ public:
 	bool hexMode;
 	string defaultConfig;
 	unsigned audioChunkSize;
+	unsigned keyRepeatDelay;
 
 	vector<string> configList;
 
