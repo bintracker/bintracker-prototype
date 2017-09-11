@@ -234,13 +234,13 @@ void Main_Window::init_track_view() {
 	al_draw_text(font, settings.sysColor, xpos,
         buttonPanel.printArea.bottomRight.y - CHAR_HEIGHT() + 2.0f, ALLEGRO_ALIGN_LEFT, "AUTOINC");
 	print_autoinc_setting();
-	xpos += (10 * CHAR_WIDTH() + DEFAULT_MARGIN());
+	xpos += (10 * BT_CHAR_WIDTH() + DEFAULT_MARGIN());
 	al_draw_tinted_bitmap(arrowDown, settings.sysColor, xpos, buttonPanel.printArea.topLeft.y - 1.0f, 0);
 	al_draw_tinted_bitmap(arrowDown, settings.sysColor, xpos, buttonPanel.printArea.topLeft.y + SMALL_BUTTON_SIZE() + 1.0f, 0);
 	xpos += (SMALL_BUTTON_SIZE() + 2.0f);
 	al_draw_tinted_bitmap(arrowUp, settings.sysColor, xpos, buttonPanel.printArea.topLeft.y - 1.0f, 0);
 	al_draw_tinted_bitmap(arrowUp, settings.sysColor, xpos, buttonPanel.printArea.topLeft.y + SMALL_BUTTON_SIZE() + 1.0f, 0);
-// 	al_draw_text(font, settings.rowHlColor, xpos + (8 * CHAR_WIDTH()), buttonPanel.printArea.topLeft.y + CHAR_HEIGHT() + DEFAULT_MARGIN(),
+// 	al_draw_text(font, settings.rowHlColor, xpos + (8 * BT_CHAR_WIDTH()), buttonPanel.printArea.topLeft.y + CHAR_HEIGHT() + DEFAULT_MARGIN(),
 // 		ALLEGRO_ALIGN_LEFT, numToStr(status.autoInc, (settings.hexMode) ? 2 : 3, settings.hexMode).data());
 
 	xpos = 0.0f;
@@ -265,9 +265,9 @@ void Main_Window::init_track_view() {
 
 void Main_Window::print_base_octave() {
 
-	float xpos = DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (9 * CHAR_WIDTH());
+	float xpos = DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (9 * BT_CHAR_WIDTH());
 
-	al_draw_filled_rectangle(xpos, buttonPanel.printArea.topLeft.y, xpos + CHAR_WIDTH(),
+	al_draw_filled_rectangle(xpos, buttonPanel.printArea.topLeft.y, xpos + BT_CHAR_WIDTH(),
 		buttonPanel.printArea.topLeft.y + CHAR_HEIGHT(), settings.bgColor);
 
 	al_draw_text(font, settings.rowHlColor, xpos, buttonPanel.printArea.topLeft.y,
@@ -277,9 +277,9 @@ void Main_Window::print_base_octave() {
 
 void Main_Window::print_autoinc_setting() {
 
-	float xpos = DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (8 * CHAR_WIDTH());
+	float xpos = DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (8 * BT_CHAR_WIDTH());
 
-	al_draw_filled_rectangle(xpos, buttonPanel.printArea.bottomRight.y - CHAR_HEIGHT() + 2.0f, xpos + (2 * CHAR_WIDTH()),
+	al_draw_filled_rectangle(xpos, buttonPanel.printArea.bottomRight.y - CHAR_HEIGHT() + 2.0f, xpos + (2 * BT_CHAR_WIDTH()),
 		buttonPanel.printArea.bottomRight.y, settings.bgColor);
 
 	al_draw_text(font, settings.rowHlColor, xpos, buttonPanel.printArea.bottomRight.y - CHAR_HEIGHT() + 2.0f,
@@ -328,12 +328,12 @@ void Main_Window::print_block() {
 
 	float xpos = blockPanel.printArea.topLeft.x;
 	al_draw_tinted_bitmap(arrowLeft, settings.sysColor, xpos, settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
-	xpos += (SMALL_BUTTON_SIZE() + 12 * CHAR_WIDTH() + 3 * DEFAULT_MARGIN());
+	xpos += (SMALL_BUTTON_SIZE() + 12 * BT_CHAR_WIDTH() + 3 * DEFAULT_MARGIN());
 	al_draw_tinted_bitmap(arrowRight, settings.sysColor, xpos, settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
 	xpos += (SMALL_BUTTON_SIZE() + DEFAULT_MARGIN());
 	//TODO: fields for block length and expand/shrink param
 	al_draw_text(font, settings.sysColor, xpos, settings.tabArea.bottomRight.y + DEFAULT_MARGIN() + 2.0f, ALLEGRO_ALIGN_LEFT, "LENGTH");
-	xpos += ((10 * CHAR_WIDTH()) + DEFAULT_MARGIN());
+	xpos += ((10 * BT_CHAR_WIDTH()) + DEFAULT_MARGIN());
 	al_draw_tinted_bitmap(buttonPlus, settings.sysColor, xpos, settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
 	xpos += (SMALL_BUTTON_SIZE() + DEFAULT_MARGIN());
 	al_draw_tinted_bitmap(buttonMinus, settings.sysColor, xpos, settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
@@ -343,10 +343,10 @@ void Main_Window::print_block() {
 	al_draw_tinted_bitmap(buttonRemove, settings.sysColor, xpos, settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
 	xpos += (SMALL_BUTTON_SIZE() + DEFAULT_MARGIN());
 	al_draw_text(font, settings.sysColor, xpos, settings.tabArea.bottomRight.y + DEFAULT_MARGIN() + 2.0f, ALLEGRO_ALIGN_LEFT, "x");
-	xpos += CHAR_WIDTH();
+	xpos += BT_CHAR_WIDTH();
 	al_draw_text(font, settings.rowHlColor, xpos, settings.tabArea.bottomRight.y + DEFAULT_MARGIN() + 2.0f, ALLEGRO_ALIGN_LEFT,
 		numToStr(status.expandFactor, 0, settings.hexMode).data());
-	xpos += (CHAR_WIDTH() + DEFAULT_MARGIN());
+	xpos += (BT_CHAR_WIDTH() + DEFAULT_MARGIN());
 	al_draw_tinted_bitmap(buttonExpand, settings.sysColor, xpos, settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
 	xpos += (SMALL_BUTTON_SIZE() + DEFAULT_MARGIN());
 	al_draw_tinted_bitmap(buttonShrink, settings.sysColor, xpos, settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
@@ -367,11 +367,11 @@ void Main_Window::print_globals() {
 	for (auto&& it: currentTune.globalConstants) {
 
 		al_draw_text(font, settings.sysColor, settings.blockDataArea.topLeft.x, ypos, ALLEGRO_ALIGN_LEFT, it.command->mdCmdName.data());
-		if (pos == status.currentGlobal) al_draw_filled_rectangle(settings.blockDataArea.topLeft.x + (12 * CHAR_WIDTH()), ypos,
-			settings.blockDataArea.topLeft.x + ((12 + it.printString.size()) * CHAR_WIDTH()), ypos + CHAR_HEIGHT(),
+		if (pos == status.currentGlobal) al_draw_filled_rectangle(settings.blockDataArea.topLeft.x + (12 * BT_CHAR_WIDTH()), ypos,
+			settings.blockDataArea.topLeft.x + ((12 + it.printString.size()) * BT_CHAR_WIDTH()), ypos + CHAR_HEIGHT(),
 			settings.cursorColor);
 		al_draw_text(font, (pos == status.currentGlobal) ? settings.rowActColor : settings.rowColor,
-		settings.blockDataArea.topLeft.x + (12 * CHAR_WIDTH()), ypos, ALLEGRO_ALIGN_LEFT, it.printString.data());
+		settings.blockDataArea.topLeft.x + (12 * BT_CHAR_WIDTH()), ypos, ALLEGRO_ALIGN_LEFT, it.printString.data());
 		ypos += CHAR_HEIGHT();
 		pos++;
 	}
@@ -454,7 +454,7 @@ void Main_Window::print_stats() {
 
 
 void Main_Window::print_reference_panel() {
-	//TODO: blockHeader ypos is calculated from tabPanel, but referenceHeader x is calculated as referencePanel.printArea.topLeft.x + 3 * CHAR_WIDTH()
+	//TODO: blockHeader ypos is calculated from tabPanel, but referenceHeader x is calculated as referencePanel.printArea.topLeft.x + 3 * BT_CHAR_WIDTH()
 
 	referencePanel.printArea.clear(settings.bgColor);
 
@@ -513,19 +513,19 @@ void Main_Window::print_reference_data() {
             if ((!status.focusBlock) && (pos == status.get_current_reference_row())) bgColor = settings.cursorColor;
 
             al_draw_filled_rectangle(settings.referenceDataArea.topLeft.x, ypos,
-                settings.referenceDataArea.topLeft.x + (16 * CHAR_WIDTH()), ypos + CHAR_HEIGHT(), bgColor);
+                settings.referenceDataArea.topLeft.x + (16 * BT_CHAR_WIDTH()), ypos + CHAR_HEIGHT(), bgColor);
 
             ALLEGRO_COLOR color = (currentTune.sequence[pos] == status.get_current_block_pointer()->name)
                 ? settings.rowHlColor : settings.rowColor;
             if (pos == status.get_current_reference_row()) color = settings.rowActColor;
 
             string posstr = numToStr(static_cast<long>(pos), 3, settings.hexMode);
-            al_draw_text(font, color, settings.referenceDataArea.topLeft.x + 3 * CHAR_WIDTH(), ypos, ALLEGRO_ALIGN_RIGHT, posstr.data());
+            al_draw_text(font, color, settings.referenceDataArea.topLeft.x + 3 * BT_CHAR_WIDTH(), ypos, ALLEGRO_ALIGN_RIGHT, posstr.data());
 
             if (pos == currentTune.sequenceLoopPoint)
-                al_draw_text(font, color, settings.referenceDataArea.topLeft.x + 3 * CHAR_WIDTH(), ypos, ALLEGRO_ALIGN_LEFT, "~");
+                al_draw_text(font, color, settings.referenceDataArea.topLeft.x + 3 * BT_CHAR_WIDTH(), ypos, ALLEGRO_ALIGN_LEFT, "~");
 
-            al_draw_text(font, color, settings.referenceDataArea.topLeft.x + 4 * CHAR_WIDTH(), ypos, ALLEGRO_ALIGN_LEFT, currentTune.sequence[pos].data());
+            al_draw_text(font, color, settings.referenceDataArea.topLeft.x + 4 * BT_CHAR_WIDTH(), ypos, ALLEGRO_ALIGN_LEFT, currentTune.sequence[pos].data());
             ypos += CHAR_HEIGHT();
 
             if ((ypos + CHAR_HEIGHT()) > settings.referenceDataArea.bottomRight.y) break;
@@ -564,7 +564,7 @@ void Main_Window::print_reference_data() {
         for (size_t pos = status.get_visible_first_reference_row(); pos < currentTune.blockTypes[status.get_current_blocktype()].blocks.size(); pos++) {
 
             al_draw_filled_rectangle(settings.referenceDataArea.topLeft.x, ypos,
-                settings.referenceDataArea.topLeft.x + (12 * CHAR_WIDTH()), ypos + CHAR_HEIGHT(),
+                settings.referenceDataArea.topLeft.x + (12 * BT_CHAR_WIDTH()), ypos + CHAR_HEIGHT(),
                 (((!status.focusBlock) && (pos == status.get_current_reference_row())) ? settings.cursorColor : settings.bgColor));
 
             ALLEGRO_COLOR color = (currentTune.blockTypes[status.get_current_blocktype()].blocks[pos].name == status.get_current_block_pointer()->name)
@@ -622,7 +622,7 @@ void Main_Window::print_column_titles() {
 		al_draw_text(font, settings.sysColor, xpos, settings.columnHeaderArea.topLeft.y, ALLEGRO_ALIGN_LEFT,
 			currentTune.blockTypes[status.get_current_blocktype()].commands[cmd]->mdCmdName.data());
 
-		xpos += (status.get_current_block_pointer()->columns[cmd].width + CHAR_WIDTH());
+		xpos += (status.get_current_block_pointer()->columns[cmd].width + BT_CHAR_WIDTH());
 	}
 }
 
@@ -679,10 +679,10 @@ void Main_Window::print_block_data() {
 
     //generate horizontal scrollbar
     float hTotalSize = 0;
-    for (auto&& it: status.get_current_block_pointer()->columns) hTotalSize += (it.width + CHAR_WIDTH());
+    for (auto&& it: status.get_current_block_pointer()->columns) hTotalSize += (it.width + BT_CHAR_WIDTH());
     status.hScrollbarBlkSize = 0;
     for (unsigned col = status.get_visible_first_column(); col <= status.get_visible_last_column(); col++)
-        status.hScrollbarBlkSize += (status.get_current_block_pointer()->columns[col].width + CHAR_WIDTH());
+        status.hScrollbarBlkSize += (status.get_current_block_pointer()->columns[col].width + BT_CHAR_WIDTH());
     status.hScrollbarBlkSize /= hTotalSize;
 
     if (status.hScrollbarBlkSize < 1.0f) {
@@ -691,7 +691,7 @@ void Main_Window::print_block_data() {
         status.hScrollbarBlkStart = 0.0f;
 
         for (unsigned col = 0; col < status.get_visible_first_column(); col++)
-            status.hScrollbarBlkStart += (status.get_current_block_pointer()->columns[col].width + CHAR_WIDTH());
+            status.hScrollbarBlkStart += (status.get_current_block_pointer()->columns[col].width + BT_CHAR_WIDTH());
         status.hScrollbarBlkStart /= hTotalSize;
         status.hScrollbarBlkStart *= (settings.blockPanelArea.bottomRight.x - (3* SMALL_BUTTON_SIZE()));
         status.hScrollbarBlkStart += SMALL_BUTTON_SIZE();
@@ -709,7 +709,7 @@ void Main_Window::print_row(const unsigned &row) {
 	ALLEGRO_COLOR txtColor = (row % status.rowHighlight) ? settings.rowColor : settings.rowHlColor;
 
 	al_draw_text(font, ((row == status.get_current_cursor_row()) && status.focusBlock) ? settings.rowActColor : txtColor,
-		settings.rowNumberArea.topLeft.x + 3 * CHAR_WIDTH(),
+		settings.rowNumberArea.topLeft.x + 3 * BT_CHAR_WIDTH(),
 		settings.blockDataArea.topLeft.y + (static_cast<float>(row - status.get_visible_first_row()) * CHAR_HEIGHT()), ALLEGRO_ALIGN_RIGHT,
 		numToStr(static_cast<long>(row), 3, settings.hexMode).data());
 
@@ -723,7 +723,7 @@ void Main_Window::print_field(const unsigned &col, const unsigned &row) {
 	float xpos = settings.columnHeaderArea.topLeft.x;
 
 	for (unsigned vcol = status.get_visible_first_column(); vcol < col; vcol++)
-		xpos += (status.get_current_block_pointer()->columns[vcol].width + CHAR_WIDTH());
+		xpos += (status.get_current_block_pointer()->columns[vcol].width + BT_CHAR_WIDTH());
 	float ypos = settings.blockDataArea.topLeft.y + (static_cast<float>(row - status.get_visible_first_row()) * CHAR_HEIGHT());
 
 
@@ -741,7 +741,7 @@ void Main_Window::print_field(const unsigned &col, const unsigned &row) {
 
 void Main_Window::print_global_field(const unsigned &row) {
 
-	float xpos = settings.blockDataArea.topLeft.x + (12 * CHAR_WIDTH());
+	float xpos = settings.blockDataArea.topLeft.x + (12 * BT_CHAR_WIDTH());
 	float ypos = settings.blockDataArea.topLeft.y + (static_cast<float>(row * CHAR_HEIGHT()));
 
 	al_draw_filled_rectangle(xpos, ypos, settings.blockDataArea.bottomRight.x, ypos + CHAR_HEIGHT(),

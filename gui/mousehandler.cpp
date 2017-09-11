@@ -34,37 +34,37 @@ void Main_Window::handle_mouse_input() {
                     break;
                 case 1:
                     al_draw_tinted_bitmap(arrowRight, settings.sysColor,
-                        blockPanel.printArea.topLeft.x + SMALL_BUTTON_SIZE() + 12 * CHAR_WIDTH() + 3 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + SMALL_BUTTON_SIZE() + 12 * BT_CHAR_WIDTH() + 3 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     break;
                 case 2:
                     al_draw_tinted_bitmap(buttonPlus, settings.sysColor,
-                        blockPanel.printArea.topLeft.x + 2 * SMALL_BUTTON_SIZE() + 22 * CHAR_WIDTH() + 5 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 2 * SMALL_BUTTON_SIZE() + 22 * BT_CHAR_WIDTH() + 5 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     break;
                 case 3:
                     al_draw_tinted_bitmap(buttonMinus, settings.sysColor,
-                        blockPanel.printArea.topLeft.x + 3 * SMALL_BUTTON_SIZE() + 22 * CHAR_WIDTH() + 6 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 3 * SMALL_BUTTON_SIZE() + 22 * BT_CHAR_WIDTH() + 6 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     break;
                 case 4:
                     al_draw_tinted_bitmap(buttonInsert, settings.sysColor,
-                        blockPanel.printArea.topLeft.x + 4 * SMALL_BUTTON_SIZE() + 22 * CHAR_WIDTH() + 7 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 4 * SMALL_BUTTON_SIZE() + 22 * BT_CHAR_WIDTH() + 7 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     break;
                 case 5:
                     al_draw_tinted_bitmap(buttonRemove, settings.sysColor,
-                        blockPanel.printArea.topLeft.x + 5 * SMALL_BUTTON_SIZE() + 22 * CHAR_WIDTH() + 8 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 5 * SMALL_BUTTON_SIZE() + 22 * BT_CHAR_WIDTH() + 8 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     break;
                 case 6:
                     al_draw_tinted_bitmap(buttonExpand, settings.sysColor,
-                        blockPanel.printArea.topLeft.x + 6 * SMALL_BUTTON_SIZE() + 24 * CHAR_WIDTH() + 10 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 6 * SMALL_BUTTON_SIZE() + 24 * BT_CHAR_WIDTH() + 10 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     break;
                 case 7:
                     al_draw_tinted_bitmap(buttonShrink, settings.sysColor,
-                        blockPanel.printArea.topLeft.x + 7 * SMALL_BUTTON_SIZE() + 24 * CHAR_WIDTH() + 11 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 7 * SMALL_BUTTON_SIZE() + 24 * BT_CHAR_WIDTH() + 11 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     break;
                 case 10:
@@ -106,22 +106,22 @@ void Main_Window::handle_mouse_input() {
                     break;
                 case 20:
                     al_draw_tinted_bitmap(arrowDown, settings.sysColor,
-                        2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * CHAR_WIDTH()),
+                        2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * BT_CHAR_WIDTH()),
                         buttonPanel.printArea.topLeft.y - 1.0f, 0);
                     break;
                 case 21:
                     al_draw_tinted_bitmap(arrowUp, settings.sysColor, SMALL_BUTTON_SIZE() + 2.0f
-                        + 2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * CHAR_WIDTH()),
+                        + 2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * BT_CHAR_WIDTH()),
                         buttonPanel.printArea.topLeft.y - 1.0f, 0);
                     break;
                 case 22:
                     al_draw_tinted_bitmap(arrowDown, settings.sysColor,
-                        2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * CHAR_WIDTH()),
+                        2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * BT_CHAR_WIDTH()),
                         buttonPanel.printArea.topLeft.y + SMALL_BUTTON_SIZE() + 1.0f, 0);
                     break;
                 case 23:
                     al_draw_tinted_bitmap(arrowUp, settings.sysColor, SMALL_BUTTON_SIZE() + 2.0f
-                        + 2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * CHAR_WIDTH()),
+                        + 2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * BT_CHAR_WIDTH()),
                         buttonPanel.printArea.topLeft.y + SMALL_BUTTON_SIZE() + 1.0f, 0);
                     break;
 
@@ -227,17 +227,17 @@ void Main_Window::handle_mouse_input() {
                 status.menuButtonHighlighted = 14;
             }
             else if (mouseState.x > static_cast<int>(2 * DEFAULT_MARGIN()
-                + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * CHAR_WIDTH()))
+                + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * BT_CHAR_WIDTH()))
                 && mouseState.x < static_cast<int>(3 * DEFAULT_MARGIN()
-                + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * CHAR_WIDTH())
+                + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * BT_CHAR_WIDTH())
                 + 2 * SMALL_BUTTON_SIZE())) {
 
                 float xpos = 2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size())
-                     + (10 * CHAR_WIDTH());
+                     + (10 * BT_CHAR_WIDTH());
 
                 if (mouseState.y < static_cast<int>(buttonPanel.printArea.topLeft.y + SMALL_BUTTON_SIZE() + 1.0f)) {
                     if (mouseState.x < 2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size())
-                        + (10 * CHAR_WIDTH()) + SMALL_BUTTON_SIZE() + 2.0f) {
+                        + (10 * BT_CHAR_WIDTH()) + SMALL_BUTTON_SIZE() + 2.0f) {
                         al_draw_text(font, settings.sysColor, messagePanel.printArea.topLeft.x, messagePanel.printArea.topLeft.y,
                             ALLEGRO_ALIGN_LEFT, "Decrease Base Octave (Alt+7)");
                         al_draw_tinted_bitmap(arrowDown, settings.rowActColor, xpos, buttonPanel.printArea.topLeft.y - 1.0f, 0);
@@ -253,7 +253,7 @@ void Main_Window::handle_mouse_input() {
                 }
                 else {
                     if (mouseState.x < 2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size())
-                        + (10 * CHAR_WIDTH()) + SMALL_BUTTON_SIZE() + 2.0f) {
+                        + (10 * BT_CHAR_WIDTH()) + SMALL_BUTTON_SIZE() + 2.0f) {
                         al_draw_text(font, settings.sysColor, messagePanel.printArea.topLeft.x, messagePanel.printArea.topLeft.y,
                             ALLEGRO_ALIGN_LEFT, "Decrease Auto-Increment Step (Alt+PageDown)");
                         al_draw_tinted_bitmap(arrowDown, settings.rowActColor, xpos,
@@ -305,7 +305,7 @@ void Main_Window::handle_mouse_input() {
                         ALLEGRO_ALIGN_LEFT, "Display Next Block (Alt+Right)");
 
                 al_draw_tinted_bitmap(arrowRight, settings.rowActColor,
-                    blockPanel.printArea.topLeft.x + SMALL_BUTTON_SIZE() + 12 * CHAR_WIDTH() + 3 * DEFAULT_MARGIN(),
+                    blockPanel.printArea.topLeft.x + SMALL_BUTTON_SIZE() + 12 * BT_CHAR_WIDTH() + 3 * DEFAULT_MARGIN(),
                     settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                 status.panelButtonHighlighted = 1;
             }
@@ -317,7 +317,7 @@ void Main_Window::handle_mouse_input() {
                     al_draw_text(font, settings.sysColor, messagePanel.printArea.topLeft.x, messagePanel.printArea.topLeft.y,
                         ALLEGRO_ALIGN_LEFT, "Add Row (Alt++)");
                     al_draw_tinted_bitmap(buttonPlus, settings.rowActColor,
-                        blockPanel.printArea.topLeft.x + 2 * SMALL_BUTTON_SIZE() + 22 * CHAR_WIDTH() + 5 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 2 * SMALL_BUTTON_SIZE() + 22 * BT_CHAR_WIDTH() + 5 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     status.panelButtonHighlighted = 2;
                 }
@@ -326,7 +326,7 @@ void Main_Window::handle_mouse_input() {
                     al_draw_text(font, settings.sysColor, messagePanel.printArea.topLeft.x, messagePanel.printArea.topLeft.y,
                     ALLEGRO_ALIGN_LEFT, "Remove Last Row (Alt+-)");
                     al_draw_tinted_bitmap(buttonMinus, settings.rowActColor,
-                        blockPanel.printArea.topLeft.x + 3 * SMALL_BUTTON_SIZE() + 22 * CHAR_WIDTH() + 6 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 3 * SMALL_BUTTON_SIZE() + 22 * BT_CHAR_WIDTH() + 6 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     status.panelButtonHighlighted = 3;
                 }
@@ -335,7 +335,7 @@ void Main_Window::handle_mouse_input() {
                     al_draw_text(font, settings.sysColor, messagePanel.printArea.topLeft.x, messagePanel.printArea.topLeft.y,
                         ALLEGRO_ALIGN_LEFT, "Insert Row (Alt+V)");
                     al_draw_tinted_bitmap(buttonInsert, settings.rowActColor,
-                        blockPanel.printArea.topLeft.x + 4 * SMALL_BUTTON_SIZE() + 22 * CHAR_WIDTH() + 7 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 4 * SMALL_BUTTON_SIZE() + 22 * BT_CHAR_WIDTH() + 7 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     status.panelButtonHighlighted = 4;
                 }
@@ -344,7 +344,7 @@ void Main_Window::handle_mouse_input() {
                     al_draw_text(font, settings.sysColor, messagePanel.printArea.topLeft.x, messagePanel.printArea.topLeft.y,
                         ALLEGRO_ALIGN_LEFT, "Delete Row (Alt+Del)");
                     al_draw_tinted_bitmap(buttonRemove, settings.rowActColor,
-                        blockPanel.printArea.topLeft.x + 5 * SMALL_BUTTON_SIZE() + 22 * CHAR_WIDTH() + 8 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 5 * SMALL_BUTTON_SIZE() + 22 * BT_CHAR_WIDTH() + 8 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     status.panelButtonHighlighted = 5;
                 }
@@ -354,7 +354,7 @@ void Main_Window::handle_mouse_input() {
                     al_draw_text(font, settings.sysColor, messagePanel.printArea.topLeft.x, messagePanel.printArea.topLeft.y,
                         ALLEGRO_ALIGN_LEFT, "Expand (Alt+X)");
                     al_draw_tinted_bitmap(buttonExpand, settings.rowActColor,
-                        blockPanel.printArea.topLeft.x + 6 * SMALL_BUTTON_SIZE() + 24 * CHAR_WIDTH() + 10 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 6 * SMALL_BUTTON_SIZE() + 24 * BT_CHAR_WIDTH() + 10 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     status.panelButtonHighlighted = 6;
                 }
@@ -365,7 +365,7 @@ void Main_Window::handle_mouse_input() {
                     al_draw_text(font, settings.sysColor, messagePanel.printArea.topLeft.x, messagePanel.printArea.topLeft.y,
                         ALLEGRO_ALIGN_LEFT, "Shrink (Alt+Shift+X)");
                     al_draw_tinted_bitmap(buttonShrink, settings.rowActColor,
-                        blockPanel.printArea.topLeft.x + 7 * SMALL_BUTTON_SIZE() + 24 * CHAR_WIDTH() + 11 * DEFAULT_MARGIN(),
+                        blockPanel.printArea.topLeft.x + 7 * SMALL_BUTTON_SIZE() + 24 * BT_CHAR_WIDTH() + 11 * DEFAULT_MARGIN(),
                         settings.tabArea.bottomRight.y + DEFAULT_MARGIN(), 0);
                     status.panelButtonHighlighted = 7;
                 }
@@ -495,14 +495,14 @@ void Main_Window::handle_mouse_input() {
             else if (mouseState.x < 2 + MENU_BUTTON_SIZE * 14) paste_selection();
             else if (mouseState.x < 2 + MENU_BUTTON_SIZE * 15) insert_selection();
             else if (mouseState.x > static_cast<int>(2 * DEFAULT_MARGIN()
-                + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * CHAR_WIDTH()))
+                + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * BT_CHAR_WIDTH()))
                 && mouseState.x < static_cast<int>(3 * DEFAULT_MARGIN()
-                + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * CHAR_WIDTH())
+                + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size()) + (10 * BT_CHAR_WIDTH())
                 + 2 * SMALL_BUTTON_SIZE())) {
 
                 if (mouseState.y < static_cast<int>(buttonPanel.printArea.topLeft.y + SMALL_BUTTON_SIZE() + 1.0f)) {
                     if (mouseState.x < 2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size())
-                        + (10 * CHAR_WIDTH()) + SMALL_BUTTON_SIZE() + 2.0f) {
+                        + (10 * BT_CHAR_WIDTH()) + SMALL_BUTTON_SIZE() + 2.0f) {
                         status.currentOctave = (status.currentOctave == 0) ? 0 : status.currentOctave - 1;
                         print_base_octave();
                     }
@@ -513,7 +513,7 @@ void Main_Window::handle_mouse_input() {
                 }
                 else {
                     if (mouseState.x < 2 * DEFAULT_MARGIN() + ((BUTTON_SIZE() + 2 * DEFAULT_MARGIN()) * menuButtons.size())
-                        + (10 * CHAR_WIDTH()) + SMALL_BUTTON_SIZE() + 2.0f) {
+                        + (10 * BT_CHAR_WIDTH()) + SMALL_BUTTON_SIZE() + 2.0f) {
                         status.autoInc = (status.autoInc - 1) & 0x3f;
                         print_autoinc_setting();
                     }
@@ -794,9 +794,9 @@ void Main_Window::handle_mouse_input() {
                 //TODO first check is redundant?
                 while (col < status.get_current_block_pointer()->columns.size() && col < status.get_visible_last_column()
                     && mouseState.x > static_cast<int>(colpos
-                    + status.get_current_block_pointer()->columns[col].width + CHAR_WIDTH())) {
+                    + status.get_current_block_pointer()->columns[col].width + BT_CHAR_WIDTH())) {
 
-                    colpos += (status.get_current_block_pointer()->columns[col].width + CHAR_WIDTH());
+                    colpos += (status.get_current_block_pointer()->columns[col].width + BT_CHAR_WIDTH());
                     col++;
                 }
 
@@ -820,9 +820,9 @@ void Main_Window::handle_mouse_input() {
             float colpos = settings.columnHeaderArea.topLeft.x;
             while (col < status.get_current_block_pointer()->columns.size() && col < status.get_visible_last_column()
                 && mouseState.x > static_cast<int>(colpos
-                + status.get_current_block_pointer()->columns[col].width + CHAR_WIDTH())) {
+                + status.get_current_block_pointer()->columns[col].width + BT_CHAR_WIDTH())) {
 
-                colpos += (status.get_current_block_pointer()->columns[col].width + CHAR_WIDTH());
+                colpos += (status.get_current_block_pointer()->columns[col].width + BT_CHAR_WIDTH());
                 col++;
             }
 

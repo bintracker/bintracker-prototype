@@ -78,7 +78,7 @@ constexpr const float BUTTON_PANEL_HEIGHT() {return 40.0f;}
 constexpr const float REFERENCE_PANEL_WIDTH() {return 204.0f;}
 constexpr const float MESSAGE_PANEL_HEIGHT() {return 24.0f;}
 constexpr const float CHAR_HEIGHT() {return 14.0f;}
-constexpr const float CHAR_WIDTH() {return 10.0f;}
+constexpr const float BT_CHAR_WIDTH() {return 10.0f;}
 constexpr const float BUTTON_SIZE() {return 28.0f;}
 constexpr const float SMALL_BUTTON_SIZE() {return 16.0f;}
 constexpr const float SCROLL_PANE_SIZE() {return 16.0f;}

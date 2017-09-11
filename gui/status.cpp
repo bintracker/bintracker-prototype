@@ -284,7 +284,7 @@ void Display_Status::calculate_visible_last_column() {
 		(visibleLastColumns[bt] < workTune->blockTypes[bt].commands.size()) && ((xpos + DEFAULT_MARGIN()
 		+ get_current_block_pointer()->columns[visibleLastColumns[bt]].width)
 		<= globalSettings->blockDataArea.bottomRight.x);
-		xpos += (get_current_block_pointer()->columns[visibleLastColumns[bt]].width + CHAR_WIDTH()),
+		xpos += (get_current_block_pointer()->columns[visibleLastColumns[bt]].width + BT_CHAR_WIDTH()),
 		visibleLastColumns[bt]++) {}
 
 	visibleLastColumns[bt]--;
@@ -301,7 +301,7 @@ void Display_Status::calculate_visible_first_column() {
 		+ get_current_block_pointer()->columns[visibleFirstColumns[bt]].width);
 //		(visibleFirstColumn >= 0) && (xpos >= settings.columnHeaderArea.topLeft.x);
 		xpos >= globalSettings->columnHeaderArea.topLeft.x;	//TODO this might potentially cause trouble, but "visibleFirstColumn >=" is always true
-		xpos -= (get_current_block_pointer()->columns[visibleFirstColumns[bt]].width + CHAR_WIDTH()),
+		xpos -= (get_current_block_pointer()->columns[visibleFirstColumns[bt]].width + BT_CHAR_WIDTH()),
 			visibleFirstColumns[bt]--) {}
 
 	visibleFirstColumns[bt]++;

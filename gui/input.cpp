@@ -424,7 +424,7 @@ void Main_Window::scroll_drag_h(const int &mouseX) {
         //calculate threshold (needs two different thresholds for left|right)
         //threshold = next_col_width / total width * scrollpane_width
         float hTotalSize = 0;
-        for (auto&& it: status.get_current_block_pointer()->columns) hTotalSize += (it.width + CHAR_WIDTH());
+        for (auto&& it: status.get_current_block_pointer()->columns) hTotalSize += (it.width + BT_CHAR_WIDTH());
         float paneSize = settings.blockPanelArea.bottomRight.x - 3 * SMALL_BUTTON_SIZE();
         float thresholdLeft;
         if (status.get_visible_first_column() > 0) {
@@ -1210,7 +1210,7 @@ void Main_Window::display_options_list(const string &currentVal, const vector<st
 
 			float xpos = settings.columnHeaderArea.topLeft.x;
 			for (unsigned vcol = status.get_visible_first_column(); vcol < status.get_current_cursor_column(); vcol++)
-				xpos += (status.get_current_block_pointer()->columns[vcol].width + CHAR_WIDTH());
+				xpos += (status.get_current_block_pointer()->columns[vcol].width + BT_CHAR_WIDTH());
 
 			float ypos = settings.blockDataArea.topLeft.y + (static_cast<float>(status.get_current_cursor_row()
 				- status.get_visible_first_row()) * CHAR_HEIGHT());
@@ -1222,11 +1222,11 @@ void Main_Window::display_options_list(const string &currentVal, const vector<st
 				ypos -= static_cast<float>(options.size() * CHAR_HEIGHT());
 
 				al_draw_filled_rectangle(xpos, (ypos >= settings.blockDataArea.topLeft.y) ? ypos : settings.blockDataArea.topLeft.y,
-					xpos + ((currentField->command->mdCmdType == WORD) ? (9.0 * CHAR_WIDTH()) : (5.0 * CHAR_WIDTH())),
+					xpos + ((currentField->command->mdCmdType == WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
 					(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
 				al_draw_filled_rectangle(xpos + 1.0f, (ypos >= settings.blockDataArea.topLeft.y)
 					? ypos + 1.0f : settings.blockDataArea.topLeft.y + 1.0f,
-					xpos + ((currentField->command->mdCmdType == WORD) ? (9.0 * CHAR_WIDTH()) : (5.0 * CHAR_WIDTH())) - 1.0f,
+					xpos + ((currentField->command->mdCmdType == WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())) - 1.0f,
 					(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) - 1.0f, settings.bgColor);
 
 				for (auto&& it: options) {
@@ -1242,12 +1242,12 @@ void Main_Window::display_options_list(const string &currentVal, const vector<st
 
 				//print downwards
 				al_draw_filled_rectangle(xpos, ypos, xpos + ((currentField->command->mdCmdType == WORD)
-					? (9.0 * CHAR_WIDTH()) : (5.0 * CHAR_WIDTH())),
+					? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
 					((ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
 					? (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) : settings.blockDataArea.bottomRight.y),
 					settings.sysColor);
 				al_draw_filled_rectangle(xpos + 1.0f, ypos + 1.0f, xpos - 1.0f
-					+ ((currentField->command->mdCmdType == WORD) ? (9.0 * CHAR_WIDTH()) : (5.0 * CHAR_WIDTH())),
+					+ ((currentField->command->mdCmdType == WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
 					(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
 					? (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
 					: (settings.blockDataArea.bottomRight.y - 1.0f), settings.bgColor);
@@ -1275,7 +1275,7 @@ void Main_Window::display_options_list(const string &currentVal, const vector<st
         print_reference_data();
 
 		float xpos = settings.referenceDataArea.topLeft.x;
-		if (status.get_current_blocktype() == 0) xpos += (4 * CHAR_WIDTH());
+		if (status.get_current_blocktype() == 0) xpos += (4 * BT_CHAR_WIDTH());
 
 		float ypos = settings.referenceDataArea.topLeft.y + (static_cast<float>(status.get_current_reference_row()
 				- status.get_visible_first_reference_row()) * CHAR_HEIGHT());
@@ -1287,10 +1287,10 @@ void Main_Window::display_options_list(const string &currentVal, const vector<st
 			ypos -= static_cast<float>(options.size() * CHAR_HEIGHT());
 
 			al_draw_filled_rectangle(xpos, (ypos >= settings.referenceDataArea.topLeft.y) ? ypos : settings.referenceDataArea.topLeft.y,
-				xpos + (12.0 * CHAR_WIDTH()), (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
+				xpos + (12.0 * BT_CHAR_WIDTH()), (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
 			al_draw_filled_rectangle(xpos + 1.0f, (ypos >= settings.referenceDataArea.topLeft.y)
 				? ypos + 1.0f : settings.referenceDataArea.topLeft.y + 1.0f,
-				xpos + (12.0 * CHAR_WIDTH()) - 1.0f, (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) - 1.0f,
+				xpos + (12.0 * BT_CHAR_WIDTH()) - 1.0f, (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) - 1.0f,
 				settings.bgColor);
 
 			for (auto&& it: options) {
@@ -1306,11 +1306,11 @@ void Main_Window::display_options_list(const string &currentVal, const vector<st
 		else {
 
 			//print downwards
-			al_draw_filled_rectangle(xpos, ypos, xpos + (12.0 * CHAR_WIDTH()),
+			al_draw_filled_rectangle(xpos, ypos, xpos + (12.0 * BT_CHAR_WIDTH()),
 				((ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) < settings.referenceDataArea.bottomRight.y)
 				? (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) : settings.referenceDataArea.bottomRight.y),
 				settings.sysColor);
-			al_draw_filled_rectangle(xpos + 1.0f, ypos + 1.0f, xpos - 1.0f + (12.0 * CHAR_WIDTH()),
+			al_draw_filled_rectangle(xpos + 1.0f, ypos + 1.0f, xpos - 1.0f + (12.0 * BT_CHAR_WIDTH()),
 				(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) < settings.referenceDataArea.bottomRight.y)
 				? (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
 				: (settings.referenceDataArea.bottomRight.y - 1.0f), settings.bgColor);

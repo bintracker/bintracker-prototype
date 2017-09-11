@@ -225,7 +225,7 @@ void Panel::create(const Area &total_area, const int &border_mask, const int &sc
 Block_Tab::Block_Tab(const float &hpos, const string &title_): title(title_) {
 
 	xpos = hpos;
-	xsize = (title.size() * CHAR_WIDTH()) + 2 * DEFAULT_MARGIN();
+	xsize = (title.size() * BT_CHAR_WIDTH()) + 2 * DEFAULT_MARGIN();
 }
 
 Block_Tab::Block_Tab(const Block_Tab &tab): title(tab.title) {
@@ -437,12 +437,12 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
   	blockHeaderArea.set(blockArea.topLeft, Point(blockArea.bottomRight.x, blockArea.topLeft.y + CHAR_HEIGHT() + DEFAULT_MARGIN()));
 
 	blockNameArea.set(Point(blockPanelArea.topLeft.x + SMALL_BUTTON_SIZE() + (2 * DEFAULT_MARGIN()), tabArea.bottomRight.y + DEFAULT_MARGIN()),
-		Point(blockPanelArea.topLeft.x + SMALL_BUTTON_SIZE() + (2 * DEFAULT_MARGIN()) + (12 * CHAR_WIDTH()),
+		Point(blockPanelArea.topLeft.x + SMALL_BUTTON_SIZE() + (2 * DEFAULT_MARGIN()) + (12 * BT_CHAR_WIDTH()),
 		tabArea.bottomRight.y + (2 * DEFAULT_MARGIN()) + CHAR_HEIGHT()));
 
-	blockLengthArea.set(Point(blockPanelArea.topLeft.x + (2 * SMALL_BUTTON_SIZE()) + (19 * CHAR_WIDTH()) + (5 * DEFAULT_MARGIN()),
+	blockLengthArea.set(Point(blockPanelArea.topLeft.x + (2 * SMALL_BUTTON_SIZE()) + (19 * BT_CHAR_WIDTH()) + (5 * DEFAULT_MARGIN()),
 		tabArea.bottomRight.y + 2.0f + DEFAULT_MARGIN()),
-		Point(blockPanelArea.topLeft.x + (2 * SMALL_BUTTON_SIZE()) + (22 * CHAR_WIDTH()) + (5 * DEFAULT_MARGIN()),
+		Point(blockPanelArea.topLeft.x + (2 * SMALL_BUTTON_SIZE()) + (22 * BT_CHAR_WIDTH()) + (5 * DEFAULT_MARGIN()),
 		tabArea.bottomRight.y + 2.0f + DEFAULT_MARGIN() + CHAR_HEIGHT()));
 
  	rowNumberArea.set(Point(blockPanelArea.topLeft.x + DEFAULT_MARGIN(), blockHeaderArea.bottomRight.y + DEFAULT_MARGIN()),
