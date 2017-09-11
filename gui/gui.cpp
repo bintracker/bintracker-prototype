@@ -777,12 +777,25 @@ void Main_Window::shutdown() {
         return;
     }
 
-    int doWhat = al_show_native_message_box(nullptr, "Save unsaved changes?", "",
-        "The current tune has unsaved changes. Save changes before exiting?", "Cancel|Discard Changes|Save Changes",
-        ALLEGRO_MESSAGEBOX_WARN);
+//    int doWhat = al_show_native_message_box(nullptr, "Save unsaved changes?", "",
+//        "The current tune has unsaved changes. Save changes before exiting?", "Cancel|Discard Changes|Save Changes",
+//        ALLEGRO_MESSAGEBOX_QUESTION);
+//
+//    if (doWhat < 2) return;
+//    else if (doWhat == 3) {
+//        save_file();
+//        if (currentTune.hasUnsavedChanges) return;
+//    }
 
-    if (doWhat < 2) return;
-    else if (doWhat == 3) {
+    //TODO temporary work-around because Windows version of liballeg ignores custom buttons,
+    // and is not able to return the correct button pressed either
+    int doWhat = al_show_native_message_box(nullptr, "Save unsaved changes?", "",
+        "The current tune has unsaved changes. Save changes before exiting?", nullptr,
+        ALLEGRO_MESSAGEBOX_QUESTION|ALLEGRO_MESSAGEBOX_YES_NO);
+
+//    if (doWhat == 0) return;
+//    else if (doWhat == 1) {
+    if (doWhat == 1) {
         save_file();
         if (currentTune.hasUnsavedChanges) return;
     }
