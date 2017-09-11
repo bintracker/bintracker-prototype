@@ -994,3 +994,9 @@ void Main_Window::handle_keyboard_input() {
 
 	status.keyDown = true;
 }
+
+
+void Main_Window::handle_key_release() {
+	status.keyLock = 0;
+	status.keyDown = false;
+}

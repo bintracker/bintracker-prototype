@@ -501,6 +501,7 @@ public:
 	~Main_Window();
 	void handle_event(ALLEGRO_EVENT &ev);
 	void handle_keyboard_input();
+	void handle_key_release();
     void handle_mouse_input();
 
     ALLEGRO_TIMER *timer;
