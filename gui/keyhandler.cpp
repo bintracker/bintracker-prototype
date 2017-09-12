@@ -14,7 +14,7 @@ void Main_Window::handle_keyboard_input() {
 		status.keyLock--;
 		return;
 	}
-	if (!status.keyDown) status.keyLock = 3;
+	if (!status.keyDown) status.keyLock = settings.keyRepeatDelay;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //HANDLE GERMAN KEYBOARDS
@@ -993,4 +993,10 @@ void Main_Window::handle_keyboard_input() {
     }
 
 	status.keyDown = true;
+}
+
+
+void Main_Window::handle_key_release() {
+	status.keyLock = 0;
+	status.keyDown = false;
 }

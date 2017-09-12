@@ -50,6 +50,13 @@ int main(int argc, char **argv){
                 }
                 al_start_timer(gui.timer);
 			}
+			else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+				al_get_keyboard_state(&gui.kbdstate);
+				gui.handle_keyboard_input();
+			}
+			else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
+				gui.handle_key_release();
+			}
 			else if (ev.type == ALLEGRO_EVENT_AUDIO_STREAM_FRAGMENT) gui.soundEmul.update_audio();
 			else gui.handle_event(ev);
 		}
