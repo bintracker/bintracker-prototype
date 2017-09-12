@@ -260,6 +260,7 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
 	defaultBlockLength = 64;
 	hexMode = true;
 	audioChunkSize = 256;
+	keyRepeatDelay = 3;
 
 	ifstream DEFAULTINI("settings.ini");
 	if (!DEFAULTINI.is_open()) {
