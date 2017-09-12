@@ -4,7 +4,7 @@
 void Main_Window::handle_mouse_input() {
 
     //if left mouse button isn't pressed, reset some status vars and do hover effects
-    if (!mouseState.buttons & 1) {
+    if (~mouseState.buttons & 1) {
 
         status.leftMouseButtonDown = false;
         status.mouseDragLockH = false;
