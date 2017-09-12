@@ -196,6 +196,7 @@ Main_Window::~Main_Window() {
     al_close_native_text_log(engineInfo);
     if (newFilePopupMenu) al_destroy_menu(newFilePopupMenu);
 	al_set_display_menu(mainDisplay, nullptr);
+	al_shutdown_native_dialog_addon();
 	al_destroy_event_queue(eventQueue);
 	al_destroy_timer(timer);
 	al_destroy_display(mainDisplay);
