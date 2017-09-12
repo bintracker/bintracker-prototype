@@ -25,7 +25,12 @@ Virtual_ZX48::Virtual_ZX48() : cpu(memory, NMOS) {
 		ROMFILE.read(buffer, 0x4000);
 		for (int i = 0; i < 0x4000; i++) memory[i] = buffer[i] & 0xff;
 	}
-	else cout << "Warning: Could not load zxspectrum48.rom\n";
+	else {
+
+        cout << "Warning: Could not load zxspectrum48.rom\n";
+        vector<unsigned> randomData = generate_random_data(0x4000);
+        for (int i = 0; i < 0x4000; i++) memory[i] = randomData[i] & 0xff;
+	}
 
 	prgmIsInitialized = false;
 	prgmHasFinished = true;
