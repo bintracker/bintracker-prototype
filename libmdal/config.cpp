@@ -74,7 +74,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
 
         string tempstr = mdalconfig.attribute("version").value();
         if (tempstr == "") throw (string("MDAL_VERSION not specified."));
-        if (getType(tempstr) != DEC) throw (string("MDAL_VERSION argument is not a decimal number."));
+        if (getType(tempstr) != MD_DEC) throw (string("MDAL_VERSION argument is not a decimal number."));
         if (stoi(tempstr, nullptr, 10) != MDALVERSION) throw ("Unsupported MDAL version " + tempstr + ".");
         if (verbose) cout << "MDAL version: \t\t" << stoi(tempstr, nullptr, 10) << endl;
 
@@ -164,9 +164,9 @@ void mdConfig::init(const string &configname, bool &verbose) {
 
             tempstr = tempnode.attribute("size").value();
             if (tempstr == "") throw (string("<command>: size not specified."));
-            if (tempstr == "bool") mdCmdList[cmdNr].mdCmdType = BOOL;
-            else if (tempstr == "byte") mdCmdList[cmdNr].mdCmdType = BYTE;
-            else if (tempstr == "word") mdCmdList[cmdNr].mdCmdType = WORD;
+            if (tempstr == "bool") mdCmdList[cmdNr].mdCmdType = MD_BOOL;
+            else if (tempstr == "byte") mdCmdList[cmdNr].mdCmdType = MD_BYTE;
+            else if (tempstr == "word") mdCmdList[cmdNr].mdCmdType = MD_WORD;
             else throw ("<command>: unknown command type \"" + tempstr + "\".");
 
             tempstr = tempnode.attribute("default").value();
@@ -178,7 +178,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
             if (param != nullptr) {
                 tempstr = param.attribute("value").value();
                 if (tempstr == "") throw (string("<command>: missing auto value specification."));
-                if (mdCmdList[cmdNr].mdCmdType == BOOL && getType(tempstr) != BOOL)
+                if (mdCmdList[cmdNr].mdCmdType == MD_BOOL && getType(tempstr) != MD_BOOL)
                     throw (string("<command>: non-boolean value specified as auto value for bool command."));
                 mdCmdList[cmdNr].mdCmdAutoValString = tempstr;
                 mdCmdList[cmdNr].mdCmdAuto = true;
@@ -213,7 +213,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
             }
 
             param = tempnode.child("range");
-            if (param != nullptr && mdCmdList[cmdNr].mdCmdType != BOOL) {
+            if (param != nullptr && mdCmdList[cmdNr].mdCmdType != MD_BOOL) {
                 mdCmdList[cmdNr].limitRange = true;
                 tempstr = param.attribute("lower_limit").value();
                 if (tempstr == "") throw (string("<command>: range used, but no lower limit specified."));
@@ -259,8 +259,8 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 cout << mdCmdList[cmdNr].mdCmdName << ": " << mdCmdList[cmdNr].description << "\n";
                 cout << "Type is ";
 
-                if (mdCmdList[cmdNr].mdCmdType == BYTE) cout << "BYTE";
-                else if (mdCmdList[cmdNr].mdCmdType == BOOL) cout << "BOOL";
+                if (mdCmdList[cmdNr].mdCmdType == MD_BYTE) cout << "BYTE";
+                else if (mdCmdList[cmdNr].mdCmdType == MD_BOOL) cout << "BOOL";
                 else cout << "WORD";
 
                 cout << ", default is ";
@@ -471,7 +471,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                     if (tempstr == "") throw (string("<blocktype><field><set_hi>: missing from= argument"));
                     cmdNr = getCmdNr(tempstr);
                     if (cmdNr == -1) throw ("<blocktype><field><set_hi>: Unknown command \"" + tempstr + "\" in from= argument");
-                    if (mdCmdList[cmdNr].mdCmdType != BYTE)
+                    if (mdCmdList[cmdNr].mdCmdType != MD_BYTE)
                         throw ("<blocktype><field><set_hi>: Command \"" + tempstr + "\" is not byte-sized");
                     blockTypes.back().blkFieldList[fieldNr].requiredBy[cmdNr] = true;
                     blockTypes.back().blkFieldList[fieldNr].setHiBy = cmdNr;
@@ -484,7 +484,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                     if (tempstr == "") throw (string("<blocktype><field><set_lo>: missing from= argument"));
                     cmdNr = getCmdNr(tempstr);
                     if (cmdNr == -1) throw ("<blocktype><field><set_lo>: Unknown command \"" + tempstr + "\" in from= argument");
-                    if (mdCmdList[cmdNr].mdCmdType != BYTE)
+                    if (mdCmdList[cmdNr].mdCmdType != MD_BYTE)
                         throw ("<blocktype><field><set_lo>: Command \"" + tempstr + "\" is not byte-sized");
                     blockTypes.back().blkFieldList[fieldNr].requiredBy[cmdNr] = true;
                     blockTypes.back().blkFieldList[fieldNr].setLoBy = cmdNr;
@@ -497,7 +497,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                     if (tempstr == "") throw (string("<blocktype><field><set>: missing from= argument"));
                     cmdNr = getCmdNr(tempstr);
                     if (cmdNr == -1) throw ("<blocktype><field><set>: Unknown command \"" + tempstr + "\" in from= argument");
-                    if (mdCmdList[cmdNr].mdCmdType == BOOL)
+                    if (mdCmdList[cmdNr].mdCmdType == MD_BOOL)
                         throw ("<blocktype><field><set>: Command \"" + tempstr + "\" is boolean");
                     blockTypes.back().blkFieldList[fieldNr].requiredBy[cmdNr] = true;
                     blockTypes.back().blkFieldList[fieldNr].setBy = cmdNr;
@@ -521,7 +521,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                     if (from == "") throw (string("<blocktype><field><set_bits>: missing from= argument"));
                     cmdNr = getCmdNr(from);
                     if (cmdNr == -1) throw ("<blocktype><field><set_bits>: unknown source command \"" + from);
-                    if (mdCmdList[cmdNr].mdCmdType != BOOL)
+                    if (mdCmdList[cmdNr].mdCmdType != MD_BOOL)
                         throw ("<blocktype><field><set_bits>: \"" + from + "\" is not boolean command");
 
                     string mask = param.attribute("value").value();

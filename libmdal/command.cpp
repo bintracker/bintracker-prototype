@@ -9,7 +9,7 @@ using namespace std;
 mdCommand::mdCommand(): description(""), referenceBlkID(""), mdCmdDefaultValString(""), mdCmdAutoValString(""),
     mdCmdCurrentValString(""), mdCmdLastValString("") {
 
-    mdCmdType = BOOL;
+    mdCmdType = MD_BOOL;
     mdCmdGlobalConst = false;
 
     useNoteNames = false;
@@ -86,7 +86,7 @@ void mdCommand::set(const string &currentValString) {
 
     int paramType = getType(currentValString);
 
-    if (mdCmdForceInt && (paramType != DEC && paramType != HEX))
+    if (mdCmdForceInt && (paramType != MD_DEC && paramType != MD_HEX))
         throw (string("String argument supplied for integer command "));
     //TODO: does not check for bool
     if (mdCmdForceString && isNumber(currentValString)) throw (string("Integer argument supplied for string command "));
@@ -102,8 +102,8 @@ void mdCommand::set(const string &currentValString) {
     if (mdCmdForceSubstitution) {
 
         if (substitutionList.count(currentValString)) mdCmdCurrentValString = substitutionList[currentValString];
-        //TODO paramType == STRING is unreliable, will pass bool but fail non-quote-enclosed strings
-        else if (paramType == STRING) throw ("\"" + currentValString + "\" is not a valid parameter for command ");
+        //TODO paramType == MD_STRING is unreliable, will pass bool but fail non-quote-enclosed strings
+        else if (paramType == MD_STRING) throw ("\"" + currentValString + "\" is not a valid parameter for command ");
     }
 
     mdCmdLastValString = mdCmdCurrentValString;
@@ -131,17 +131,17 @@ void mdCommand::setDefault(const string &param) {
 
     int paramType = getType(param);
 
-    //if (paramType == INVALID) throw ("\"" + param + "\" is not a valid argument ");
-    if (paramType == BOOL && mdCmdType != BOOL) throw (string("Non-Boolean default parameter specified for BOOL command"));
+    //if (paramType == MD_INVALID) throw ("\"" + param + "\" is not a valid argument ");
+    if (paramType == MD_BOOL && mdCmdType != MD_BOOL) throw (string("Non-Boolean default parameter specified for BOOL command"));
 
     mdCmdDefaultValString = trimChars(param, "\"");
 
     int paramVal = -1;
 
-    if (paramType == DEC) paramVal = static_cast<int>(stoul(trimChars(param, " "), nullptr, 10));
-    else if (paramType == HEX) paramVal = static_cast<int>(stoul(trimChars(param, " $"), nullptr, 16));
+    if (paramType == MD_DEC) paramVal = static_cast<int>(stoul(trimChars(param, " "), nullptr, 10));
+    else if (paramType == MD_HEX) paramVal = static_cast<int>(stoul(trimChars(param, " $"), nullptr, 16));
 
 
-    if ((mdCmdType == WORD && paramVal > 0xffff) || (mdCmdType == BYTE && paramVal > 0xff))
+    if ((mdCmdType == MD_WORD && paramVal > 0xffff) || (mdCmdType == MD_BYTE && paramVal > 0xff))
         throw (string("Default value out of range "));
 }

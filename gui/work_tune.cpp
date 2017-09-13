@@ -12,7 +12,7 @@
 
 
 Datablock_Field::Datablock_Field(mdCommand *command_): command(command_), dataString(""),
-	printString((command->mdCmdType == WORD) ? "..." : ".."), arg1(""), arg2(""), modifier("") {}
+	printString((command->mdCmdType == MD_WORD) ? "..." : ".."), arg1(""), arg2(""), modifier("") {}
 
 Datablock_Field::Datablock_Field(const Datablock_Field &field): command(field.command), dataString(field.dataString),
 	printString(field.printString), arg1(field.arg1), arg2(field.arg2), modifier(field.modifier) {}
@@ -38,7 +38,7 @@ void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 		arg1 = "";
 		arg2 = "";
 		modifier = "";
-		printString = (command->mdCmdType == WORD) ? "..." : "..";
+		printString = (command->mdCmdType == MD_WORD) ? "..." : "..";
 		return;
 	}
 
@@ -51,7 +51,7 @@ void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 
 		if (isNumber(dataString_)) {
 
-			if (getType(dataString_) == DEC) arg1 = dataString_;
+			if (getType(dataString_) == MD_DEC) arg1 = dataString_;
 			else {
 
 				ostringstream argstr;
@@ -59,7 +59,7 @@ void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 				arg1 = argstr.str();
 			}
 
-			arg1print = numToStr(stol(arg1, nullptr, 10), (command->mdCmdType == WORD) ? 4 : 2, hexMode);
+			arg1print = numToStr(stol(arg1, nullptr, 10), (command->mdCmdType == MD_WORD) ? 4 : 2, hexMode);
 		}
 		else {
 			arg1 = dataString_;
@@ -78,7 +78,7 @@ void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 		if (argstr1 != "") {
 			if (isNumber(argstr1)) {
 
-				if (getType(argstr1) == DEC) arg1 = argstr1;
+				if (getType(argstr1) == MD_DEC) arg1 = argstr1;
 				else {
 
 					ostringstream argstr;
@@ -86,7 +86,7 @@ void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 					arg1 = argstr.str();
 				}
 
-				arg1print = numToStr(stol(arg1, nullptr, 10), (command->mdCmdType == WORD) ? 4 : 2, hexMode);
+				arg1print = numToStr(stol(arg1, nullptr, 10), (command->mdCmdType == MD_WORD) ? 4 : 2, hexMode);
 			}
 			else {
 				arg1 = argstr1;
@@ -96,14 +96,14 @@ void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 
 		if (isNumber(argstr2)) {
 
-			if (getType(argstr2) == DEC) arg2 = argstr2;
+			if (getType(argstr2) == MD_DEC) arg2 = argstr2;
 			else {
 				ostringstream argstr;
 				argstr << stol(trimChars(argstr2, "$"), nullptr, 16);
 				arg2 = argstr.str();
 			}
 
-			arg2print = numToStr(stol(arg2, nullptr, 10), (command->mdCmdType == WORD) ? 4 : 2, hexMode);
+			arg2print = numToStr(stol(arg2, nullptr, 10), (command->mdCmdType == MD_WORD) ? 4 : 2, hexMode);
 		}
 		else {
 			arg2 = argstr2;
@@ -127,13 +127,13 @@ void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 				arg2 = arg1;
 				arg1 = "0";
 				arg1print = "  0";
-				arg2print = numToStr(stol(arg2, nullptr, 10), (command->mdCmdType == WORD) ? 4 : 2, hexMode);
+				arg2print = numToStr(stol(arg2, nullptr, 10), (command->mdCmdType == MD_WORD) ? 4 : 2, hexMode);
 			}
 		}
 		else if (arg1print.compare(1, 2, "is") == 0) arg1print = arg1print.substr(0, 1) + "#" + arg1print.substr(3, string::npos);
 		else arg1print = arg1print.substr(0, 1) + "-" + arg1print.substr(1, string::npos);
 
-		if (isNumber(arg2print)) arg2print = numToStr(stol(arg2, nullptr, 10), (command->mdCmdType == WORD) ? 4 : 2, hexMode);
+		if (isNumber(arg2print)) arg2print = numToStr(stol(arg2, nullptr, 10), (command->mdCmdType == MD_WORD) ? 4 : 2, hexMode);
 	}
 
 	//TODO: MDAL will currently not accept parameters in form of "xMODy"
@@ -157,7 +157,7 @@ void Datablock_Field::remove_modifier() {
 
 Datablock_Column::Datablock_Column(mdCommand *command_): command(command_) {
 
-	width = ((command->mdCmdType == WORD) && (command->allowModifiers || command->isBlkReference)) ? 90.0f : 50.0f;
+	width = ((command->mdCmdType == MD_WORD) && (command->allowModifiers || command->isBlkReference)) ? 90.0f : 50.0f;
 }
 
 Datablock_Column::Datablock_Column(const Datablock_Column &col):

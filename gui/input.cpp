@@ -775,7 +775,7 @@ void Main_Window::receive_data_input(const char &data) {
 
 				userInputString += data;
 
-				size_t allowedFieldSize = (currentField->command->mdCmdType == BYTE) ? 3 : 5;
+				size_t allowedFieldSize = (currentField->command->mdCmdType == MD_BYTE) ? 3 : 5;
 				if (userInputString.find_first_of("+-*/|&^") != string::npos) allowedFieldSize++;
 
 				currentField->set(userInputString, settings.hexMode);
@@ -1222,11 +1222,11 @@ void Main_Window::display_options_list(const string &currentVal, const vector<st
 				ypos -= static_cast<float>(options.size() * CHAR_HEIGHT());
 
 				al_draw_filled_rectangle(xpos, (ypos >= settings.blockDataArea.topLeft.y) ? ypos : settings.blockDataArea.topLeft.y,
-					xpos + ((currentField->command->mdCmdType == WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
+					xpos + ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
 					(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
 				al_draw_filled_rectangle(xpos + 1.0f, (ypos >= settings.blockDataArea.topLeft.y)
 					? ypos + 1.0f : settings.blockDataArea.topLeft.y + 1.0f,
-					xpos + ((currentField->command->mdCmdType == WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())) - 1.0f,
+					xpos + ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())) - 1.0f,
 					(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) - 1.0f, settings.bgColor);
 
 				for (auto&& it: options) {
@@ -1241,13 +1241,13 @@ void Main_Window::display_options_list(const string &currentVal, const vector<st
 			else {
 
 				//print downwards
-				al_draw_filled_rectangle(xpos, ypos, xpos + ((currentField->command->mdCmdType == WORD)
+				al_draw_filled_rectangle(xpos, ypos, xpos + ((currentField->command->mdCmdType == MD_WORD)
 					? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
 					((ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
 					? (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) : settings.blockDataArea.bottomRight.y),
 					settings.sysColor);
 				al_draw_filled_rectangle(xpos + 1.0f, ypos + 1.0f, xpos - 1.0f
-					+ ((currentField->command->mdCmdType == WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
+					+ ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
 					(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
 					? (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
 					: (settings.blockDataArea.bottomRight.y - 1.0f), settings.bgColor);
@@ -1798,7 +1798,7 @@ void Main_Window::interpolate_selection(const unsigned &interpolationType) {
 
     for (unsigned col = status.selectionColumnFirst; col <= status.selectionColumnLast; col++) {
 
-        if (!(status.get_current_block_pointer()->columns[col].command->mdCmdType == BOOL)
+        if (!(status.get_current_block_pointer()->columns[col].command->mdCmdType == MD_BOOL)
             && !(status.get_current_block_pointer()->columns[col].command->mdCmdForceString)
             && status.get_current_block_pointer()->columns[col].command->substitutionList.empty()) {
 
@@ -2019,17 +2019,17 @@ void Main_Window::randomize_selection() {
                     status.get_current_block_pointer()->columns[col].columnData[row]
                         .set(currentTune.get_note_data_string(currentTune.freqDividers[pos]), settings.hexMode);
                 }
-                else if (cmd->mdCmdType == BOOL) {
+                else if (cmd->mdCmdType == MD_BOOL) {
 
                     if (it & 1) status.get_current_block_pointer()->columns[col].columnData[row].set("true", settings.hexMode);
                     else status.get_current_block_pointer()->columns[col].columnData[row].set("false", settings.hexMode);
                 }
-                else if (cmd->mdCmdType == BYTE) {
+                else if (cmd->mdCmdType == MD_BYTE) {
 
                     status.get_current_block_pointer()->columns[col].columnData[row]
                         .set(numToStr(it & 0xff, (settings.hexMode) ? 2 : 3, settings.hexMode), settings.hexMode);
                 }
-                else if (cmd->mdCmdType == WORD) {
+                else if (cmd->mdCmdType == MD_WORD) {
 
                     status.get_current_block_pointer()->columns[col].columnData[row]
                         .set(numToStr(it & 0xffff, (settings.hexMode) ? 4 : 5, settings.hexMode), settings.hexMode);

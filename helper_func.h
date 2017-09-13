@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-enum ParameterType {BOOL, BYTE, WORD, DEC, HEX, STRING, INVALID};
+enum ParameterType {MD_BOOL, MD_BYTE, MD_WORD, MD_DEC, MD_HEX, MD_STRING, MD_INVALID};
 
 bool isNumber(const std::string &str);
 long strToNum(std::string str);

@@ -61,14 +61,12 @@ enum MenuID {
 };
 
 enum Directions {DIR_NONE = 0x00, DIR_LEFT = 0x01, DIR_RIGHT = 0x02, DIR_TOP = 0x04, DIR_BOTTOM = 0x08};
-// enum Changelog_Entry_Types {EDIT_CELL, EDIT_ROW, EDIT_COL, INSERT_ROW, REMOVE_ROW, ADD_BLK, DEL_BLK, CHANGE_BLK_LENGTH, EDIT_SEQ_ORDER};
 enum Editor_Display_Limits {DISPLAY_MAX_ROWS = 999};
 enum Default_Entry_Points {SPECTRUM48_ENTRY_POINT = 0x8000};
 enum Selection_Types {INACTIVE, BLOCK, SEQUENCE};
 enum Interpolation_Types {LINEAR, LOGARITHMIC, EXPONENTIAL};
 enum Fill_Types {REPLACE, POROUS, INVERSE_POROUS};
 enum Dimensions {SMALL_BUTTON_WIDTH = 20, MENU_BUTTON_SIZE = 36};
-enum Timings {DOUBLECLICK_DELAY = 2};
 
 
 constexpr const float THICK_LINE() {return 2.0f;}
@@ -128,7 +126,8 @@ public:
 	bool verticalScroll;
 
 	Panel();
-	void create(const Area &total_area, const int &border_mask, const int &scrollbar_mask, const ALLEGRO_COLOR &sysColor, const Main_Window *win);
+	void create(const Area &total_area, const int &border_mask, const int &scrollbar_mask,
+        const ALLEGRO_COLOR &sysColor, const Main_Window *win);
 };
 
 
@@ -195,147 +194,6 @@ public:
 	Global_Settings& operator=(const Global_Settings &settings) =delete;
 	~Global_Settings();
 };
-
-
-
-//class Datablock_Field {
-//
-//public:
-//	mdCommand *command;
-//	string dataString;
-//	string printString;
-//	string arg1;
-//	string arg2;
-//	string modifier;
-//
-//	Datablock_Field(mdCommand *command_);
-//	Datablock_Field(const Datablock_Field &field);
-//	Datablock_Field& operator=(const Datablock_Field &field);
-//	~Datablock_Field();
-//	void set(const string &dataString_, const bool &hexMode);
-//	void remove_modifier();
-//};
-//
-//
-//class Datablock_Column {
-//
-//public:
-//	mdCommand *command;
-//	float width;
-//	vector<Datablock_Field> columnData;
-//
-//	Datablock_Column(mdCommand *command_);
-//	Datablock_Column(const Datablock_Column &col);
-//	Datablock_Column& operator=(const Datablock_Column &col);
-//	~Datablock_Column();
-//};
-//
-//
-//class Datablock {
-//
-//public:
-//	string name;
-//	vector<Datablock_Column> columns;
-//
-//	Datablock(const string &title);
-//	Datablock(const Datablock &blk);
-//	Datablock& operator=(const Datablock &blk);
-//	~Datablock();
-//};
-//
-//
-//class Datablock_Type {
-//
-//public:
-//	vector<Datablock> blocks;
-//	vector<mdCommand*> commands;
-//
-//	Datablock_Type();
-//	Datablock_Type(const Datablock_Type &blkType);
-//	Datablock_Type& operator=(const Datablock_Type &blkType);
-//	~Datablock_Type();
-//};
-//
-//
-//class Work_Tune {
-//
-//public:
-//	char *engineCode;
-//	char *engineCodeNoLoop;
-//	int engineSize;
-//	int engineSizeNoLoop;
-//
-//	bool hasUnsavedChanges;
-//	string infilePath;
-//	string savefilePath;
-//	string configName;
-//	string configPath;
-//
-//	mdConfig config;
-//
-//	vector<string> moduleLines;
-//	vector<string> patternLines;
-//	vector<string> singleLine;
-//
-//	Data_Assembly musicdataBinary;
-//
-//	long loopPatchAddr;
-//    long orgAddress;
-//    long engineInitAddress;
-//    long engineExitAddress;
-//    long engineReloadAddress;
-//
-//	vector<Datablock_Field> lastUsed;		//contains values set before the current line
-//	vector<Datablock_Field> globalConstants;
-//	vector<string> sequence;
-//	vector<Datablock_Type> blockTypes;
-//	unsigned sequenceLoopPoint;
-//
-//	unsigned clipboardStatus;
-//	vector<Datablock_Column> clipboard;
-//	vector<string> clipboardSequence;
-//
-//	vector<unsigned> freqDividers;
-//	const string noteNames[12] = {"c", "cis", "d", "dis", "e", "f", "fis", "g", "gis", "a", "ais", "b"};
-//
-//	Work_Tune();
-//	~Work_Tune();
-//	void init(const string &infile, const Global_Settings &settings);
-//	void replace_reference(const string &original, const string &replacement, const string &blocktypeID);
-//	void generate_module_lines();
-//	void generate_pattern_lines(unsigned pattern);
-//	void generate_single_line(const unsigned &block, const unsigned &row);
-//	void callback_provide_emulator_data();
-//	string generate_unique_block_name();
-//	void update_last_used(const unsigned &block, const unsigned &row);
-//
-//	unsigned get_frequency_divider(const string &noteName);
-//	unsigned get_note_index(const string &noteNames);
-//	string get_note_data_string(const unsigned &freqDivider);
-//
-//
-//private:
-//	unsigned uniqueSeed;
-//
-////	unsigned firstDividerIndex;
-////	unsigned lastDividerIndex;
-//
-//	void reset();
-//	void generate_empty_module(const unsigned &defaultBlockLength);
-//	bool is_block_name_unique(const string &blockName);
-//};
-
-
-//class Clipboard {
-////TODO perhaps better to make it a member of Display_Status? nope, just pass status when necessary
-//public:
-//
-//    Clipboard();
-//    ~Clipboard();
-//
-//private:
-//
-//}
 
 
 class Display_Status {
