@@ -1984,6 +1984,66 @@ void Main_Window::reverse_selection() {
 }
 
 
+void Main_Window::randomize_selection() {
+
+    if (status.selectionType != BLOCK || !status.focusBlock) return;
+
+    push_changelog();
+
+    for (unsigned col = status.selectionColumnFirst; col <= status.selectionColumnLast; col++) {
+
+        mdCommand *cmd = status.get_current_block_pointer()->columns[col].command;
+
+        if (!cmd->isBlkReference && !cmd->mdCmdAuto && !cmd->mdCmdForceString) {
+
+            vector<unsigned> randomData = generate_random_data(status.selectionRowLast - status.selectionRowFirst + 1);
+
+            unsigned row = status.selectionRowFirst;
+
+            for (auto&& it: randomData) {
+
+                if (cmd->limitRange) it = cmd->lowerRangeLimit + (it % (cmd->upperRangeLimit - cmd->lowerRangeLimit));
+
+                if (cmd->mdCmdForceSubstitution) {
+
+                    unsigned pos = it % cmd->substitutionList.size();
+                    auto el = cmd->substitutionList.begin();
+                    for (unsigned i = 0; i < pos; i++) el++;
+
+                    status.get_current_block_pointer()->columns[col].columnData[row].set(el->first, settings.hexMode);
+                }
+                else if (cmd->useNoteNames) {
+
+                    unsigned pos = it % currentTune.freqDividers.size();
+
+                    status.get_current_block_pointer()->columns[col].columnData[row]
+                        .set(currentTune.get_note_data_string(currentTune.freqDividers[pos]), settings.hexMode);
+                }
+                else if (cmd->mdCmdType == BOOL) {
+
+                    if (it & 1) status.get_current_block_pointer()->columns[col].columnData[row].set("true", settings.hexMode);
+                    else status.get_current_block_pointer()->columns[col].columnData[row].set("false", settings.hexMode);
+                }
+                else if (cmd->mdCmdType == BYTE) {
+
+                    status.get_current_block_pointer()->columns[col].columnData[row]
+                        .set(numToStr(it & 0xff, (settings.hexMode) ? 2 : 3, settings.hexMode), settings.hexMode);
+                }
+                else if (cmd->mdCmdType == WORD) {
+
+                    status.get_current_block_pointer()->columns[col].columnData[row]
+                        .set(numToStr(it & 0xffff, (settings.hexMode) ? 4 : 5, settings.hexMode), settings.hexMode);
+                }
+
+                row++;
+            }
+        }
+    }
+
+    print_block_data();
+}
+
+
 void Main_Window::fill_data(const unsigned &fillType) {
 
     if (currentTune.clipboardStatus != BLOCK || !status.focusBlock) return;

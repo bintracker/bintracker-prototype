@@ -42,6 +42,7 @@ enum MenuID {
 	MENU_EDIT_LOGINTERPOLATE,
 	MENU_EDIT_EXPINTERPOLATE,
 	MENU_EDIT_REVERSE,
+	MENU_EDIT_RANDOMIZE,
 	MENU_EDIT_FILL,
 	MENU_EDIT_FILLPOROUS,
 	MENU_EDIT_TRANSPOSE_SEMI_UP,
@@ -60,7 +61,7 @@ enum MenuID {
 };
 
 enum Directions {DIR_NONE = 0x00, DIR_LEFT = 0x01, DIR_RIGHT = 0x02, DIR_TOP = 0x04, DIR_BOTTOM = 0x08};
-enum Changelog_Entry_Types {EDIT_CELL, EDIT_ROW, EDIT_COL, INSERT_ROW, REMOVE_ROW, ADD_BLK, DEL_BLK, CHANGE_BLK_LENGTH, EDIT_SEQ_ORDER};
+// enum Changelog_Entry_Types {EDIT_CELL, EDIT_ROW, EDIT_COL, INSERT_ROW, REMOVE_ROW, ADD_BLK, DEL_BLK, CHANGE_BLK_LENGTH, EDIT_SEQ_ORDER};
 enum Editor_Display_Limits {DISPLAY_MAX_ROWS = 999};
 enum Default_Entry_Points {SPECTRUM48_ENTRY_POINT = 0x8000};
 enum Selection_Types {INACTIVE, BLOCK, SEQUENCE};
@@ -607,6 +608,7 @@ private:
 	void interpolate_selection(const unsigned &interpolationType = LINEAR);
 	unsigned find_next_used_field(const unsigned &col, const unsigned &startPosition);
 	void reverse_selection();
+	void randomize_selection();
 	void fill_data(const unsigned &fillType = REPLACE);
 	void transpose(const int &amount);
 

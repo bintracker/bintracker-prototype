@@ -85,6 +85,7 @@ Main_Window::Main_Window(const string &initFile): isUp(false), userInputString("
 	al_append_menu_item(editMenu, "Fill...", 0, 0, nullptr, fillMenu);
 	al_append_menu_item(editMenu, "Transpose...", 0, 0, nullptr, transposeMenu);
 	al_append_menu_item(editMenu, "Reverse (Ctrl+R)", MENU_EDIT_REVERSE, 0, nullptr, nullptr);
+	al_append_menu_item(editMenu, "Randomize", MENU_EDIT_RANDOMIZE, 0, nullptr, nullptr);
 
 	playMenu = al_create_menu();
 	al_append_menu_item(playMenu, "Play from Start (F5)", MENU_PLAY_PLAYFROMSTART, 0, nullptr, nullptr);

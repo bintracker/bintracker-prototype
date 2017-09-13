@@ -109,6 +109,10 @@ void Main_Window::handle_event(ALLEGRO_EVENT &ev) {
                     reverse_selection();
                     break;
 
+                case MENU_EDIT_RANDOMIZE:
+                    randomize_selection();
+                    break;
+
                 case MENU_EDIT_FILL:
                     fill_data();
                     break;
