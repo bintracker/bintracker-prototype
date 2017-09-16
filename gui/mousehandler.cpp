@@ -872,7 +872,7 @@ void Main_Window::handle_mouse_input() {
                 status.set_current_block_from_cursor();
                 status.focusBlock = false;
                 print_reference_data();
-                print_block();
+                print_block_data();
             }
             status.leftMouseButtonDown = true;
         }
@@ -896,7 +896,7 @@ void Main_Window::handle_mouse_input() {
                     status.set_current_block_from_cursor();
                     status.focusBlock = false;
                     print_reference_data();
-                    print_block();
+                    print_block_data();
                 }
             }
         }

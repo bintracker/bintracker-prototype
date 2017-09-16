@@ -205,11 +205,11 @@ void Display_Status::set_current_block_from_cursor() {
 		unsigned bt = get_current_blocktype();
 
 		visibleFirstRows[bt] = 0;
-		visibleFirstColumns[bt] = 0;
+//		visibleFirstColumns[bt] = 0;
 
 		if (bt == 0) currentBlocks[bt] = get_reference_iterator(workTune->sequence[get_current_reference_row()]);
 		else currentBlocks[bt] = get_reference_iterator(workTune->blockTypes[bt].blocks[get_current_reference_row()].name);
-		currentCsrColumns[bt] = 0;
+//		currentCsrColumns[bt] = 0;
 		currentCsrRows[bt] = 0;
 		focusBlock = true;
 	}
