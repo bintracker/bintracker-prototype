@@ -25,7 +25,7 @@ void Main_Window::handle_key_down() {
         status.set_current_block_from_cursor();
         status.focusBlock = false;
         print_reference_data();
-        print_block_data();
+        print_block();
     }
 }
 
@@ -52,7 +52,7 @@ void Main_Window::handle_key_up() {
         status.set_current_block_from_cursor();
         status.focusBlock = false;
         print_reference_data();
-        print_block_data();
+        print_block();
     }
 }
 
@@ -100,7 +100,7 @@ void Main_Window::handle_key_pgdown() {
         print_reference_data();
     }
 
-    print_block_data();
+    print_block();
 }
 
 
@@ -124,7 +124,7 @@ void Main_Window::handle_key_pgup() {
         print_reference_data();
     }
 
-    print_block_data();
+    print_block();
 }
 
 
@@ -143,7 +143,7 @@ void Main_Window::handle_key_home() {
         status.update_selection();
         print_reference_data();
     }
-    print_block_data();
+    print_block();
 }
 
 
@@ -162,7 +162,7 @@ void Main_Window::handle_key_end() {
         status.update_selection();
         print_reference_data();
     }
-    print_block_data();
+    print_block();
 }
 
 
@@ -230,7 +230,7 @@ void Main_Window::scroll_down(const unsigned &amount) {
         }
     }
 
-    print_block_data();
+    print_block();
     print_reference_data();
 }
 
@@ -272,7 +272,7 @@ void Main_Window::scroll_up(const unsigned &amount) {
         }
     }
 
-    print_block_data();
+    print_block();
     print_reference_data();
 }
 
@@ -1470,7 +1470,7 @@ void Main_Window::delete_row() {
 
 		status.set_current_block_from_cursor();
         status.focusBlock = false;
-        print_block_data();
+        print_block();
         print_reference_data();
 	}
 	//TODO: find better way of detecting sequence/no sequence

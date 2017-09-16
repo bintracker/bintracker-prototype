@@ -213,6 +213,8 @@ void Display_Status::set_current_block_from_cursor() {
 		currentCsrRows[bt] = 0;
 		focusBlock = true;
 	}
+
+	calculate_visible_last_column();
 }
 
 
