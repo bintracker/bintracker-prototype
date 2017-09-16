@@ -990,7 +990,20 @@ string Main_Window::receive_string_input() {
 
             if (keyEv.keyboard.keycode >= ALLEGRO_KEY_A && keyEv.keyboard.keycode <= ALLEGRO_KEY_9) {
 
-                outputStr.append(al_keycode_to_name(keyEv.keyboard.keycode));
+                if (settings.kbdLang != "FR" || keyEv.keyboard.keycode <= ALLEGRO_KEY_Z)
+                    outputStr.append(al_keycode_to_name(keyEv.keyboard.keycode));
+                else {
+                    if (keyEv.keyboard.keycode == ALLEGRO_KEY_0) outputStr += "0";
+                    else if (keyEv.keyboard.keycode == ALLEGRO_KEY_1) outputStr += "1";
+                    else if (keyEv.keyboard.keycode == ALLEGRO_KEY_2) outputStr += "2";
+                    else if (keyEv.keyboard.keycode == ALLEGRO_KEY_3) outputStr += "3";
+                    else if (keyEv.keyboard.keycode == ALLEGRO_KEY_4) outputStr += "4";
+                    else if (keyEv.keyboard.keycode == ALLEGRO_KEY_5) outputStr += "5";
+                    else if (keyEv.keyboard.keycode == ALLEGRO_KEY_6) outputStr += "6";
+                    else if (keyEv.keyboard.keycode == ALLEGRO_KEY_7) outputStr += "7";
+                    else if (keyEv.keyboard.keycode == ALLEGRO_KEY_8) outputStr += "8";
+                    else if (keyEv.keyboard.keycode == ALLEGRO_KEY_9) outputStr += "9";
+                }
                 userInputString = outputStr + "_";
 
                 if (status.editBlockName) {
