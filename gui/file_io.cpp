@@ -380,14 +380,6 @@ void Main_Window::export_zxspectrum_tap() {
 			currentTune.engineCode[currentTune.loopPatchAddr + 1] = static_cast<char>(lp >> 8);
 
 			//generate BASIC loader
-			//TODO: generate titles and patch checksums, line length: 32 (use 30)
-			char genericLoader[156];
-			ifstream LOADER("resources/generic-loader.tap", ios::binary|ios::ate);
-			if (!LOADER.is_open()) throw (string("Could not read resources/generic-loader.tap"));
-
-			LOADER.seekg(0, ios::beg);
-			LOADER.read(&genericLoader[0], 156);
-
 			vector<char> basicLoader;
 			//header block
 			basicLoader.push_back(0x13);               //size_lo
