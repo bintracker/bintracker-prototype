@@ -610,6 +610,7 @@ void Main_Window::print_reference_data() {
         else status.vScrollbarRefSize = 0.0f;
 	}
 
+    if (dropdown.isActive) print_dropdown();
 }
 
 
@@ -704,6 +705,8 @@ void Main_Window::print_block_data() {
             settings.sysColor);
     }
     else status.hScrollbarBlkSize = 0.0f;
+
+    if (dropdown.isActive) print_dropdown();
 }
 
 
@@ -752,6 +755,144 @@ void Main_Window::print_global_field(const unsigned &row) {
 
 	al_draw_text(font, (status.focusBlock && row == status.currentGlobal) ? settings.rowActColor : settings.rowColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
 		currentTune.globalConstants[row].printString.data());
+}
+
+
+void Main_Window::print_dropdown() {
+
+	//TODO: limit list output if ypos out of blockDataArea bounds
+//	cout << "display_options_list\n";
+	if (status.focusBlock) {
+
+		if (status.currentTab > 0) {
+
+			float xpos = settings.columnHeaderArea.topLeft.x;
+			for (unsigned vcol = status.get_visible_first_column(); vcol < status.get_current_cursor_column(); vcol++)
+				xpos += (status.get_current_block_pointer()->columns[vcol].width + BT_CHAR_WIDTH());
+
+			float ypos = settings.blockDataArea.topLeft.y + (static_cast<float>(status.get_current_cursor_row()
+				- status.get_visible_first_row()) * CHAR_HEIGHT());
+
+			if (status.get_current_cursor_row() - status.get_visible_first_row() >= status.visibleRowsMax / 2) {
+
+				//print upwards
+				//TODO: make window size dependant on command type, see downwards print
+				ypos -= static_cast<float>(dropdown.options.size() * CHAR_HEIGHT());
+
+				al_draw_filled_rectangle(xpos, (ypos >= settings.blockDataArea.topLeft.y) ? ypos : settings.blockDataArea.topLeft.y,
+					xpos + ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
+					(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
+				al_draw_filled_rectangle(xpos + 1.0f, (ypos >= settings.blockDataArea.topLeft.y)
+					? ypos + 1.0f : settings.blockDataArea.topLeft.y + 1.0f,
+					xpos + ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())) - 1.0f,
+					(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) - 1.0f, settings.bgColor);
+
+//				for (auto&& it: options) {
+                for (unsigned i = 0; i < dropdown.options.size(); i++) {
+
+                    ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
+					if (ypos >= settings.blockDataArea.topLeft.y)
+						al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
+					ypos += CHAR_HEIGHT();
+				}
+
+				al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
+                    (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
+			}
+			else {
+
+				//print downwards
+				al_draw_filled_rectangle(xpos, ypos, xpos + ((currentField->command->mdCmdType == MD_WORD)
+					? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
+					((ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
+					? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) : settings.blockDataArea.bottomRight.y),
+					settings.sysColor);
+				al_draw_filled_rectangle(xpos + 1.0f, ypos + 1.0f, xpos - 1.0f
+					+ ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
+					(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
+					? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
+					: (settings.blockDataArea.bottomRight.y - 1.0f), settings.bgColor);
+
+				al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
+                    (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
+
+				for (unsigned i = 0; i < dropdown.options.size(); i++) {
+
+                    ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
+
+					ypos += CHAR_HEIGHT();
+
+					if ((ypos + CHAR_HEIGHT()) > settings.blockDataArea.bottomRight.y) break;
+
+					al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
+				}
+			}
+		}
+		else {
+
+			//TODO: options list for global input
+		}
+	}
+
+	else {
+
+		float xpos = settings.referenceDataArea.topLeft.x;
+		if (status.get_current_blocktype() == 0) xpos += (4 * BT_CHAR_WIDTH());
+
+		float ypos = settings.referenceDataArea.topLeft.y + (static_cast<float>(status.get_current_reference_row()
+				- status.get_visible_first_reference_row()) * CHAR_HEIGHT());
+
+
+		if (status.get_current_reference_row() - status.get_visible_first_reference_row() >= status.visibleReferenceRowsMax / 2) {
+
+			//print upwards
+			ypos -= static_cast<float>(dropdown.options.size() * CHAR_HEIGHT());
+
+			al_draw_filled_rectangle(xpos, (ypos >= settings.referenceDataArea.topLeft.y) ? ypos : settings.referenceDataArea.topLeft.y,
+				xpos + (12.0 * BT_CHAR_WIDTH()), (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
+			al_draw_filled_rectangle(xpos + 1.0f, (ypos >= settings.referenceDataArea.topLeft.y)
+				? ypos + 1.0f : settings.referenceDataArea.topLeft.y + 1.0f,
+				xpos + (12.0 * BT_CHAR_WIDTH()) - 1.0f, (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) - 1.0f,
+				settings.bgColor);
+
+			for (unsigned i = 0; i < dropdown.options.size(); i++) {
+
+                ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
+
+				if (ypos >= settings.referenceDataArea.topLeft.y)
+					al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
+				ypos += CHAR_HEIGHT();
+			}
+
+			al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
+                (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
+
+		}
+		else {
+
+			//print downwards
+			al_draw_filled_rectangle(xpos, ypos, xpos + (12.0 * BT_CHAR_WIDTH()),
+				((ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.referenceDataArea.bottomRight.y)
+				? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) : settings.referenceDataArea.bottomRight.y),
+				settings.sysColor);
+			al_draw_filled_rectangle(xpos + 1.0f, ypos + 1.0f, xpos - 1.0f + (12.0 * BT_CHAR_WIDTH()),
+				(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.referenceDataArea.bottomRight.y)
+				? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
+				: (settings.referenceDataArea.bottomRight.y - 1.0f), settings.bgColor);
+
+			al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
+                (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
+
+			for (unsigned i = 0; i < dropdown.options.size(); i++) {
+
+                ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
+				ypos += CHAR_HEIGHT();
+
+				if ((ypos + CHAR_HEIGHT()) > settings.referenceDataArea.bottomRight.y) break;
+				al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
+			}
+		}
+	}
 }
 
 

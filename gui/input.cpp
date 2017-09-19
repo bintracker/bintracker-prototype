@@ -828,8 +828,6 @@ void Main_Window::receive_data_input(const char &data) {
 
                     userInputString = auto_complete(options);
                     dropdown.activate(options, userInputString);
-					display_options_dropdown();
-
 				}
 
 				else if (options.size() == 1) {
@@ -837,7 +835,6 @@ void Main_Window::receive_data_input(const char &data) {
 					currentField->set(options[0], settings.hexMode);
 					complete_data_input();
 					if (status.autoInc > 0) status.inc_current_cursor_row();
-					print_block_data();
 					if (status.get_current_blocktype() == 0)
 						currentTune.update_last_used(status.get_current_block(), status.get_current_cursor_row());
 				}
@@ -846,8 +843,9 @@ void Main_Window::receive_data_input(const char &data) {
 
                     userInputString = auto_complete(options);
                     dropdown.activate(options, userInputString);
-					display_options_dropdown();
 				}
+
+				print_block_data();
 			}
 			else {  //command is blkReference
 
@@ -879,14 +877,12 @@ void Main_Window::receive_data_input(const char &data) {
                         currentField->set(options[0], settings.hexMode);
                         complete_data_input();
                         if (status.autoInc > 0) status.inc_current_cursor_row();
-                        print_block_data();
                         if (status.get_current_blocktype() == 0)
                             currentTune.update_last_used(status.get_current_block(), status.get_current_cursor_row());
                     }
                     else {
                         userInputString = auto_complete(options);
                         dropdown.activate(options, userInputString);
-                        display_options_dropdown();
                     }
 				}
 
@@ -895,7 +891,6 @@ void Main_Window::receive_data_input(const char &data) {
 					currentField->set(options[0], settings.hexMode);
 					complete_data_input();
 					if (status.autoInc > 0) status.inc_current_cursor_row();
-					print_block_data();
 					if (status.get_current_blocktype() == 0)
 						currentTune.update_last_used(status.get_current_block(), status.get_current_cursor_row());
 				}
@@ -904,8 +899,9 @@ void Main_Window::receive_data_input(const char &data) {
 
                     userInputString = auto_complete(options);
                     dropdown.activate(options, userInputString);
-					display_options_dropdown();
 				}
+
+				print_block_data();
 			}
 		}
 	}
@@ -918,47 +914,44 @@ void Main_Window::receive_data_input(const char &data) {
 			push_changelog();
 		}
 
-		if (status.editLock) {
+        string previousInputString = userInputString;
+        userInputString += data;
 
-			string previousInputString = userInputString;
-			userInputString += data;
+        vector<string> options;
+        unsigned bt = status.get_current_blocktype();
 
-			vector<string> options;
-			unsigned bt = status.get_current_blocktype();
+        for (unsigned i = 0; i < currentTune.blockTypes[bt].blocks.size(); i++) {
 
-			for (unsigned i = 0; i < currentTune.blockTypes[bt].blocks.size(); i++) {
+            if (currentTune.blockTypes[bt].blocks[i].name.compare(0, userInputString.size(), userInputString) == 0)
+                options.push_back(currentTune.blockTypes[bt].blocks[i].name);
+        }
 
-				if (currentTune.blockTypes[bt].blocks[i].name.compare(0, userInputString.size(), userInputString) == 0)
-					options.push_back(currentTune.blockTypes[bt].blocks[i].name);
-			}
+        if (options.size() == 1) {
 
-			if (options.size() == 1) {
+            currentTune.sequence[status.get_current_reference_row()] = options[0];
+            complete_data_input();
+        }
 
-				currentTune.sequence[status.get_current_reference_row()] = options[0];
-				complete_data_input();
-                print_reference_data();
-			}
+        else {
 
-			else {
+            if (options.size() == 0) {
 
-				if (options.size() == 0) {
+                userInputString = previousInputString;
+                options.clear();
 
-					userInputString = previousInputString;
-					options.clear();
+                for (unsigned i = 0; i < currentTune.blockTypes[bt].blocks.size(); i++) {
 
-					for (unsigned i = 0; i < currentTune.blockTypes[bt].blocks.size(); i++) {
+                    if (userInputString == ""
+                        || currentTune.blockTypes[bt].blocks[i].name.compare(0, userInputString.size(), userInputString) == 0)
+                        options.push_back(currentTune.blockTypes[bt].blocks[i].name);
+                }
+            }
 
-						if (userInputString == ""
-							|| currentTune.blockTypes[bt].blocks[i].name.compare(0, userInputString.size(), userInputString) == 0)
-							options.push_back(currentTune.blockTypes[bt].blocks[i].name);
-					}
-				}
+            userInputString = auto_complete(options);
+            dropdown.activate(options, userInputString);
+        }
 
-                userInputString = auto_complete(options);
-                dropdown.activate(options, userInputString);
-				display_options_dropdown();
-			}
-		}
+        print_reference_data();
 	}
 }
 
@@ -1220,149 +1213,6 @@ void Main_Window::cancel_data_input() {
 	if (status.currentTab != 0) print_block_name();
 }
 
-
-void Main_Window::display_options_dropdown() {
-
-	//TODO: limit list output if ypos out of blockDataArea bounds
-//	cout << "display_options_list\n";
-	if (status.focusBlock) {
-
-		if (status.currentTab > 0) {
-
-			print_block_data();
-
-			float xpos = settings.columnHeaderArea.topLeft.x;
-			for (unsigned vcol = status.get_visible_first_column(); vcol < status.get_current_cursor_column(); vcol++)
-				xpos += (status.get_current_block_pointer()->columns[vcol].width + BT_CHAR_WIDTH());
-
-			float ypos = settings.blockDataArea.topLeft.y + (static_cast<float>(status.get_current_cursor_row()
-				- status.get_visible_first_row()) * CHAR_HEIGHT());
-
-			if (status.get_current_cursor_row() - status.get_visible_first_row() >= status.visibleRowsMax / 2) {
-
-				//print upwards
-				//TODO: make window size dependant on command type, see downwards print
-				ypos -= static_cast<float>(dropdown.options.size() * CHAR_HEIGHT());
-
-				al_draw_filled_rectangle(xpos, (ypos >= settings.blockDataArea.topLeft.y) ? ypos : settings.blockDataArea.topLeft.y,
-					xpos + ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
-					(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
-				al_draw_filled_rectangle(xpos + 1.0f, (ypos >= settings.blockDataArea.topLeft.y)
-					? ypos + 1.0f : settings.blockDataArea.topLeft.y + 1.0f,
-					xpos + ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())) - 1.0f,
-					(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) - 1.0f, settings.bgColor);
-
-//				for (auto&& it: options) {
-                for (unsigned i = 0; i < dropdown.options.size(); i++) {
-
-                    ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
-					if (ypos >= settings.blockDataArea.topLeft.y)
-						al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
-					ypos += CHAR_HEIGHT();
-				}
-
-				al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
-                    (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
-			}
-			else {
-
-				//print downwards
-				al_draw_filled_rectangle(xpos, ypos, xpos + ((currentField->command->mdCmdType == MD_WORD)
-					? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
-					((ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
-					? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) : settings.blockDataArea.bottomRight.y),
-					settings.sysColor);
-				al_draw_filled_rectangle(xpos + 1.0f, ypos + 1.0f, xpos - 1.0f
-					+ ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
-					(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
-					? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
-					: (settings.blockDataArea.bottomRight.y - 1.0f), settings.bgColor);
-
-				al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
-                    (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
-
-				for (unsigned i = 0; i < dropdown.options.size(); i++) {
-
-                    ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
-
-					ypos += CHAR_HEIGHT();
-
-					if ((ypos + CHAR_HEIGHT()) > settings.blockDataArea.bottomRight.y) break;
-
-					al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
-				}
-			}
-		}
-		else {
-
-			//TODO: options list for global input
-		}
-	}
-
-	else {
-
-        print_reference_data();
-
-		float xpos = settings.referenceDataArea.topLeft.x;
-		if (status.get_current_blocktype() == 0) xpos += (4 * BT_CHAR_WIDTH());
-
-		float ypos = settings.referenceDataArea.topLeft.y + (static_cast<float>(status.get_current_reference_row()
-				- status.get_visible_first_reference_row()) * CHAR_HEIGHT());
-
-
-		if (status.get_current_reference_row() - status.get_visible_first_reference_row() >= status.visibleReferenceRowsMax / 2) {
-
-			//print upwards
-			ypos -= static_cast<float>(dropdown.options.size() * CHAR_HEIGHT());
-
-			al_draw_filled_rectangle(xpos, (ypos >= settings.referenceDataArea.topLeft.y) ? ypos : settings.referenceDataArea.topLeft.y,
-				xpos + (12.0 * BT_CHAR_WIDTH()), (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
-			al_draw_filled_rectangle(xpos + 1.0f, (ypos >= settings.referenceDataArea.topLeft.y)
-				? ypos + 1.0f : settings.referenceDataArea.topLeft.y + 1.0f,
-				xpos + (12.0 * BT_CHAR_WIDTH()) - 1.0f, (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) - 1.0f,
-				settings.bgColor);
-
-			for (unsigned i = 0; i < dropdown.options.size(); i++) {
-
-                ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
-
-				if (ypos >= settings.referenceDataArea.topLeft.y)
-					al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
-				ypos += CHAR_HEIGHT();
-			}
-
-			al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
-                (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
-
-		}
-		else {
-
-			//print downwards
-			al_draw_filled_rectangle(xpos, ypos, xpos + (12.0 * BT_CHAR_WIDTH()),
-				((ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.referenceDataArea.bottomRight.y)
-				? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) : settings.referenceDataArea.bottomRight.y),
-				settings.sysColor);
-			al_draw_filled_rectangle(xpos + 1.0f, ypos + 1.0f, xpos - 1.0f + (12.0 * BT_CHAR_WIDTH()),
-				(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.referenceDataArea.bottomRight.y)
-				? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
-				: (settings.referenceDataArea.bottomRight.y - 1.0f), settings.bgColor);
-
-			al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
-                (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
-
-			for (unsigned i = 0; i < dropdown.options.size(); i++) {
-
-                ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
-
-				ypos += CHAR_HEIGHT();
-
-				if ((ypos + CHAR_HEIGHT()) > settings.referenceDataArea.bottomRight.y) break;
-
-				al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
-			}
-		}
-	}
-}
 
 string Main_Window::auto_complete(const vector<string> &options) {
 

@@ -440,6 +440,7 @@ private:
 	void print_globals();
 	void print_stats();
 	void print_column_titles();
+	void print_dropdown();
 	void print_row(const unsigned &row);
 	void print_field(const unsigned &col, const unsigned &row);
 	void print_global_field(const unsigned &row);
@@ -464,7 +465,6 @@ private:
 	void erase_data_input();
 	void complete_data_input();
 	void cancel_data_input();
-    void display_options_dropdown();
 	string auto_complete(const vector<string> &options);
 
 	void add_row();
