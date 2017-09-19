@@ -331,6 +331,28 @@ private:
 };
 
 
+class Options_Dropdown {
+
+public:
+    bool isActive;
+    vector<string> options;
+    string userEntry;
+    unsigned selectedOption;
+
+    Options_Dropdown();
+    ~Options_Dropdown();
+    void activate(const vector<string> &_options, const string &_userEntry);
+    void collapse();
+    void select_next();
+    void select_previous();
+    string chose_current_option();
+
+private:
+
+
+};
+
+
 class Main_Window {
 
 public:
@@ -404,6 +426,8 @@ private:
     vector<Changelog_Entry> undoStack;
 	vector<Changelog_Entry> redoStack;
 
+	Options_Dropdown dropdown;
+
 	void init_track_view();
 	void print_base_octave();
 	void print_autoinc_setting();
@@ -434,14 +458,13 @@ private:
 	void play_from_current_pos();
 	void play_pattern();
 	void play_row();
-//	void reload_data();
 
 	void receive_data_input(const char &data);
 	string receive_string_input();
 	void erase_data_input();
 	void complete_data_input();
 	void cancel_data_input();
-	void display_options_list(const string &currentVal, const vector<string> &options);
+    void display_options_dropdown();
 	string auto_complete(const vector<string> &options);
 
 	void add_row();

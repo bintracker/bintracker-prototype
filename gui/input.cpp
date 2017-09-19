@@ -827,7 +827,8 @@ void Main_Window::receive_data_input(const char &data) {
 					}
 
                     userInputString = auto_complete(options);
-					display_options_list(userInputString, options);
+                    dropdown.activate(options, userInputString);
+					display_options_dropdown();
 
 				}
 
@@ -844,7 +845,8 @@ void Main_Window::receive_data_input(const char &data) {
 				else {	//TODO asserting mdCommand::isBlkReference, may this should be enforced?
 
                     userInputString = auto_complete(options);
-					display_options_list(userInputString, options);
+                    dropdown.activate(options, userInputString);
+					display_options_dropdown();
 				}
 			}
 			else {  //command is blkReference
@@ -883,7 +885,8 @@ void Main_Window::receive_data_input(const char &data) {
                     }
                     else {
                         userInputString = auto_complete(options);
-                        display_options_list(userInputString, options);
+                        dropdown.activate(options, userInputString);
+                        display_options_dropdown();
                     }
 				}
 
@@ -900,7 +903,8 @@ void Main_Window::receive_data_input(const char &data) {
 				else {
 
                     userInputString = auto_complete(options);
-					display_options_list(userInputString, options);
+                    dropdown.activate(options, userInputString);
+					display_options_dropdown();
 				}
 			}
 		}
@@ -951,7 +955,8 @@ void Main_Window::receive_data_input(const char &data) {
 				}
 
                 userInputString = auto_complete(options);
-				display_options_list(userInputString, options);
+                dropdown.activate(options, userInputString);
+				display_options_dropdown();
 			}
 		}
 	}
@@ -990,7 +995,7 @@ string Main_Window::receive_string_input() {
 
             if (keyEv.keyboard.keycode >= ALLEGRO_KEY_A && keyEv.keyboard.keycode <= ALLEGRO_KEY_9) {
 
-                if (settings.kbdLang != "FR" || keyEv.keyboard.keycode <= ALLEGRO_KEY_Z)
+                if (settings.kbdLang != "EN" || keyEv.keyboard.keycode <= ALLEGRO_KEY_Z)
                     outputStr.append(al_keycode_to_name(keyEv.keyboard.keycode));
                 else {
                     if (keyEv.keyboard.keycode == ALLEGRO_KEY_0) outputStr += "0";
@@ -1120,6 +1125,8 @@ void Main_Window::erase_data_input() {
 
 void Main_Window::complete_data_input() {
 
+    dropdown.collapse();
+
 	if (status.editLock) {
 
         if (status.editBlockName) {
@@ -1196,6 +1203,8 @@ void Main_Window::complete_data_input() {
 
 void Main_Window::cancel_data_input() {
 
+    dropdown.collapse();
+
     if (status.editLock && !undoStack.empty()) {
 
         undoStack.pop_back();
@@ -1211,7 +1220,8 @@ void Main_Window::cancel_data_input() {
 	if (status.currentTab != 0) print_block_name();
 }
 
-void Main_Window::display_options_list(const string &currentVal, const vector<string> &options) {
+
+void Main_Window::display_options_dropdown() {
 
 	//TODO: limit list output if ypos out of blockDataArea bounds
 //	cout << "display_options_list\n";
@@ -1232,48 +1242,54 @@ void Main_Window::display_options_list(const string &currentVal, const vector<st
 
 				//print upwards
 				//TODO: make window size dependant on command type, see downwards print
-				ypos -= static_cast<float>(options.size() * CHAR_HEIGHT());
+				ypos -= static_cast<float>(dropdown.options.size() * CHAR_HEIGHT());
 
 				al_draw_filled_rectangle(xpos, (ypos >= settings.blockDataArea.topLeft.y) ? ypos : settings.blockDataArea.topLeft.y,
 					xpos + ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
-					(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
+					(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
 				al_draw_filled_rectangle(xpos + 1.0f, (ypos >= settings.blockDataArea.topLeft.y)
 					? ypos + 1.0f : settings.blockDataArea.topLeft.y + 1.0f,
 					xpos + ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())) - 1.0f,
-					(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) - 1.0f, settings.bgColor);
+					(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) - 1.0f, settings.bgColor);
 
-				for (auto&& it: options) {
+//				for (auto&& it: options) {
+                for (unsigned i = 0; i < dropdown.options.size(); i++) {
 
+                    ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
 					if (ypos >= settings.blockDataArea.topLeft.y)
-						al_draw_text(font, settings.rowHlColor, xpos, ypos, ALLEGRO_ALIGN_LEFT, it.data());
+						al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
 					ypos += CHAR_HEIGHT();
 				}
 
-				al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT, (currentVal == "") ? "_" : currentVal.data());
+				al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
+                    (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
 			}
 			else {
 
 				//print downwards
 				al_draw_filled_rectangle(xpos, ypos, xpos + ((currentField->command->mdCmdType == MD_WORD)
 					? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
-					((ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
-					? (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) : settings.blockDataArea.bottomRight.y),
+					((ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
+					? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) : settings.blockDataArea.bottomRight.y),
 					settings.sysColor);
 				al_draw_filled_rectangle(xpos + 1.0f, ypos + 1.0f, xpos - 1.0f
 					+ ((currentField->command->mdCmdType == MD_WORD) ? (9.0 * BT_CHAR_WIDTH()) : (5.0 * BT_CHAR_WIDTH())),
-					(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
-					? (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
+					(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.blockDataArea.bottomRight.y)
+					? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
 					: (settings.blockDataArea.bottomRight.y - 1.0f), settings.bgColor);
 
-				al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT, (currentVal == "") ? "_" : currentVal.data());
+				al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
+                    (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
 
-				for (auto&& it: options) {
+				for (unsigned i = 0; i < dropdown.options.size(); i++) {
+
+                    ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
 
 					ypos += CHAR_HEIGHT();
 
 					if ((ypos + CHAR_HEIGHT()) > settings.blockDataArea.bottomRight.y) break;
 
-					al_draw_text(font, settings.rowHlColor, xpos, ypos, ALLEGRO_ALIGN_LEFT, it.data());
+					al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
 				}
 			}
 		}
@@ -1297,46 +1313,52 @@ void Main_Window::display_options_list(const string &currentVal, const vector<st
 		if (status.get_current_reference_row() - status.get_visible_first_reference_row() >= status.visibleReferenceRowsMax / 2) {
 
 			//print upwards
-			ypos -= static_cast<float>(options.size() * CHAR_HEIGHT());
+			ypos -= static_cast<float>(dropdown.options.size() * CHAR_HEIGHT());
 
 			al_draw_filled_rectangle(xpos, (ypos >= settings.referenceDataArea.topLeft.y) ? ypos : settings.referenceDataArea.topLeft.y,
-				xpos + (12.0 * BT_CHAR_WIDTH()), (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
+				xpos + (12.0 * BT_CHAR_WIDTH()), (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())), settings.sysColor);
 			al_draw_filled_rectangle(xpos + 1.0f, (ypos >= settings.referenceDataArea.topLeft.y)
 				? ypos + 1.0f : settings.referenceDataArea.topLeft.y + 1.0f,
-				xpos + (12.0 * BT_CHAR_WIDTH()) - 1.0f, (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) - 1.0f,
+				xpos + (12.0 * BT_CHAR_WIDTH()) - 1.0f, (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) - 1.0f,
 				settings.bgColor);
 
-			for (auto&& it: options) {
+			for (unsigned i = 0; i < dropdown.options.size(); i++) {
+
+                ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
 
 				if (ypos >= settings.referenceDataArea.topLeft.y)
-					al_draw_text(font, settings.rowHlColor, xpos, ypos, ALLEGRO_ALIGN_LEFT, it.data());
+					al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
 				ypos += CHAR_HEIGHT();
 			}
 
-			al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT, (currentVal == "") ? "_" : currentVal.data());
+			al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
+                (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
 
 		}
 		else {
 
 			//print downwards
 			al_draw_filled_rectangle(xpos, ypos, xpos + (12.0 * BT_CHAR_WIDTH()),
-				((ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) < settings.referenceDataArea.bottomRight.y)
-				? (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT())) : settings.referenceDataArea.bottomRight.y),
+				((ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.referenceDataArea.bottomRight.y)
+				? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT())) : settings.referenceDataArea.bottomRight.y),
 				settings.sysColor);
 			al_draw_filled_rectangle(xpos + 1.0f, ypos + 1.0f, xpos - 1.0f + (12.0 * BT_CHAR_WIDTH()),
-				(ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) < settings.referenceDataArea.bottomRight.y)
-				? (ypos + static_cast<float>((options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
+				(ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) < settings.referenceDataArea.bottomRight.y)
+				? (ypos + static_cast<float>((dropdown.options.size() + 1) * CHAR_HEIGHT()) - 1.0f)
 				: (settings.referenceDataArea.bottomRight.y - 1.0f), settings.bgColor);
 
-			al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT, (currentVal == "") ? "_" : currentVal.data());
+			al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
+                (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
 
-			for (auto&& it: options) {
+			for (unsigned i = 0; i < dropdown.options.size(); i++) {
+
+                ALLEGRO_COLOR color = (i == dropdown.selectedOption) ? settings.rowHlColor : settings.rowColor;
 
 				ypos += CHAR_HEIGHT();
 
 				if ((ypos + CHAR_HEIGHT()) > settings.referenceDataArea.bottomRight.y) break;
 
-				al_draw_text(font, settings.rowHlColor, xpos, ypos, ALLEGRO_ALIGN_LEFT, it.data());
+				al_draw_text(font, color, xpos, ypos, ALLEGRO_ALIGN_LEFT, dropdown.options[i].data());
 			}
 		}
 	}

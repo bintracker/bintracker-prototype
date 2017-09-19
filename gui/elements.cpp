@@ -3,6 +3,56 @@
 #include <string>
 #include "gui.h"
 
+Options_Dropdown::Options_Dropdown() : userEntry("") {
+
+    isActive = false;
+    selectedOption = 0;
+}
+
+
+Options_Dropdown::~Options_Dropdown() {}
+
+
+void Options_Dropdown::activate(const vector<string> &_options, const string &_userEntry) {
+
+    isActive = true;
+    selectedOption = 0;
+    options = _options;
+    userEntry = _userEntry;
+}
+
+
+void Options_Dropdown::collapse() {
+
+    if (!isActive) return;
+    options.clear();
+    userEntry = "";
+    selectedOption = 0;
+    isActive = false;
+}
+
+
+void Options_Dropdown::select_next() {
+
+    selectedOption++;
+    if (selectedOption >= options.size()) selectedOption = 0;
+}
+
+
+void Options_Dropdown::select_previous() {
+
+    if (selectedOption == 0) selectedOption = options.size() - 1;
+    else selectedOption--;
+}
+
+
+string Options_Dropdown::chose_current_option() {
+
+    string opt = options[selectedOption];
+    collapse();
+    return opt;
+}
+
 
 Changelog_Entry::Changelog_Entry(Work_Tune *tune, Display_Status *status) {
 

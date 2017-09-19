@@ -216,6 +216,7 @@ void Main_Window::init_track_view() {
 	tabPanel.clear();
     undoStack.clear();
 	redoStack.clear();
+	dropdown.collapse();
 
 	al_clear_to_color(settings.bgColor);
 
