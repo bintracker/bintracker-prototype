@@ -295,6 +295,7 @@ void Main_Window::handle_keyboard_input() {
 		else if (al_key_down(&kbdstate, ALLEGRO_KEY_ENTER)) {
 
 			if (status.editLock) {
+                if (dropdown.isActive) userInputString = dropdown.get_current_option();
 				complete_data_input();
 				print_block_tabs();		//TODO lazy version
 			}
@@ -623,6 +624,7 @@ void Main_Window::handle_keyboard_input() {
 		else if (al_key_down(&kbdstate, ALLEGRO_KEY_ENTER)) {
 
 			if (status.editLock) {
+                if (dropdown.isActive) userInputString = dropdown.get_current_option();
 				complete_data_input();
 				print_block_tabs();		//TODO lazy version
 			}
@@ -935,6 +937,7 @@ void Main_Window::handle_keyboard_input() {
 		else if (al_key_down(&kbdstate, ALLEGRO_KEY_ENTER)) {
 
 			if (status.editLock) {
+                if (dropdown.isActive) userInputString = dropdown.get_current_option();
 				complete_data_input();
 				print_block_tabs();		//TODO lazy version
 			}

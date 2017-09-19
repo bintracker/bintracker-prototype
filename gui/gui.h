@@ -345,7 +345,7 @@ public:
     void collapse();
     void select_next();
     void select_previous();
-    string chose_current_option();
+    string get_current_option();
 
 private:
 

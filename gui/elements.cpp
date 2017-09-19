@@ -46,11 +46,9 @@ void Options_Dropdown::select_previous() {
 }
 
 
-string Options_Dropdown::chose_current_option() {
+string Options_Dropdown::get_current_option() {
 
-    string opt = options[selectedOption];
-    collapse();
-    return opt;
+    return options[selectedOption];
 }
 
 

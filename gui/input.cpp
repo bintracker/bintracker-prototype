@@ -5,7 +5,16 @@
 
 void Main_Window::handle_key_down() {
 
-    if (status.editLock) cancel_data_input();
+    if (status.editLock) {
+
+        if (!dropdown.isActive) cancel_data_input();
+        else {
+            dropdown.select_next();
+            if (status.focusBlock) print_block_data();
+            else print_reference_data();
+            return;
+        }
+    }
 
     if (status.focusBlock) {
 
@@ -32,7 +41,16 @@ void Main_Window::handle_key_down() {
 
 void Main_Window::handle_key_up() {
 
-    if (status.editLock) cancel_data_input();
+    if (status.editLock) {
+
+        if (!dropdown.isActive) cancel_data_input();
+        else {
+            dropdown.select_previous();
+            if (status.focusBlock) print_block_data();
+            else print_reference_data();
+            return;
+        }
+    }
 
     if (status.focusBlock) {
 
@@ -1183,6 +1201,9 @@ void Main_Window::complete_data_input() {
                 if (it.name == userInputString) {
 
                     currentTune.sequence[status.get_current_reference_row()] = userInputString;
+                    status.set_current_block_from_cursor();
+                    status.focusBlock = false;
+                    print_block_data();
                     break;
                 }
             }
@@ -1191,7 +1212,8 @@ void Main_Window::complete_data_input() {
 		userInputString = "";
 		status.editLock = false;
 	}
-	if (status.currentTab == 0) status.keyLock = 3;
+
+//	if (status.currentTab == 0) status.keyLock = 3;
 }
 
 void Main_Window::cancel_data_input() {
