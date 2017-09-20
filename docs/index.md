@@ -18,7 +18,8 @@ Source, win32 executable, and documentation are available on the [github release
 
 # timeline
 
-2017-09-10 first public beta release
+- 2017-09-20 v0.1.1 randomize selection, select entries from dropdown lists with arrow keys + Enter, various bugfixes (see [release page](https://github.com/utz82/bintracker/releases/tag/v0.1.1-beta) for details)
+- 2017-09-10 v0.1.0 first public beta release
 
 
 # community
