@@ -751,7 +751,7 @@ void Main_Window::handle_keyboard_input() {
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_INSERT) || al_key_down(&kbdstate, ALLEGRO_KEY_V)) insert_row();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_DELETE)) delete_row();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_MINUS) || al_key_down(&kbdstate, ALLEGRO_KEY_PAD_MINUS)) remove_row();
-			else if (al_key_down(&kbdstate, ALLEGRO_KEY_PAD_PLUS) || (al_key_down(&kbdstate, ALLEGRO_KEY_MINUS)
+			else if (al_key_down(&kbdstate, ALLEGRO_KEY_PAD_PLUS) || (al_key_down(&kbdstate, ALLEGRO_KEY_EQUALS)
 					&& (al_key_down(&kbdstate, ALLEGRO_KEY_LSHIFT) || al_key_down(&kbdstate, ALLEGRO_KEY_RSHIFT)))) add_row();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_L)) set_loop_point();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_R)) rename_block();

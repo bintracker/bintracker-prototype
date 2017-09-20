@@ -951,7 +951,7 @@ void Main_Window::shutdown() {
 
 void Main_Window::display_about_msg() {
 
-	al_show_native_message_box(nullptr, "About Bintracker", "Bintracker 0.1", "by utz 2017\nwww.irrlichtproject.de", nullptr, 0);
+	al_show_native_message_box(nullptr, "About Bintracker", "Bintracker 0.1.1", "by utz 2017\nwww.irrlichtproject.de", nullptr, 0);
 }
 
 bool Main_Window::display_confirm_overwrite_msg() {
