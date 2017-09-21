@@ -82,7 +82,11 @@ void Sound_Emul::update_audio() {
 
 		if (aBuffer != nullptr) {
 			//clear stream, c++11 style
+		#if __GNUC__ < 5 
+			audioBuffer.str("");
+		#else
 			ostringstream().swap(audioBuffer);
+		#endif
 //			cout << "playMode: " << playMode << endl;
 			vm->generate_audio_chunk(audioBuffer, audioChunkSize, playMode);
 //			if (vm->has_stopped()) stop();
