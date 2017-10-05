@@ -42,6 +42,7 @@ int main(int argc, char **argv){
                 gui.handle_mouse_input();
 
 				al_flip_display();
+				al_flip_display();
 				//TODO: attempt to fix display glitches -> drop all but audio updates
                 while (!al_is_event_queue_empty(gui.eventQueue)) {
                     al_peek_next_event(gui.eventQueue, &ev);
