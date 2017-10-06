@@ -41,8 +41,6 @@ int main(int argc, char **argv){
                 al_stop_timer(gui.timer);
                 gui.handle_mouse_input();
 
-				al_flip_display();
-				al_flip_display();
 				//TODO: attempt to fix display glitches -> drop all but audio updates
                 while (!al_is_event_queue_empty(gui.eventQueue)) {
                     al_peek_next_event(gui.eventQueue, &ev);
@@ -50,6 +48,8 @@ int main(int argc, char **argv){
                     al_drop_next_event(gui.eventQueue);
                 }
                 al_start_timer(gui.timer);
+
+                al_flip_display();
 			}
 			else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
 				al_get_keyboard_state(&gui.kbdstate);
