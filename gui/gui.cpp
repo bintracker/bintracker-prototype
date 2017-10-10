@@ -20,12 +20,13 @@ Main_Window::Main_Window(const string &initFile): isUp(false), userInputString("
 
 #ifdef ALLEGRO_GTK_TOPLEVEL
 	al_set_new_display_flags(ALLEGRO_GTK_TOPLEVEL);
-//	al_set_new_display_option(ALLEGRO_SINGLE_BUFFER, 1, ALLEGRO_SUGGEST);
 #endif
+
+    //switch to single-buffered (no-flip) drawing method on request (to mitigate flicker on linux)
+    if (settings.simpleGfxBuffer) al_set_new_display_option(ALLEGRO_SINGLE_BUFFER, 1, ALLEGRO_SUGGEST);
 
 	mainDisplay = al_create_display(settings.xres, settings.yres);
 	if (!mainDisplay) throw (string("Failed to create window."));
-
 
 
 	timer = al_create_timer(DEFAULT_FPS());
@@ -193,8 +194,6 @@ Main_Window::Main_Window(const string &initFile): isUp(false), userInputString("
 
 	isUp = true;
 
-//	cout << "SINGLE_BUFFER: " << al_get_display_option(mainDisplay, ALLEGRO_SINGLE_BUFFER)
-//        << ", SWAP_METHOD: " << al_get_display_option(mainDisplay, ALLEGRO_SWAP_METHOD) << endl;
 }
 
 

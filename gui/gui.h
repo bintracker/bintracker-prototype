@@ -172,6 +172,7 @@ public:
 	string defaultConfig;
 	unsigned audioChunkSize;
 	unsigned keyRepeatDelay;
+	bool simpleGfxBuffer;
 
 	vector<string> configList;
 
