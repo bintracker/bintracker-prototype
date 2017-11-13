@@ -81,8 +81,8 @@ Main_Window::Main_Window(const string &initFile): isUp(false), userInputString("
 	al_append_menu_item(editMenu, "Copy (Ctrl+C)", MENU_EDIT_COPY, 0, nullptr, nullptr);
 	al_append_menu_item(editMenu, "Cut (Ctrl+X)", MENU_EDIT_CUT, 0, nullptr, nullptr);
 	al_append_menu_item(editMenu, "Delete (Ctrl+Del)", MENU_EDIT_DELETE, 0, nullptr, nullptr);
-	al_append_menu_item(editMenu, "Insert (Ctrl+V)", MENU_EDIT_INSERT, 0, nullptr, nullptr);
-	al_append_menu_item(editMenu, "Paste (Ctrl+P)", MENU_EDIT_PASTE, 0, nullptr, nullptr);
+	al_append_menu_item(editMenu, "Insert (Ctrl+P)", MENU_EDIT_INSERT, 0, nullptr, nullptr);
+	al_append_menu_item(editMenu, "Paste (Ctrl+V)", MENU_EDIT_PASTE, 0, nullptr, nullptr);
 	al_append_menu_item(editMenu, "Porous Paste (Ctrl+Shift+P)", MENU_EDIT_POROUSPASTE, 0, nullptr, nullptr);
 	al_append_menu_item(editMenu, "Inverse Porous Paste (Ctrl+Alt+P)", MENU_EDIT_INVERSEPOROUSPASTE, 0, nullptr, nullptr);
 	al_append_menu_item(editMenu, "Interpolate...", 0, 0, nullptr, interpolateMenu);

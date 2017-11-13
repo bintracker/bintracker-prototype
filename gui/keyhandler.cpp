@@ -39,14 +39,14 @@ void Main_Window::handle_keyboard_input() {
 //			else if (al_key_down(&kbdstate, ALLEGRO_KEY_LEFT)) select_prev_block();
 
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_C)) copy_selection();
-			else if (al_key_down(&kbdstate, ALLEGRO_KEY_P)) {
+			else if (al_key_down(&kbdstate, ALLEGRO_KEY_V)) {
 
                 if (al_key_down(&kbdstate, ALLEGRO_KEY_LSHIFT) || al_key_down(&kbdstate, ALLEGRO_KEY_RSHIFT))
                     porous_paste_selection();
                 else if (al_key_down(&kbdstate, ALLEGRO_KEY_ALT)) inverse_porous_paste_selection();
                 else paste_selection();
 			}
-			else if (al_key_down(&kbdstate, ALLEGRO_KEY_V)) insert_selection();
+			else if (al_key_down(&kbdstate, ALLEGRO_KEY_P)) insert_selection();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_X)) cut_selection();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_DELETE)) delete_selection();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_I)) {
@@ -362,14 +362,14 @@ void Main_Window::handle_keyboard_input() {
 //			else if (al_key_down(&kbdstate, ALLEGRO_KEY_LEFT)) select_prev_block();
 
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_C)) copy_selection();
-			else if (al_key_down(&kbdstate, ALLEGRO_KEY_P)) {
+			else if (al_key_down(&kbdstate, ALLEGRO_KEY_V)) {
 
                 if (al_key_down(&kbdstate, ALLEGRO_KEY_LSHIFT) || al_key_down(&kbdstate, ALLEGRO_KEY_RSHIFT))
                     porous_paste_selection();
                 else if (al_key_down(&kbdstate, ALLEGRO_KEY_ALT)) inverse_porous_paste_selection();
                 else paste_selection();
 			}
-			else if (al_key_down(&kbdstate, ALLEGRO_KEY_V)) insert_selection();
+			else if (al_key_down(&kbdstate, ALLEGRO_KEY_P)) insert_selection();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_X)) cut_selection();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_DELETE)) delete_selection();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_I)) {
@@ -690,14 +690,14 @@ void Main_Window::handle_keyboard_input() {
 //			else if (al_key_down(&kbdstate, ALLEGRO_KEY_LEFT)) select_prev_block();
 
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_C)) copy_selection();
-			else if (al_key_down(&kbdstate, ALLEGRO_KEY_P)) {
+			else if (al_key_down(&kbdstate, ALLEGRO_KEY_V)) {
 
                 if (al_key_down(&kbdstate, ALLEGRO_KEY_LSHIFT) || al_key_down(&kbdstate, ALLEGRO_KEY_RSHIFT))
                     porous_paste_selection();
                 else if (al_key_down(&kbdstate, ALLEGRO_KEY_ALT)) inverse_porous_paste_selection();
                 else paste_selection();
 			}
-			else if (al_key_down(&kbdstate, ALLEGRO_KEY_V)) insert_selection();
+			else if (al_key_down(&kbdstate, ALLEGRO_KEY_P)) insert_selection();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_X)) cut_selection();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_DELETE)) delete_selection();
 			else if (al_key_down(&kbdstate, ALLEGRO_KEY_I)) {

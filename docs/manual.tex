@@ -262,10 +262,10 @@ Hence, bintracker uses independent \textit{columns}. Each column corresponds to 
 \textbf{Ctrl\(\bm{+}\)C} & Copy selection to clipboard \\
 \textbf{Ctrl\(\bm{+}\)X} & Cut selection \\
 \textbf{Ctrl\(\bm{+}\)Del} & Delete selection (cut and shift) \\
-\textbf{Ctrl\(\bm{+}\)P} & Paste from clipboard (overwrite) \\
-\textbf{Ctrl\(\bm{+}\)Shift\(\bm{+}\)P} & Porous paste \\
-\textbf{Ctrl\(\bm{+}\)Alt\(\bm{+}\)P} & Inverse porous paste \\
-\textbf{Ctrl\(\bm{+}\)V} & Insert (paste and shift) \\
+\textbf{Ctrl\(\bm{+}\)V} & Paste from clipboard (overwrite) \\
+\textbf{Ctrl\(\bm{+}\)Shift\(\bm{+}\)V} & Porous paste \\
+\textbf{Ctrl\(\bm{+}\)Alt\(\bm{+}\)V} & Inverse porous paste \\
+\textbf{Ctrl\(\bm{+}\)P} & Insert (paste and shift) \\
 \\
 \textbf{Ctrl\(\bm{+}\)F} & Fill selection/cursor-end from clipboard \\
 \textbf{Ctrl\(\bm{+}\)Shift\(\bm{+}\)F} & Porous fill \\
@@ -311,8 +311,8 @@ Hence, bintracker uses independent \textit{columns}. Each column corresponds to 
 \\
 \textbf{Ctrl\(\bm{+}\)C} & Copy selection to clipboard \\
 \textbf{Ctrl\(\bm{+}\)Del} & Delete selection (cut and shift) \\
-\textbf{Ctrl\(\bm{+}\)P} & Paste from clipboard (overwrite) \\
-\textbf{Ctrl\(\bm{+}\)V} & Insert (paste and shift) \\
+\textbf{Ctrl\(\bm{+}\)V} & Paste from clipboard (overwrite) \\
+\textbf{Ctrl\(\bm{+}\)P} & Insert (paste and shift) \\
 \end{longtable}
 
 
@@ -457,7 +457,7 @@ The following column, labelled "A", sets the note for the first oscillator (in o
 
 Feel free to enter a few notes before moving on to the next column, labelled "B". As you might have guessed, B sets the note for the second oscillator. Now, a special feature of the PhaseSqueek engine is that by default, it combines two oscillators into one channel. That means A and B are not independent from each other, but rather form one combined sound. 
 
-In effect, this also means that we probably don't want to enter arbitrary notes into column B. Rather, a smart move would be to duplicate the notes in colum A, but with a little bit of detune. Here's how to do that. First, move the cursor back to column A. Now, hold down the \textbf{Shift} key and select the notes you entered with the \textbf{arrow up/down} keys. When you're done, press \textbf{Ctrl\(\bm{+}\)C} to copy the selection. Now move the cursor to column B and press \textbf{Ctrl\(\bm{+}\)P} to paste the current selection. Column A and B should now contain the same data. If you've accidentally pasted at the wrong position, you can move things down or up by pressing \textbf{Ins} or \textbf{Del}. 
+In effect, this also means that we probably don't want to enter arbitrary notes into column B. Rather, a smart move would be to duplicate the notes in colum A, but with a little bit of detune. Here's how to do that. First, move the cursor back to column A. Now, hold down the \textbf{Shift} key and select the notes you entered with the \textbf{arrow up/down} keys. When you're done, press \textbf{Ctrl\(\bm{+}\)C} to copy the selection. Now move the cursor to column B and press \textbf{Ctrl\(\bm{+}\)V} to paste the current selection. Column A and B should now contain the same data. If you've accidentally pasted at the wrong position, you can move things down or up by pressing \textbf{Ins} or \textbf{Del}. 
 
 If all is good, it's time to work on that detune. Move the cursor to the first note in column B, and press \textbf{\(\bm{+}\)}, followed by \textbf{1}, followed by \textbf{Enter}. The field will now display \textless\textit{notename}\textgreater+0001. Congratulations, you've just used a \textit{modifier} for the first time. Repeat this for the other notes you may have pasted into column B. 
 
