@@ -178,6 +178,11 @@ unsigned Display_Status::get_current_block() {
 	return currentBlocks[get_current_blocktype()];
 }
 
+unsigned Display_Status::get_current_block_size() {
+
+    return get_current_block_pointer()->columns[0].columnData.size();
+}
+
 
 //TODO: also handle things if focusBlock = true
 void Display_Status::set_current_block_from_cursor() {
@@ -478,7 +483,7 @@ void Display_Status::dec_current_reference_row(unsigned amount) {
 
 	if (currentTab == 1) {
 
-        if (amount < workTune->sequence.size()) {
+        if (amount <= workTune->sequence.size()) {
 
             if (visibleReferenceRowsMax <= workTune->sequence.size()) {
 

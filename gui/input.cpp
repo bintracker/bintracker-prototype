@@ -1362,16 +1362,27 @@ void Main_Window::delete_row() {
  		for (auto&& it: status.get_current_block_pointer()->columns)
   			it.columnData.erase(it.columnData.begin() + status.get_current_cursor_row());
 
-		if (status.get_current_cursor_row() == status.get_current_block_pointer()->columns[0].columnData.size())
-			status.dec_current_cursor_row();
+        if (status.get_visible_first_row() > 0
+            && status.get_visible_first_row() + status.visibleRowsMax - 1 >= status.get_current_block_size())
+            status.visibleFirstRows[status.get_current_blocktype()]--;
+
+		if (status.get_current_cursor_row() == status.get_current_block_size())
+            status.dec_current_cursor_row();
+
 		print_block_data();
 	}
 
 	else if (status.get_current_blocktype() == 0 && currentTune.sequence.size() > 1) {
         push_changelog();
-		if (currentTune.sequenceLoopPoint > status.get_current_reference_row()) currentTune.sequenceLoopPoint--;
+
+        if (currentTune.sequenceLoopPoint > status.get_current_reference_row()
+            || currentTune.sequenceLoopPoint + 1 >= currentTune.sequence.size()) currentTune.sequenceLoopPoint--;
 
 		currentTune.sequence.erase(currentTune.sequence.begin() + status.get_current_reference_row());
+
+		if (status.get_visible_first_reference_row() > 0
+            && status.get_visible_first_reference_row() + status.visibleReferenceRowsMax - 1 >= currentTune.sequence.size())
+            status.visibleFirstReferenceRows[0]--;
 
 		if (status.get_current_reference_row() >= currentTune.sequence.size()) status.dec_current_reference_row();
 

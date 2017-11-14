@@ -265,6 +265,7 @@ public:
 	unsigned get_visible_first_row();
 	unsigned get_current_blocktype();
 	unsigned get_current_block();
+	unsigned get_current_block_size();
 	void set_current_block_from_cursor();
 	unsigned get_current_cursor_column();
 	void inc_current_cursor_column();
