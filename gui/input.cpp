@@ -1081,6 +1081,9 @@ void Main_Window::clone_block() {
     newBlock.name = newBlockName;
     currentTune.blockTypes[status.get_current_blocktype()].blocks.push_back(newBlock);
     if (status.get_current_blocktype() == 0) currentTune.sequence[status.get_current_reference_row()] = newBlockName;
+    status.set_current_block_from_cursor();
+    status.focusBlock = false;
+    print_block();
     print_reference_data();
 }
 

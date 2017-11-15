@@ -138,13 +138,13 @@ https://github.com/utz82/ZX-Spectrum-1-Bit-Routines/tree/master/phaserX.</descri
 		</field>
 		<field size="word">
 			<required_seq_begin />
-			<required if="A" />
+			<required if="A|NOISE" />
 			<set_hi from="DMODA" />
 			<set_lo from="DUTYA" />
 		</field>
 		<field size="word">
 			<required_seq_begin />
-			<required if="DMODA|DUTYA" />
+			<required if="DMODA|DUTYA|NOISE" />
 			<set from="A" />
 		</field>
 		<field size="word">
