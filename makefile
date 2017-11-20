@@ -1,4 +1,4 @@
-CC		= clang++
+CXX		= clang++
 CXXFLAGS	= -O2 -std=c++11 -ffast-math -stdlib=libc++
 LDFLAGS		= -stdlib=libc++ -L/usr/lib -lallegro -lallegro_image -lallegro_font -lallegro_primitives -lallegro_dialog -lallegro_audio
 INCLUDE		= -I. -I/usr/include/allegro5
@@ -15,10 +15,10 @@ OBJ		= bintracker.o helper_func.o\
 
 
 bintracker: $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(INCLUDE) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(INCLUDE) $(LDFLAGS)
 
 %.o: %.cpp $(DEPS)
-	$(CC) -c $(CXXFLAGS) -o $@ $< 
+	$(CXX) -c $(CXXFLAGS) -o $@ $< 
 
 .PHONY: clean
 clean:
