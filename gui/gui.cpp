@@ -23,7 +23,7 @@ Main_Window::Main_Window(const string &initFile): isUp(false), userInputString("
 #endif
 
     //switch to single-buffered (no-flip) drawing method on request (to mitigate flicker on linux)
-    if (settings.simpleGfxBuffer) al_set_new_display_option(ALLEGRO_SINGLE_BUFFER, 1, ALLEGRO_SUGGEST);
+    if (settings.simpleGfxBuffer) al_set_new_display_option(ALLEGRO_SINGLE_BUFFER, 1, ALLEGRO_REQUIRE);
 
 	mainDisplay = al_create_display(settings.xres, settings.yres);
 	if (!mainDisplay) throw (string("Failed to create window."));

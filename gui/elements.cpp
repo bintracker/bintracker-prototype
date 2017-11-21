@@ -309,7 +309,7 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
 	hexMode = true;
 	audioChunkSize = 256;
 	keyRepeatDelay = 3;
-	simpleGfxBuffer = false;
+	simpleGfxBuffer = true;
 
 	ifstream DEFAULTINI("settings.ini");
 	if (!DEFAULTINI.is_open()) {
@@ -465,7 +465,7 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
 			if (!isNumber(tempstr)) cout << "Error: Invalid KEYREPEATDELAY argument in settings.ini." << endl;
 			else keyRepeatDelay = static_cast<unsigned>(strToNum(tempstr));
 		}
-		else if (it.find("SIMPLEGFXBUFFER=true") != string::npos) simpleGfxBuffer = true;
+		else if (it.find("SIMPLEGFXBUFFER=false") != string::npos) simpleGfxBuffer = false;
 	}
 
 
