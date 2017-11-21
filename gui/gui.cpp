@@ -110,7 +110,8 @@ Main_Window::Main_Window(const string &initFile): isUp(false), userInputString("
 	al_set_display_menu(mainDisplay, menu);
 
 
-	ALLEGRO_PATH *rPath = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
+    ALLEGRO_PATH *rPath = al_get_standard_path(ALLEGRO_EXENAME_PATH);
+    al_set_path_filename(rPath, "");
 	al_append_path_component(rPath, "resources/gui");
 	al_change_directory(al_path_cstr(rPath, '/'));
 	al_destroy_path(rPath);

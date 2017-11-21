@@ -10,6 +10,8 @@ using namespace std;
 
 int main(int argc, char **argv){
 
+    chdir(argv[0]);
+
 	try {
 
 		if (!al_init()) throw (string("Allegro initialization failed."));
