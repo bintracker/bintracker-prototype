@@ -27,7 +27,7 @@ bintracker.exe: $(OBJ)
 
 .PHONY: clean
 clean:
-	rm *.o gui/*.o libmdal/*.o data_as/*.o sound_emul/*.o sound_emul/machines/*.o sound_emul/machines/CPU/*.o
+	rm $(OBJ)
 
 
 

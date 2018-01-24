@@ -1,6 +1,6 @@
 CXX		= clang++
 CXXFLAGS	= -O2 -std=c++11 -ffast-math -stdlib=libc++
-LDFLAGS		= -stdlib=libc++ -L/usr/lib -lallegro -lallegro_main -lallegro_image -lallegro_font -lallegro_primitives -lallegro_dialog -lallegro_audio
+LDFLAGS		= -stdlib=libc++ -L/usr/lib -lallegro -lallegro_main -lallegro_image -lallegro_font -lallegro_primitives -lallegro_dialog -lallegro_audio 
 INCLUDE		= -I. -I/usr/include/allegro5
 
 DEPS		= bintracker.h helper_func.h gui/gui.h gui/worktune.h libmdal/pugixml.hpp libmdal/mdal.h data_as/mdatas.h\
@@ -22,5 +22,5 @@ bintracker: $(OBJ)
 
 .PHONY: clean
 clean:
-	rm *.o gui/*.o libmdal/*.o data_as/*.o sound_emul/*.o sound_emul/machines/*.o sound_emul/machines/CPU/*.o
+	rm $(OBJ)
 
