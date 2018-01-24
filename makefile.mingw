@@ -1,9 +1,9 @@
-CXX		= i686-w64-mingw32-g++-win32
+CXX		= i686-w64-mingw32-g++  # i686-w64-mingew32.static-g++
 CXXFLAGS	= -O2 -std=c++11 -ffast-math -s -static -static-libstdc++ -DALLEGRO_STATICLINK
 LDFLAGS		= -Wl,--subsystem,windows \
 		-Lliballeg_w32/allegro/lib  -lallegro_dialog-static -lallegro-static \
 		-lallegro_main-static -lallegro_image-static -lallegro_font-static -lallegro_primitives-static -lallegro_audio-static \
-		-ljpeg \
+		-ljpeg -lpng16 -lzlib \
 		-L/usr/i686-w64-mingw32/lib -ldsound -lgdiplus -luuid -lkernel32 -lwinmm -lpsapi -lopengl32 -lglu32 -luser32 -lcomdlg32 \
 		-lgdi32 -lshell32 -lole32 -ladvapi32 -lws2_32 -lshlwapi
 INCLUDE		= -I. -Iliballeg_w32/allegro/include -I/usr/i686-w64-mingw32/include
