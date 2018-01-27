@@ -30,7 +30,6 @@ public:
 	~z80cpu();
 
 private:
-//	int *memory;
     std::array<int, 0x10000> *memory;
 	int instructionCycles;
 
@@ -70,11 +69,10 @@ private:
 
 	int regDummy;	//dummy register for generic instructions
 
-	int *const regPtr[8] = {&regB, &regC, &regD, &regE, &regH, &regL, &regDummy, &regA};
+	const std::array<int *const, 8> regPtr = {{&regB, &regC, &regD, &regE, &regH, &regL, &regDummy, &regA}};
+	static const std::array<const int, 4> conditionCodes;
 
-	static const int conditionCodes[4];
-
-	int parity_tbl[256];
+	std::array<int, 256> parity_tbl;    //TODO improper naming, should be parityTable
 
 //generic 16-bit register instructions
 

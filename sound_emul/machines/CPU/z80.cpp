@@ -37,8 +37,7 @@ z80cpu::~z80cpu() {
 
 }
 
-const int z80cpu::conditionCodes[4] = {0x40, 0x01, 0x04, 0x80};
-
+const std::array<const int, 4> z80cpu::conditionCodes = {{0x40, 0x01, 0x04, 0x80}};
 
 void z80cpu::setPC(int startAddress) {
 
