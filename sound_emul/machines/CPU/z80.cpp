@@ -7,23 +7,26 @@
 
 #include "z80.h"
 
+using namespace std;
 
-z80cpu::z80cpu(int *mem, int z80type) {
+
+z80cpu::z80cpu(std::array<int, 0x10000> *mem, Z80Type z80type) {
 
 	memory = mem;
-	fill_n(inputPorts, 0x10000, 0);
-	fill_n(outputPorts, 0x10000, 0);
-	fill_n(inputPortsShort, 0x100, 0);
-	fill_n(outputPortsShort, 0x100, 0);
-	
+
+    inputPorts.fill(0);
+    inputPortsShort.fill(0);
+    outputPorts.fill(0);
+    outputPortsShort.fill(0);
+
 	for (int i = 0; i <= 255; i++) {
-	
+
 		int j, par;
 		for (j = i, par = 0; j != 0; j >>= 1) par ^= (j & 1);
-		
+
 		parity_tbl[i] = (par ? 0 : 4);
 	}
-	
+
 	cpuType = z80type;
 
 	reset();
@@ -68,26 +71,26 @@ int z80cpu::maskable_interrupt() {
 void z80cpu::execute_cycle() {
 
 	if (instructionCycles) {
-		
+
 		instructionCycles--;
 		return;
 	}
-	
+
 	regR = ((regR & 0x80) | ((regR & 0x7f) + 1));
-	
+
 // 	int lastInstr = memory[regPC];
 // 	int lastAddr = regPC;
 
-	instructionCycles = cpu_instructions[(memory[regPC]) & 0xff](this);
+	instructionCycles = cpu_instructions[(memory->at(regPC)) & 0xff](this);
 	regPC &= 0xffff;
-	
+
 // 	if ((memory[regPC] > 0xff) || (regPC < 0x8000) || (regPC > 0x98ff)) {
-// 	
+//
 // 		cout << hex << "Last instr: " << lastInstr << " at " << lastAddr << endl;
 // 		cout << hex << "Err: PC=" << regPC << ", Instr=" << memory[regPC] << endl;
 // 		cout << "A= " << regA << " A'=" << regAs << " B=" << regB << " C=" << regC << " D=" << regD << " E=" << regE << " H=" << regH << " L=" << regL << " IXH=" << regIXH << " IXL=" << regIXL << " IYH=" << regIYH << " IYL=" << regIYL << " SP=" << regSP << endl;
 // 	}
-	
+
 	return;
 }
 
@@ -130,7 +133,7 @@ void z80cpu::execute_debug() {
 	else cout << "-";
 	if (regFs & 0x1) cout << "C";
 	else cout << "-";
-	
+
 	cout << "\tI:   ";
 	cout << setfill('0') << setw(2) << regI;
 	cout << "\tR:   ";
@@ -145,37 +148,37 @@ void z80cpu::execute_debug() {
 	cout << "\tBC': " << setfill('0') << setw(2) << regBs << setfill('0') << setw(2) << regCs;
 	cout << "\tDE': " << setfill('0') << setw(2) << regDs << setfill('0') << setw(2) << regEs;
 	cout << "\tHL': " << setfill('0') << setw(2) << regHs << setfill('0') << setw(2) << regLs << endl;
-	cout << boolalpha << "EI: " << interruptsEnabled << "\tIM: " << interruptMode << "\tIFF1: " << regIFF1 << "\tIFF2: " << regIFF2 
+	cout << boolalpha << "EI: " << interruptsEnabled << "\tIM: " << interruptMode << "\tIFF1: " << regIFF1 << "\tIFF2: " << regIFF2
 		<< "\tMEMPTR: " << setfill('0') << setw(4) << regMEMPTR << endl;
-	
+
 
 	instructionCycles = 0;
-	
+
 	cout << hex << "at " << setfill('0') << setw(4) << regPC;
-	cout << " exec " << setfill('0') << setw(2) << memory[regPC];
-	
-	if ((memory[regPC] == 0xed) | (memory[regPC] == 0xcb)) cout << memory[(regPC + 1) & 0xffff];
-	if ((memory[regPC] == 0xdd) | (memory[regPC] == 0xfd)) {
-	
-		if (memory[(regPC + 1) & 0xffff] == 0xcb) cout << "cb" << setfill('0') << setw(2) 
-			<< memory[(regPC + 2) & 0xffff] << memory[(regPC + 3) & 0xffff];
+	cout << " exec " << setfill('0') << setw(2) << memory->at(regPC);
+
+	if ((memory->at(regPC) == 0xed) | (memory->at(regPC) == 0xcb)) cout << memory->at((regPC + 1) & 0xffff);
+	if ((memory->at(regPC) == 0xdd) | (memory->at(regPC) == 0xfd)) {
+
+		if (memory->at((regPC + 1) & 0xffff) == 0xcb) cout << "cb" << setfill('0') << setw(2)
+			<< memory->at((regPC + 2) & 0xffff) << memory->at((regPC + 3) & 0xffff);
 		else {
 			int i = 1;
-			
-			while ((memory[(regPC + i) & 0xffff] == 0xdd) | (memory[(regPC + i) & 0xffff] == 0xfd)) {
-			
-				cout << setfill('0') << setw(2) << memory[(regPC + i) & 0xffff];
+
+			while ((memory->at((regPC + i) & 0xffff) == 0xdd) | (memory->at((regPC + i) & 0xffff) == 0xfd)) {
+
+				cout << setfill('0') << setw(2) << memory->at((regPC + i) & 0xffff);
 				i++;
 			}
-			
-			cout << setfill('0') << setw(2) << memory[(regPC + i) & 0xffff];
+
+			cout << setfill('0') << setw(2) << memory->at((regPC + i) & 0xffff);
 		}
 	}
-	
+
 	regR = ((regR & 0x80) | ((regR & 0x7f) + 1));
-	
-	int ticks = cpu_instructions[static_cast<unsigned>(memory[regPC])](this);
-	
+
+	int ticks = cpu_instructions[static_cast<unsigned>(memory->at(regPC))](this);
+
 	cout << dec << ", ticks: " << ticks << hex << endl;
 
 	regPC &= 0xffff;
@@ -208,15 +211,15 @@ void z80cpu::reset() {
 	regIYL = 0;
 	regSP = 0;
 	regPC = 0;
-	
+
 	regMEMPTR = 0;
 	regQ = 0;
 	regDummy = 0;
-	
+
 	interruptsEnabled = false;
 	interruptMode = 0;
 	regIFF1 = false;
 	regIFF2 = false;
-	
+
 	instructionCycles = 0;
 }
