@@ -239,7 +239,7 @@ int z80cpu::sbx_a_r8() {
 int z80cpu::and_r8() {
 
 	regA &= *regPtr[memory->at(regPC) & 0x7];
-	regF = (regA & 0xa8) | parity_tbl[regA] | 0x10;		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA] | 0x10;		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -249,7 +249,7 @@ int z80cpu::and_r8() {
 int z80cpu::xor_r8() {
 
 	regA = (regA ^ *regPtr[memory->at(regPC) & 0x7]) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -259,7 +259,7 @@ int z80cpu::xor_r8() {
 int z80cpu::or_r8() {
 
 	regA = (regA | *regPtr[memory->at(regPC) & 0x7]) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -539,7 +539,7 @@ int z80cpu::daa() {
 		regA = (regA + temp) & 0xff;
 	}
 
-	regF = (regF & 0xfa) | (regA & 0xa8) | carry | parity_tbl[regA];
+	regF = (regF & 0xfa) | (regA & 0xa8) | carry | parityTable[regA];
 	if (!regA) regF |= 0x40;				//set Z flag
 
 	regPC++;
@@ -758,7 +758,7 @@ int z80cpu::sbx_a_athl() {
 int z80cpu::and_athl() {
 
 	regA &= memory->at(regL + (regH << 8));
-	regF = (regA & 0xa8) | parity_tbl[regA] | 0x10;		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA] | 0x10;		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -768,7 +768,7 @@ int z80cpu::and_athl() {
 int z80cpu::xor_athl() {
 
 	regA = (regA ^ memory->at(regL + (regH << 8))) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -783,7 +783,7 @@ int z80cpu::xor_athl() {
 int z80cpu::or_athl() {
 
 	regA = (regA | memory->at(regL + (regH << 8))) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -965,7 +965,7 @@ int z80cpu::ex_atsp_hl() {
 int z80cpu::and_n() {
 
 	regA &= memory->at((regPC + 1) & 0xffff);
-	regF = (regA & 0xa8) | parity_tbl[regA] | 0x10;		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA] | 0x10;		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC += 2;
@@ -1012,7 +1012,7 @@ int z80cpu::prefix_ed() {
 int z80cpu::xor_n() {
 
 	regA = (regA ^ memory->at((regPC + 1) & 0xffff)) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC += 2;
@@ -1057,7 +1057,7 @@ int z80cpu::push_af() {
 int z80cpu::or_n() {
 
 	regA |= memory->at((regPC + 1) & 0xffff);
-	regF = (regA & 0xa8) | parity_tbl[regA];	//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];	//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;			//set Z flag
 
 	regPC += 2;
@@ -2486,7 +2486,7 @@ int z80cpu::sbx_a_atixpd() {
 int z80cpu::and_ixh() {
 
 	regA &= regIXH;
-	regF = (regA & 0xa8) | parity_tbl[regA] | 0x10;		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA] | 0x10;		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -2496,7 +2496,7 @@ int z80cpu::and_ixh() {
 int z80cpu::and_ixl() {
 
 	regA &= regIXL;
-	regF = (regA & 0xa8) | parity_tbl[regA] | 0x10;		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA] | 0x10;		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -2508,7 +2508,7 @@ int z80cpu::and_atixpd() {
 	regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00) | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
 	regA &= memory->at(regMEMPTR);
-	regF = (regA & 0xa8) | parity_tbl[regA] | 0x10;		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA] | 0x10;		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC += 2;
@@ -2518,7 +2518,7 @@ int z80cpu::and_atixpd() {
 int z80cpu::xor_ixh() {
 
 	regA = (regA ^ regIXH) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -2528,7 +2528,7 @@ int z80cpu::xor_ixh() {
 int z80cpu::xor_ixl() {
 
 	regA = (regA ^ regIXL) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -2540,7 +2540,7 @@ int z80cpu::xor_atixpd() {
 	regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00) | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
 	regA = (regA ^ memory->at(regMEMPTR)) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC += 2;
@@ -2555,7 +2555,7 @@ int z80cpu::xor_atixpd() {
 int z80cpu::or_ixh() {
 
 	regA = (regA | regIXH) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -2565,7 +2565,7 @@ int z80cpu::or_ixh() {
 int z80cpu::or_ixl() {
 
 	regA = (regA | regIXL) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -2577,7 +2577,7 @@ int z80cpu::or_atixpd() {
 	regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00) | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
 	regA = (regA | memory->at(regMEMPTR)) & 0xff;
-	regF = (regA & 0xa8) | parity_tbl[regA];		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA];		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -3152,7 +3152,7 @@ int z80cpu::sbx_a_atiypd() {
 int z80cpu::and_iyh() {
 
 	regA &= regIYH;
-	regF = (regA & 0xa8) | parity_tbl[regA] | 0x10;		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA] | 0x10;		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -3162,7 +3162,7 @@ int z80cpu::and_iyh() {
 int z80cpu::and_iyl() {
 
 	regA &= regIYL;
-	regF = (regA & 0xa8) | parity_tbl[regA] | 0x10;		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA] | 0x10;		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC++;
@@ -3174,7 +3174,7 @@ int z80cpu::and_atiypd() {
 	regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00) | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
 	regA &= memory->at(regMEMPTR);
-	regF = (regA & 0xa8) | parity_tbl[regA] | 0x10;		//set S,5,H,3,P,N,C flags
+	regF = (regA & 0xa8) | parityTable[regA] | 0x10;		//set S,5,H,3,P,N,C flags
 	if (!regA) regF |= 0x40;		//set Z flag
 
 	regPC += 2;

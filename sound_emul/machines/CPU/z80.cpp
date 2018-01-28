@@ -13,21 +13,12 @@ using namespace std;
 z80cpu::z80cpu(std::array<int, 0x10000> *mem, Z80Type z80type) {
 
 	memory = mem;
+	cpuType = z80type;
 
     inputPorts.fill(0);
     inputPortsShort.fill(0);
     outputPorts.fill(0);
     outputPortsShort.fill(0);
-
-	for (int i = 0; i <= 255; i++) {
-
-		int j, par;
-		for (j = i, par = 0; j != 0; j >>= 1) par ^= (j & 1);
-
-		parity_tbl[i] = (par ? 0 : 4);
-	}
-
-	cpuType = z80type;
 
 	reset();
 }
@@ -38,6 +29,21 @@ z80cpu::~z80cpu() {
 }
 
 const std::array<const int, 4> z80cpu::conditionCodes = {{0x40, 0x01, 0x04, 0x80}};
+const std::array<int, 256> z80cpu::parityTable = z80cpu::init_parity_table();
+
+
+std::array<int, 256> z80cpu::init_parity_table() {
+
+    std::array<int, 256> parityTable;
+	for (int i = 0; i <= 255; i++) {
+		int j, par;
+		for (j = i, par = 0; j != 0; j >>= 1) par ^= (j & 1);
+		parityTable[i] = (par ? 0 : 4);
+	}
+
+	return parityTable;
+}
+
 
 void z80cpu::setPC(int startAddress) {
 

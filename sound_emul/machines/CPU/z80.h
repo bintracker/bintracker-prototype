@@ -71,11 +71,12 @@ private:
 
 	const std::array<int *const, 8> regPtr = {{&regB, &regC, &regD, &regE, &regH, &regL, &regDummy, &regA}};
 	static const std::array<const int, 4> conditionCodes;
+    //used as lookup by z80 instructions that set the parity flag
+	static const std::array<int, 256> parityTable;
 
-	std::array<int, 256> parity_tbl;    //TODO improper naming, should be parityTable
+	static std::array<int, 256> init_parity_table();
 
-//generic 16-bit register instructions
-
+    //generic 16-bit register instructions
 	int ld_r16_nn();
 	int add_hl_r16();
 	int inc_r16();
@@ -83,8 +84,7 @@ private:
 	int pop_r16();
 	int push_r16();
 
-//generic 8-bit register instructions
-
+    //generic 8-bit register instructions
 	int inc_r8();
 	int dec_r8();
 	int ld_r8_n();
