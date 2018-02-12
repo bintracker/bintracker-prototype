@@ -83,18 +83,8 @@ void z80cpu::execute_cycle() {
 
 	regR = ((regR & 0x80) | ((regR & 0x7f) + 1));
 
-// 	int lastInstr = memory[regPC];
-// 	int lastAddr = regPC;
-
 	instructionCycles = cpu_instructions[(memory->at(regPC)) & 0xff](this);
 	regPC &= 0xffff;
-
-// 	if ((memory[regPC] > 0xff) || (regPC < 0x8000) || (regPC > 0x98ff)) {
-//
-// 		cout << hex << "Last instr: " << lastInstr << " at " << lastAddr << endl;
-// 		cout << hex << "Err: PC=" << regPC << ", Instr=" << memory[regPC] << endl;
-// 		cout << "A= " << regA << " A'=" << regAs << " B=" << regB << " C=" << regC << " D=" << regD << " E=" << regE << " H=" << regH << " L=" << regL << " IXH=" << regIXH << " IXL=" << regIXL << " IYH=" << regIYH << " IYL=" << regIYL << " SP=" << regSP << endl;
-// 	}
 
 	return;
 }
