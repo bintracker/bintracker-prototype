@@ -1,4 +1,4 @@
-BetaPhase MDAL Configuration
+Pytha MDAL Configuration
 ============================
 
 This MDAL config can be used to create music.asm files for the Pytha beeper
