@@ -73,7 +73,7 @@
 				<Option output="bintracker.exe" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Release-win32" />
 				<Option type="1" />
-				<Option compiler="i686-w64-mingw32" />
+				<Option compiler="mingw" />
 				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-O2" />
@@ -89,7 +89,7 @@
 					<Add option="-static" />
 					<Add option="-static-libstdc++" />
 					<Add option="-Wl,--subsystem,windows" />
-					<Add option="-L//home/heinz/development/PROG/bintracker/liballeg_w32/allegro/lib" />
+					<Add option="-Lliballeg_w32/allegro/lib" />
 					<Add option="-lallegro_dialog-static -lallegro-static \" />
 					<Add option="-lallegro_main-static" />
 					<Add option="-lallegro_image-static" />
