@@ -70,7 +70,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
         if (verbose) cout << "configuration:\t\t" << configname << endl;
 
         pugi::xml_node mdalconfig = xml.child("mdalconfig");
-        if (mdalconfig == nullptr) throw (string("Not a valid MDAL configuration."));
+        if (!mdalconfig) throw (string("Not a valid MDAL configuration."));
 
         string tempstr = mdalconfig.attribute("version").value();
         if (tempstr == "") throw (string("MDAL_VERSION not specified."));
@@ -103,7 +103,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
         if (verbose) cout << "\nSEQUENCE CONFIGURATION\n======================" << endl;
 
         tempnode = mdalconfig.child("sequence");
-        if (tempnode == nullptr) throw (string("Missing sequence configuration"));
+        if (!tempnode) throw (string("Missing sequence configuration"));
 
         tempstr = tempnode.attribute("label").value();
         if (tempstr != "") seqLabel = tempstr;
@@ -129,7 +129,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
         if (trackSources.size() == 0) throw (string("<sequence>: no <track>s specified."));
 
         tempnode = mdalconfig.child("sequence").child("loop");
-        if (tempnode != nullptr) {
+        if (tempnode) {
             tempstr = tempnode.attribute("type").value();
             if (tempstr == "") throw (string("<sequence><loop>: No loop type specified."));
             if (tempstr != "label" && tempstr != "pointer") throw ("<sequence><loop>: Invalid type \"" + tempstr + "\".");
@@ -144,7 +144,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
 
 
         pugi::xml_node commands = mdalconfig.child("commands");
-        if (commands == nullptr) throw (string("No <commands> block found."));
+        if (!commands) throw (string("No <commands> block found."));
 
         if (verbose) cout << endl << "USER COMMANDS\n=============" << endl;
 
@@ -175,7 +175,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
 
             //TODO could be attr of main command declaration
             pugi::xml_node param = tempnode.child("auto");
-            if (param != nullptr) {
+            if (param) {
                 tempstr = param.attribute("value").value();
                 if (tempstr == "") throw (string("<command>: missing auto value specification."));
                 if (mdCmdList[cmdNr].mdCmdType == MD_BOOL && getType(tempstr) != MD_BOOL)
@@ -185,27 +185,27 @@ void mdConfig::init(const string &configname, bool &verbose) {
             }
 
             param = tempnode.child("description");
-            if (param != nullptr) mdCmdList[cmdNr].description = param.child_value();
+            if (param) mdCmdList[cmdNr].description = param.child_value();
             param = tempnode.child("use_note_names");
-            if (param != nullptr) mdCmdList[cmdNr].useNoteNames = true;
+            if (param) mdCmdList[cmdNr].useNoteNames = true;
             param = tempnode.child("allow_modifiers");
-            if (param != nullptr) mdCmdList[cmdNr].allowModifiers = true;
+            if (param) mdCmdList[cmdNr].allowModifiers = true;
             param = tempnode.child("force_string");
-            if (param != nullptr) mdCmdList[cmdNr].mdCmdForceString = true;
+            if (param) mdCmdList[cmdNr].mdCmdForceString = true;
             param = tempnode.child("force_int");
-            if (param != nullptr) mdCmdList[cmdNr].mdCmdForceInt = true;
+            if (param) mdCmdList[cmdNr].mdCmdForceInt = true;
             param = tempnode.child("force_repeat");
-            if (param != nullptr) mdCmdList[cmdNr].mdCmdForceRepeat = true;
+            if (param) mdCmdList[cmdNr].mdCmdForceRepeat = true;
             param = tempnode.child("use_last_set");
-            if (param != nullptr) mdCmdList[cmdNr].mdCmdUseLastSet = true;
+            if (param) mdCmdList[cmdNr].mdCmdUseLastSet = true;
             param = tempnode.child("global_const");
-            if (param != nullptr) mdCmdList[cmdNr].mdCmdGlobalConst = true;
+            if (param) mdCmdList[cmdNr].mdCmdGlobalConst = true;
 
             if (mdCmdList[cmdNr].mdCmdForceString && mdCmdList[cmdNr].mdCmdForceInt)
                 throw (string("<command>: force_int and force_string are mutually exclusive."));
 
             param = tempnode.child("reference");
-            if (param != nullptr) {
+            if (param) {
                 tempstr = param.attribute("to").value();
                 if (tempstr == "") throw (string("<command>: reference used, but no block id given."));
                 mdCmdList[cmdNr].isBlkReference = true;
@@ -213,7 +213,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
             }
 
             param = tempnode.child("range");
-            if (param != nullptr && mdCmdList[cmdNr].mdCmdType != MD_BOOL) {
+            if (param && mdCmdList[cmdNr].mdCmdType != MD_BOOL) {
                 mdCmdList[cmdNr].limitRange = true;
                 tempstr = param.attribute("lower_limit").value();
                 if (tempstr == "") throw (string("<command>: range used, but no lower limit specified."));
@@ -226,7 +226,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
             }
 
             param = tempnode.child("substitute");
-            if (param != nullptr) {
+            if (param) {
                 mdCmdList[cmdNr].mdCmdForceSubstitution = true;
 
                 for (; param; param = param.next_sibling("substitute")) {
@@ -240,7 +240,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
             }
 
             param = tempnode.child("default_substitute");
-            if (param != nullptr) {
+            if (param) {
                 tempstr = param.attribute("from").value();
                 if (tempstr == "") throw (string("<command>: default substitute used, but no source given."));
 
@@ -340,7 +340,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
             if (verbose) cout << "Pattern label prefix:\t" << blockTypes.back().blkLabelPrefix << endl;
 
             pugi::xml_node argnode = tempnode.child("init_defaults");
-            if (argnode != nullptr) {
+            if (argnode) {
                 blockTypes.back().initBlkDefaults = true;
                 if (verbose) cout << "Initialize commands with default values at each block start" << endl;
             }
@@ -359,20 +359,20 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 else if (tempstr != "byte") throw ("<blocktype><field>: invalid field size argument \"" + tempstr + "\".");
                 else {
                     param = argnode.child("set_hi");
-                    if (param != nullptr) throw (string("<blocktype><field>: set_hi not allowed on byte-sized fields."));
+                    if (param) throw (string("<blocktype><field>: set_hi not allowed on byte-sized fields."));
                 }
 
                 //TODO inefficient
                 param = argnode.child("set_hi");
-                if (param == nullptr) {
+                if (!param) {
                     param = argnode.child("set_lo");
-                    if (param == nullptr) {
+                    if (!param) {
                         param = argnode.child("set");
-                        if (param == nullptr) {
+                        if (!param) {
                             param = argnode.child("set_if");
-                            if (param == nullptr) {
+                            if (!param) {
                                 param = argnode.child("set_bits");
-                                if (param == nullptr)
+                                if (!param)
                                     throw (string("<blocktype><field>: field not set by any command."));
                             }
                         }
@@ -387,13 +387,13 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 }
 
                 param = argnode.child("required_seq_begin");
-                if (param != nullptr) blockTypes.back().blkFieldList[fieldNr].requiredSeqBegin = true;
+                if (param) blockTypes.back().blkFieldList[fieldNr].requiredSeqBegin = true;
 
                 param = argnode.child("required_blk_begin");
-                if (param != nullptr) blockTypes.back().blkFieldList[fieldNr].requiredBlkBegin = true;
+                if (param) blockTypes.back().blkFieldList[fieldNr].requiredBlkBegin = true;
 
                 param = argnode.child("required");
-                if (param != nullptr) {
+                if (param) {
 
                     tempstr = param.attribute("if").value();
                     if (tempstr == "") blockTypes.back().blkFieldList[fieldNr].requiredAlways = true;
@@ -466,7 +466,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 fill_n(blockTypes.back().blkFieldList[fieldNr].useCmd, mdCmdCount, false);
 
                 param = argnode.child("set_hi");
-                if (param != nullptr) {
+                if (param) {
                     tempstr = param.attribute("from").value();
                     if (tempstr == "") throw (string("<blocktype><field><set_hi>: missing from= argument"));
                     cmdNr = getCmdNr(tempstr);
@@ -479,7 +479,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 }
 
                 param = argnode.child("set_lo");
-                if (param != nullptr) {
+                if (param) {
                     tempstr = param.attribute("from").value();
                     if (tempstr == "") throw (string("<blocktype><field><set_lo>: missing from= argument"));
                     cmdNr = getCmdNr(tempstr);
@@ -492,7 +492,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 }
 
                 param = argnode.child("set");
-                if (param != nullptr) {
+                if (param) {
                     tempstr = param.attribute("from").value();
                     if (tempstr == "") throw (string("<blocktype><field><set>: missing from= argument"));
                     cmdNr = getCmdNr(tempstr);
