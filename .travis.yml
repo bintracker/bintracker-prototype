@@ -14,12 +14,12 @@ before_install:
   && cd liballeg_w32
   && git clone https://github.com/liballeg/allegro5.git
   && cd allegro5
-  && cmake -DSHARED=0 -DCMAKE_TOOLCHAIN_FILE=/usr/lib/mxe/usr/i686-w64-mingw32.static/share/cmake/mxe-conf.cmake
+  && cmake -DSHARED=0 -DWANT_DEMO=0 -DWANT_EXAMPLES=0 -DCMAKE_TOOLCHAIN_FILE=/usr/lib/mxe/usr/i686-w64-mingw32.static/share/cmake/mxe-conf.cmake
   && make
-  && cd ../..  
+  && cd ../..
   && export PATH=$PATH:/usr/lib/mxe/usr/bin ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew install --HEAD allegro ; fi
-  
+
 compiler: clang
 
 script:
