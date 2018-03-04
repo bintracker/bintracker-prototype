@@ -114,7 +114,7 @@
 					<Add option="-ladvapi32" />
 					<Add option="-lws2_32" />
 					<Add option="-lshlwapi" />
-					<Add option="-I. -I//home/heinz/development/PROG/bintracker/liballeg_w32/allegro/include" />
+					<Add option="-I. -Iliballeg_w32/allegro/include" />
 				</Linker>
 			</Target>
 		</Build>
