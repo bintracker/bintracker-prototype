@@ -5,6 +5,7 @@ obj/
 _RELEASE/
 docs/data/raw
 docs/private
+CMakeFiles/
 *.cpb
 *.depend
 *.exe
@@ -16,6 +17,9 @@ docs/private
 *.toc
 *.bak
 *.backup
+*.cmake
+Makefile
+CMakeCache.txt
 /resources/gui/repl
 /bintracker
 /run_checks.sh
