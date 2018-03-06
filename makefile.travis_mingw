@@ -9,7 +9,7 @@ INCLUDE		= -I. -I/usr/lib/mxe/usr/i686-w64-mingw32.static/ -Iliballeg_w32/allegr
 		-Iliballeg_w32/allegro5/addons/image -Iliballeg_w32/allegro5/addons/font \
 		-Iliballeg_w32/allegro5/addons/primitives -Iliballeg_w32/allegro5/addons/native_dialog -Iliballeg_w32/allegro5/addons/main \
 
-DEPS		= bintracker.h helper_func.h gui/gui.h gui/worktune.h libmdal/pugixml.hpp libmdal/mdal.h data_as/mdatas.h\
+DEPS		= bintracker.h helper_func.h gui/gui.h gui/worktune.h libmdal/mdal.h data_as/mdatas.h\
 		 sound_emul/sound_emul.h sound_emul/machines/vm.h sound_emul/machines/zxspectrum48.h sound_emul/machines/CPU/z80.h
 OBJ		= bintracker.o helper_func.o\
  		 gui/elements.o gui/events.o gui/file_io.o gui/gui.o gui/input.o gui/keyhandler.o gui/mousehandler.o gui/status.o gui/work_tune.o\

@@ -3,7 +3,7 @@ CXXFLAGS	= -O2 -std=c++11 -ffast-math -stdlib=libc++
 LDFLAGS		= -stdlib=libc++ -L/usr/lib -lpugixml -lallegro -lallegro_main -lallegro_image -lallegro_font -lallegro_primitives -lallegro_dialog -lallegro_audio
 INCLUDE		= -I. -I/usr/include/allegro5
 
-DEPS		= bintracker.h helper_func.h gui/gui.h gui/worktune.h libmdal/pugixml.hpp libmdal/mdal.h data_as/mdatas.h\
+DEPS		= bintracker.h helper_func.h gui/gui.h gui/worktune.h libmdal/mdal.h data_as/mdatas.h\
 		 sound_emul/sound_emul.h sound_emul/machines/vm.h sound_emul/machines/zxspectrum48.h sound_emul/machines/CPU/z80.h
 OBJ		= bintracker.o helper_func.o\
  		 gui/elements.o gui/events.o gui/file_io.o gui/gui.o gui/input.o gui/keyhandler.o gui/mousehandler.o gui/status.o gui/work_tune.o\

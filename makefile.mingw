@@ -8,7 +8,7 @@ LDFLAGS		= -Wl,--subsystem,windows \
 		-lgdi32 -lshell32 -lole32 -ladvapi32 -lws2_32 -lshlwapi
 INCLUDE		= -I. -Iliballeg_w32/allegro/include -I/usr/i686-w64-mingw32/include
 
-DEPS		= bintracker.h helper_func.h gui/gui.h gui/worktune.h libmdal/pugixml.hpp libmdal/mdal.h data_as/mdatas.h\
+DEPS		= bintracker.h helper_func.h gui/gui.h gui/worktune.h libmdal/mdal.h data_as/mdatas.h\
 		 sound_emul/sound_emul.h sound_emul/machines/vm.h sound_emul/machines/zxspectrum48.h sound_emul/machines/CPU/z80.h
 OBJ		= bintracker.o helper_func.o\
  		 gui/elements.o gui/events.o gui/file_io.o gui/gui.o gui/input.o gui/keyhandler.o gui/mousehandler.o gui/status.o gui/work_tune.o\
