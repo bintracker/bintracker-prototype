@@ -14,6 +14,8 @@ docs/private
 *.log
 *.out
 *.toc
+*.bak
+*.backup
 /resources/gui/repl
 /bintracker
 /run_checks.sh
