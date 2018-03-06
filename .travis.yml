@@ -1,7 +1,7 @@
 language: cpp
 
 os:
-- osx
+# - osx
 - linux
 
 before_install:
@@ -18,10 +18,11 @@ before_install:
   && make
   && cd ../..
   && export PATH=$PATH:/usr/lib/mxe/usr/bin ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew install --HEAD allegro ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew install --HEAD allegro && brew install pugixml; fi
 
 compiler: clang
 
 script:
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make && make clean && make -f makefile.travis_mingw ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make ; fi
+# - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make && make clean && make -f makefile.travis_mingw ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make -f makefile.osx; fi
