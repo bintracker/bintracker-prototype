@@ -1,6 +1,6 @@
 CXX		= i686-w64-mingw32.static-g++
 CXXFLAGS	= -O2 -std=c++11 -ffast-math -s -static -static-libstdc++ -DALLEGRO_STATICLINK
-LDFLAGS		= -Wl,--subsystem,windows \
+LDFLAGS		= -Wl,--subsystem,windows -pugixml \
 		-Lliballeg_w32/allegro5/lib -L/home/heinz/dev-utils/mxe/usr/i686-w64-mingw32.static/lib -lallegro_dialog-static -lallegro-static \
 		-lallegro_main-static -ljpeg -lpng -lz -lallegro_image-static -lallegro_font-static -lallegro_primitives-static -lallegro_audio-static \
 		-ldsound -lgdiplus -luuid -lkernel32 -lwinmm -lpsapi -lopengl32 -lglu32 -luser32 -lcomdlg32 \
@@ -17,18 +17,15 @@ OBJ		= bintracker.o helper_func.o\
 		 data_as/data_as.o\
 		 sound_emul/sound_emul.o\
 		 sound_emul/machines/zxspectrum48.o sound_emul/machines/CPU/z80.o sound_emul/machines/CPU/z80instructions.o
-		 
+
 
 
 bintracker.exe: $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(INCLUDE) $(LDFLAGS)
 
 %.o: %.cpp $(DEPS)
-	$(CXX) $(INCLUDE) -c $(CXXFLAGS) -o $@ $< 
+	$(CXX) $(INCLUDE) -c $(CXXFLAGS) -o $@ $<
 
 .PHONY: clean
 clean:
 	rm $(OBJ)
-
-
-

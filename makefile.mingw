@@ -1,7 +1,7 @@
 CXX		= i686-w64-mingw32-g++  # i686-w64-mingew32.static-g++
 CXXFLAGS	= -O2 -std=c++11 -ffast-math -s -static -static-libstdc++ -DALLEGRO_STATICLINK
 LDFLAGS		= -Wl,--subsystem,windows \
-		-Lliballeg_w32/allegro/lib  -lallegro_dialog-static -lallegro-static \
+		-Lliballeg_w32/allegro/lib  -lpugixml -lallegro_dialog-static -lallegro-static \
 		-lallegro_main-static -lallegro_image-static -lallegro_font-static -lallegro_primitives-static -lallegro_audio-static \
 		-ljpeg -lpng16 -lzlib \
 		-L/usr/i686-w64-mingw32/lib -ldsound -lgdiplus -luuid -lkernel32 -lwinmm -lpsapi -lopengl32 -lglu32 -luser32 -lcomdlg32 \
@@ -12,22 +12,19 @@ DEPS		= bintracker.h helper_func.h gui/gui.h gui/worktune.h libmdal/pugixml.hpp 
 		 sound_emul/sound_emul.h sound_emul/machines/vm.h sound_emul/machines/zxspectrum48.h sound_emul/machines/CPU/z80.h
 OBJ		= bintracker.o helper_func.o\
  		 gui/elements.o gui/events.o gui/file_io.o gui/gui.o gui/input.o gui/keyhandler.o gui/mousehandler.o gui/status.o gui/work_tune.o\
-		 libmdal/pugixml.o libmdal/module.o libmdal/config.o libmdal/sequence.o libmdal/blocks.o libmdal/field.o libmdal/command.o\
+		 libmdal/module.o libmdal/config.o libmdal/sequence.o libmdal/blocks.o libmdal/field.o libmdal/command.o\
 		 data_as/data_as.o\
 		 sound_emul/sound_emul.o\
 		 sound_emul/machines/zxspectrum48.o sound_emul/machines/CPU/z80.o sound_emul/machines/CPU/z80instructions.o
-		 
+
 
 
 bintracker.exe: $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(INCLUDE) $(LDFLAGS)
 
 %.o: %.cpp $(DEPS)
-	$(CXX) $(INCLUDE) -c $(CXXFLAGS) -o $@ $< 
+	$(CXX) $(INCLUDE) -c $(CXXFLAGS) -o $@ $<
 
 .PHONY: clean
 clean:
 	rm $(OBJ)
-
-
-
