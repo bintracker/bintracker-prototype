@@ -9,7 +9,7 @@ before_install:
   && echo "deb http://pkg.mxe.cc/repos/apt/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mxeapt.list
   && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D43A795B73B16ABE9643FE1AFD8FFF16DB45C6AB
   && sudo apt-get -qq update
-  && sudo apt-get install -y liballegro5-dev libpugixml-dev # i686-w64-mingw32.static-pugixml i686-w64-mingw32.static-jpeg i686-w64-mingw32.static-libpng i686-w64-mingw32.static-zlib i686-w64-mingw32.static-vorbis i686-w64-mingw32.static-opus i686-w64-mingw32.static-physfs i686-w64-mingw32.static-libwebp
+  && sudo apt-get install -y liballegro5-dev libpugixml-dev
   && mkdir liballeg_w32
   && cd liballeg_w32
   && git clone https://github.com/liballeg/allegro5.git
