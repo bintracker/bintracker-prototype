@@ -10,10 +10,10 @@
 
 using namespace std;
 
+//TODO: badness! by passing memory.data(), size information is lost
+Virtual_ZX48::Virtual_ZX48() : cpu(&memory, Z80Type::NMOS) {
 
-Virtual_ZX48::Virtual_ZX48() : cpu(memory, NMOS) {
-
-	fill_n(memory, 0x10000, 0);
+	memory.fill(0);
 //	insertVirtualOSReturn(0x8000);		//TODO magic number
 	cpu.inputPortsShort[0xfe] = 0xff;	//return no_key_down on keyboard checks
 
