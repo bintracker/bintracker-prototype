@@ -1,12 +1,13 @@
-CXX		= i686-w64-mingw32-g++  # i686-w64-mingew32.static-g++
+CXX		= i686-w64-mingw32.static-g++
 CXXFLAGS	= -O2 -std=c++11 -ffast-math -s -static -static-libstdc++ -DALLEGRO_STATICLINK
-LDFLAGS		= -Wl,--subsystem,windows \
-		-Lliballeg_w32/allegro/lib  -lpugixml -lallegro_dialog-static -lallegro-static \
-		-lallegro_main-static -lallegro_image-static -lallegro_font-static -lallegro_primitives-static -lallegro_audio-static \
-		-ljpeg -lpng16 -lzlib \
-		-L/usr/i686-w64-mingw32/lib -ldsound -lgdiplus -luuid -lkernel32 -lwinmm -lpsapi -lopengl32 -lglu32 -luser32 -lcomdlg32 \
-		-lgdi32 -lshell32 -lole32 -ladvapi32 -lws2_32 -lshlwapi
-INCLUDE		= -I. -Iliballeg_w32/allegro/include -I/usr/i686-w64-mingw32/include
+LDFLAGS		= -Wl,--subsystem,windows -lpugixml \
+		-Lallegro5/lib -L/opt/mxe/usr/i686-w64-mingw32.static/lib -lallegro_dialog-static -lallegro-static \
+		-lallegro_main-static -ljpeg -lpng -lz -lallegro_image-static -lallegro_font-static -lallegro_primitives-static -lallegro_audio-static \
+		-ldsound -lgdiplus -luuid -lkernel32 -lwinmm -lpsapi -lopengl32 -lglu32 -luser32 -lcomdlg32 \
+		-lgdi32 -lshell32 -lole32 -ladvapi32 -lws2_32 -lshlwapi -lwebp
+INCLUDE		= -I. -I/usr/lib/mxe/usr/i686-w64-mingw32.static/ -Iallegro5/include -Iallegro5/addons/audio \
+		-Iallegro5/addons/image -Iallegro5/addons/font \
+		-Iallegro5/addons/primitives -Iallegro5/addons/native_dialog -Iallegro5/addons/main \
 
 DEPS		= bintracker.h helper_func.h gui/gui.h gui/worktune.h libmdal/mdal.h data_as/mdatas.h\
 		 sound_emul/sound_emul.h sound_emul/machines/vm.h sound_emul/machines/zxspectrum48.h sound_emul/machines/CPU/z80.h

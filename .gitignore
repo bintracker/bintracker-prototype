@@ -1,12 +1,12 @@
 _BACKUP/
-liballeg_w32/
+allegro5/
 libsamplerate/
 obj/
 _RELEASE/
 docs/data/raw
 docs/private
 CMakeFiles/
-*.cpb
+*.cbp
 *.depend
 *.exe
 *.layout

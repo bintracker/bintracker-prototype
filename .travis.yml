@@ -1,28 +1,18 @@
 language: cpp
 
 os:
-# - osx
 - linux
+- osx
 
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository -y ppa:allegro/5.2
-  && echo "deb http://pkg.mxe.cc/repos/apt/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mxeapt.list
-  && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys D43A795B73B16ABE9643FE1AFD8FFF16DB45C6AB
+  && sudo add-apt-repository -y ppa:anton+/miscellaneous
   && sudo apt-get -qq update
-  && sudo apt-get install -y liballegro5-dev libpugixml-dev
-  && mkdir liballeg_w32
-  && cd liballeg_w32
-  && git clone https://github.com/liballeg/allegro5.git
-  && cd allegro5
-  && cmake -DSHARED=0 -DWANT_DEMO=0 -DWANT_EXAMPLES=0 -DCMAKE_TOOLCHAIN_FILE=/usr/lib/mxe/usr/i686-w64-mingw32.static/share/cmake/mxe-conf.cmake
-  && make
-  && cd ../..
-  && export PATH=$PATH:/usr/lib/mxe/usr/bin ; fi
+  && sudo apt-get install -y liballegro5-dev libpugixml-dev ; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew install --HEAD allegro && brew install pugixml; fi
 
 compiler: clang
 
 script:
-# - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make && make clean && make -f makefile.travis_mingw ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make -f makefile.osx; fi
+- cmake . -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_COMPILER=clang++
+- make
