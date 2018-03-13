@@ -16,13 +16,13 @@ class z80cpu {
     std::array<int8_t, 0x10000> outputPorts;
     std::array<int8_t, 0x100> outputPortsShort;
 
-    void reset();
+    void reset() noexcept;
 
-    void setPC(int startAddress);
-    void setSP(int address);
-    int getPC();
+    void setPC(int startAddress) noexcept;
+    void setSP(int address) noexcept;
+    int getPC() noexcept;
 
-    void execute_cycle();
+    void execute_cycle() noexcept;
     void execute_debug();
     int non_maskable_interrupt();
     int maskable_interrupt();
@@ -79,341 +79,341 @@ class z80cpu {
     static const std::array<unsigned, 256> instructionTimingsED;
 
     static std::array<int, 256> init_parity_table();
-    void debugger_print_flags(const int flagRegister);
-    unsigned get_instruction_timing(int instructionPointer);
-    unsigned get_conditional_timing(const int instruction);
+    void debugger_print_flags(const int flagRegister) noexcept;
+    unsigned get_instruction_timing(int instructionPointer) noexcept;
+    unsigned get_conditional_timing(const int instruction) noexcept;
 
     // generic 16-bit register instructions
-    void ld_r16_nn();
-    void add_hl_r16();
-    void inc_r16();
-    void dec_r16();
-    void pop_r16();
-    void push_r16();
+    void ld_r16_nn() noexcept;
+    void add_hl_r16() noexcept;
+    void inc_r16() noexcept;
+    void dec_r16() noexcept;
+    void pop_r16() noexcept;
+    void push_r16() noexcept;
 
     // generic 8-bit register instructions
-    void inc_r8();
-    void dec_r8();
-    void ld_r8_n();
-    void ld_r8_r8();
-    void ld_r8_athl();
-    void ld_athl_r8();
-    void adx_a_r8();
-    void sbx_a_r8();
-    void and_r8();
-    void xor_r8();
-    void or_r8();
-    void cp_r8();
+    void inc_r8() noexcept;
+    void dec_r8() noexcept;
+    void ld_r8_n() noexcept;
+    void ld_r8_r8() noexcept;
+    void ld_r8_athl() noexcept;
+    void ld_athl_r8() noexcept;
+    void adx_a_r8() noexcept;
+    void sbx_a_r8() noexcept;
+    void and_r8() noexcept;
+    void xor_r8() noexcept;
+    void or_r8() noexcept;
+    void cp_r8() noexcept;
 
     // generic conditional instructions
-    void jr_cc_n();
-    void ret_cc();
-    void jp_cc_nn();
-    void call_cc_nn();
+    void jr_cc_n() noexcept;
+    void ret_cc() noexcept;
+    void jp_cc_nn() noexcept;
+    void call_cc_nn() noexcept;
 
     // misc generic instructions
-    void rst_xx();
+    void rst_xx() noexcept;
 
     // regular (non-prefixed) instructions
-    void nop();
-    void ld_atbc_a();
-    void rlca();
-    void ex_af_af();
-    void ld_a_atbc();
-    void rrca();
+    void nop() noexcept;
+    void ld_atbc_a() noexcept;
+    void rlca() noexcept;
+    void ex_af_af() noexcept;
+    void ld_a_atbc() noexcept;
+    void rrca() noexcept;
 
-    void djnz();
-    void ld_atde_a();
-    void rla();
-    void jr();
-    void ld_a_atde();
-    void rra();
+    void djnz() noexcept;
+    void ld_atde_a() noexcept;
+    void rla() noexcept;
+    void jr() noexcept;
+    void ld_a_atde() noexcept;
+    void rra() noexcept;
 
-    void ld_atnn_hl();
-    void daa();
-    void ld_hl_atnn();
-    void cpl();
+    void ld_atnn_hl() noexcept;
+    void daa() noexcept;
+    void ld_hl_atnn() noexcept;
+    void cpl() noexcept;
 
-    void ld_sp_nn();
-    void ld_atnn_a();
-    void inc_sp();
-    void inc_athl();
-    void dec_athl();
-    void ld_athl_n();
-    void scf();
-    void add_hl_sp();
-    void ld_a_atnn();
-    void dec_sp();
-    void ccf();
+    void ld_sp_nn() noexcept;
+    void ld_atnn_a() noexcept;
+    void inc_sp() noexcept;
+    void inc_athl() noexcept;
+    void dec_athl() noexcept;
+    void ld_athl_n() noexcept;
+    void scf() noexcept;
+    void add_hl_sp() noexcept;
+    void ld_a_atnn() noexcept;
+    void dec_sp() noexcept;
+    void ccf() noexcept;
 
-    void halt();
+    void halt() noexcept;
 
-    void adx_a_athl();
+    void adx_a_athl() noexcept;
 
-    void sbx_a_athl();
+    void sbx_a_athl() noexcept;
 
-    void and_athl();
-    void xor_athl();
+    void and_athl() noexcept;
+    void xor_athl() noexcept;
 
-    void or_athl();
-    void cp_athl();
+    void or_athl() noexcept;
+    void cp_athl() noexcept;
 
-    void jp_nn();
-    void ret();
-    void prefix_cb();
-    void call_nn();
-    void adx_a_n();
+    void jp_nn() noexcept;
+    void ret() noexcept;
+    void prefix_cb() noexcept;
+    void call_nn() noexcept;
+    void adx_a_n() noexcept;
 
-    void out_atn_a();
-    void exx();
-    void in_a_atn();
-    void prefix_dd();
-    void sbx_a_n();
+    void out_atn_a() noexcept;
+    void exx() noexcept;
+    void in_a_atn() noexcept;
+    void prefix_dd() noexcept;
+    void sbx_a_n() noexcept;
 
-    void ex_atsp_hl();
-    void and_n();
-    void jp_athl();
-    void ex_de_hl();
-    void prefix_ed();
-    void xor_n();
+    void ex_atsp_hl() noexcept;
+    void and_n() noexcept;
+    void jp_athl() noexcept;
+    void ex_de_hl() noexcept;
+    void prefix_ed() noexcept;
+    void xor_n() noexcept;
 
-    void pop_af();
-    void di();
-    void push_af();
-    void or_n();
-    void ld_sp_hl();
-    void ei();
-    void prefix_fd();
-    void cp_n();
+    void pop_af() noexcept;
+    void di() noexcept;
+    void push_af() noexcept;
+    void or_n() noexcept;
+    void ld_sp_hl() noexcept;
+    void ei() noexcept;
+    void prefix_fd() noexcept;
+    void cp_n() noexcept;
 
 
     // prefix ED
-    void in_r8_atc();
-    void out_atc_r8();
-    void sbc_hl_r16();
-    void adc_hl_r16();
-    void ld_atnn_r16();
-    void ld_r16_atnn();
+    void in_r8_atc() noexcept;
+    void out_atc_r8() noexcept;
+    void sbc_hl_r16() noexcept;
+    void adc_hl_r16() noexcept;
+    void ld_atnn_r16() noexcept;
+    void ld_r16_atnn() noexcept;
 
-    void neg();
-    void retn();
-    void im0();
-    void ld_i_a();
-    void reti();
-    void ld_r_a();
+    void neg() noexcept;
+    void retn() noexcept;
+    void im0() noexcept;
+    void ld_i_a() noexcept;
+    void reti() noexcept;
+    void ld_r_a() noexcept;
 
-    void im1();
-    void ld_a_i();
-    void im2();
-    void ld_a_r();
+    void im1() noexcept;
+    void ld_a_i() noexcept;
+    void im2() noexcept;
+    void ld_a_r() noexcept;
 
-    void rrd();
-    void rld();
+    void rrd() noexcept;
+    void rld() noexcept;
 
-    void sbc_hl_sp();
-    void ld_atnn_sp();
-    void adc_hl_sp();
-    void ld_sp_atnn();
+    void sbc_hl_sp() noexcept;
+    void ld_atnn_sp() noexcept;
+    void adc_hl_sp() noexcept;
+    void ld_sp_atnn() noexcept;
 
-    void ldi();
-    void cpi();
-    void ini();
-    void outi();
-    void ldd();
-    void cpd();
-    void ind();
-    void outd();
+    void ldi() noexcept;
+    void cpi() noexcept;
+    void ini() noexcept;
+    void outi() noexcept;
+    void ldd() noexcept;
+    void cpd() noexcept;
+    void ind() noexcept;
+    void outd() noexcept;
 
-    void ldir();
-    void cpir();
-    void inir();
-    void otir();
-    void lddr();
-    void cpdr();
-    void indr();
-    void otdr();
+    void ldir() noexcept;
+    void cpir() noexcept;
+    void inir() noexcept;
+    void otir() noexcept;
+    void lddr() noexcept;
+    void cpdr() noexcept;
+    void indr() noexcept;
+    void otdr() noexcept;
 
     // prefix CB
-    void rlc_r8();
-    void rlc_athl();
-    void rrc_r8();
-    void rrc_athl();
+    void rlc_r8() noexcept;
+    void rlc_athl() noexcept;
+    void rrc_r8() noexcept;
+    void rrc_athl() noexcept;
 
-    void rl_r8();
-    void rl_athl();
-    void rr_r8();
-    void rr_athl();
+    void rl_r8() noexcept;
+    void rl_athl() noexcept;
+    void rr_r8() noexcept;
+    void rr_athl() noexcept;
 
-    void sra_r8();
-    void sra_athl();
+    void sra_r8() noexcept;
+    void sra_athl() noexcept;
 
-    void slx_r8();
-    void slx_athl();
-    void srl_r8();
-    void srl_athl();
+    void slx_r8() noexcept;
+    void slx_athl() noexcept;
+    void srl_r8() noexcept;
+    void srl_athl() noexcept;
 
-    void bit_x_r8();
-    void bit_x_athl();
+    void bit_x_r8() noexcept;
+    void bit_x_athl() noexcept;
 
-    void res_x_r8();
-    void res_x_athl();
+    void res_x_r8() noexcept;
+    void res_x_athl() noexcept;
 
-    void set_x_r8();
-    void set_x_athl();
+    void set_x_r8() noexcept;
+    void set_x_athl() noexcept;
 
 
     // prefix DD
-    void add_ix_r16();
-    void ld_r8_atixpd();
-    void ld_r8_ixh();
-    void ld_r8_ixl();
+    void add_ix_r16() noexcept;
+    void ld_r8_atixpd() noexcept;
+    void ld_r8_ixh() noexcept;
+    void ld_r8_ixl() noexcept;
 
-    void ld_ix_nn();
-    void ld_atnn_ix();
-    void inc_ix();
-    void inc_ixh();
-    void dec_ixh();
-    void ld_ixh_n();
-    void add_ix_ix();
-    void ld_ix_atnn();
-    void dec_ix();
-    void inc_ixl();
-    void dec_ixl();
-    void ld_ixl_n();
+    void ld_ix_nn() noexcept;
+    void ld_atnn_ix() noexcept;
+    void inc_ix() noexcept;
+    void inc_ixh() noexcept;
+    void dec_ixh() noexcept;
+    void ld_ixh_n() noexcept;
+    void add_ix_ix() noexcept;
+    void ld_ix_atnn() noexcept;
+    void dec_ix() noexcept;
+    void inc_ixl() noexcept;
+    void dec_ixl() noexcept;
+    void ld_ixl_n() noexcept;
 
-    void inc_atixpd();
-    void dec_atixpd();
-    void ld_atixpd_n();
-    void add_ix_sp();
+    void inc_atixpd() noexcept;
+    void dec_atixpd() noexcept;
+    void ld_atixpd_n() noexcept;
+    void add_ix_sp() noexcept;
 
-    void ld_ixh_r8();
-    void ld_ixh_ixl();
-    void ld_ixl_r8();
-    void ld_ixl_ixh();
+    void ld_ixh_r8() noexcept;
+    void ld_ixh_ixl() noexcept;
+    void ld_ixl_r8() noexcept;
+    void ld_ixl_ixh() noexcept;
 
-    void ld_atixpd_r8();
+    void ld_atixpd_r8() noexcept;
 
-    void adx_a_ixh();
-    void adx_a_ixl();
-    void adx_a_atixpd();
+    void adx_a_ixh() noexcept;
+    void adx_a_ixl() noexcept;
+    void adx_a_atixpd() noexcept;
 
-    void sbx_a_ixh();
-    void sbx_a_ixl();
-    void sbx_a_atixpd();
+    void sbx_a_ixh() noexcept;
+    void sbx_a_ixl() noexcept;
+    void sbx_a_atixpd() noexcept;
 
-    void and_ixh();
-    void and_ixl();
-    void and_atixpd();
-    void xor_ixh();
-    void xor_ixl();
-    void xor_atixpd();
+    void and_ixh() noexcept;
+    void and_ixl() noexcept;
+    void and_atixpd() noexcept;
+    void xor_ixh() noexcept;
+    void xor_ixl() noexcept;
+    void xor_atixpd() noexcept;
 
-    void or_ixh();
-    void or_ixl();
-    void or_atixpd();
-    void cp_ixh();
-    void cp_ixl();
-    void cp_atixpd();
+    void or_ixh() noexcept;
+    void or_ixl() noexcept;
+    void or_atixpd() noexcept;
+    void cp_ixh() noexcept;
+    void cp_ixl() noexcept;
+    void cp_atixpd() noexcept;
 
-    void prefix_ddcb();
+    void prefix_ddcb() noexcept;
 
-    void pop_ix();
-    void ex_atsp_ix();
-    void push_ix();
-    void jp_atix();
+    void pop_ix() noexcept;
+    void ex_atsp_ix() noexcept;
+    void push_ix() noexcept;
+    void jp_atix() noexcept;
 
-    void ld_sp_ix();
+    void ld_sp_ix() noexcept;
 
 
     // prefix FD
-    void add_iy_r16();
-    void ld_r8_atiypd();
-    void ld_r8_iyh();
-    void ld_r8_iyl();
+    void add_iy_r16() noexcept;
+    void ld_r8_atiypd() noexcept;
+    void ld_r8_iyh() noexcept;
+    void ld_r8_iyl() noexcept;
 
-    void ld_iy_nn();
-    void ld_atnn_iy();
-    void inc_iy();
-    void inc_iyh();
-    void dec_iyh();
-    void ld_iyh_n();
-    void add_iy_iy();
-    void ld_iy_atnn();
-    void dec_iy();
-    void inc_iyl();
-    void dec_iyl();
-    void ld_iyl_n();
+    void ld_iy_nn() noexcept;
+    void ld_atnn_iy() noexcept;
+    void inc_iy() noexcept;
+    void inc_iyh() noexcept;
+    void dec_iyh() noexcept;
+    void ld_iyh_n() noexcept;
+    void add_iy_iy() noexcept;
+    void ld_iy_atnn() noexcept;
+    void dec_iy() noexcept;
+    void inc_iyl() noexcept;
+    void dec_iyl() noexcept;
+    void ld_iyl_n() noexcept;
 
-    void inc_atiypd();
-    void dec_atiypd();
-    void ld_atiypd_n();
-    void add_iy_sp();
+    void inc_atiypd() noexcept;
+    void dec_atiypd() noexcept;
+    void ld_atiypd_n() noexcept;
+    void add_iy_sp() noexcept;
 
-    void ld_iyh_r8();
-    void ld_iyh_iyl();
-    void ld_iyl_r8();
-    void ld_iyl_iyh();
+    void ld_iyh_r8() noexcept;
+    void ld_iyh_iyl() noexcept;
+    void ld_iyl_r8() noexcept;
+    void ld_iyl_iyh() noexcept;
 
-    void ld_atiypd_r8();
+    void ld_atiypd_r8() noexcept;
 
-    void adx_a_iyh();
-    void adx_a_iyl();
-    void adx_a_atiypd();
+    void adx_a_iyh() noexcept;
+    void adx_a_iyl() noexcept;
+    void adx_a_atiypd() noexcept;
 
-    void sbx_a_iyh();
-    void sbx_a_iyl();
-    void sbx_a_atiypd();
+    void sbx_a_iyh() noexcept;
+    void sbx_a_iyl() noexcept;
+    void sbx_a_atiypd() noexcept;
 
-    void and_iyh();
-    void and_iyl();
-    void and_atiypd();
-    void xor_iyh();
-    void xor_iyl();
-    void xor_atiypd();
+    void and_iyh() noexcept;
+    void and_iyl() noexcept;
+    void and_atiypd() noexcept;
+    void xor_iyh() noexcept;
+    void xor_iyl() noexcept;
+    void xor_atiypd() noexcept;
 
-    void or_iyh();
-    void or_iyl();
-    void or_atiypd();
-    void cp_iyh();
-    void cp_iyl();
-    void cp_atiypd();
+    void or_iyh() noexcept;
+    void or_iyl() noexcept;
+    void or_atiypd() noexcept;
+    void cp_iyh() noexcept;
+    void cp_iyl() noexcept;
+    void cp_atiypd() noexcept;
 
-    void prefix_fdcb();
+    void prefix_fdcb() noexcept;
 
-    void pop_iy();
-    void ex_atsp_iy();
-    void push_iy();
-    void jp_atiy();
+    void pop_iy() noexcept;
+    void ex_atsp_iy() noexcept;
+    void push_iy() noexcept;
+    void jp_atiy() noexcept;
 
-    void ld_sp_iy();
+    void ld_sp_iy() noexcept;
 
     // prefix DDCB
-    void rlc_atixpd();
-    void rrc_atixpd();
-    void rl_atixpd();
-    void rr_atixpd();
-    void sla_atixpd();
-    void sra_atixpd();
-    void sll_atixpd();
-    void srl_atixpd();
+    void rlc_atixpd() noexcept;
+    void rrc_atixpd() noexcept;
+    void rl_atixpd() noexcept;
+    void rr_atixpd() noexcept;
+    void sla_atixpd() noexcept;
+    void sra_atixpd() noexcept;
+    void sll_atixpd() noexcept;
+    void srl_atixpd() noexcept;
 
-    void bit_x_atixpd();
-    void res_x_atixpd();
-    void set_x_atixpd();
+    void bit_x_atixpd() noexcept;
+    void res_x_atixpd() noexcept;
+    void set_x_atixpd() noexcept;
 
     // prefix FDCB
-    void rlc_atiypd();
-    void rrc_atiypd();
-    void rl_atiypd();
-    void rr_atiypd();
-    void sla_atiypd();
-    void sra_atiypd();
-    void sll_atiypd();
-    void srl_atiypd();
+    void rlc_atiypd() noexcept;
+    void rrc_atiypd() noexcept;
+    void rl_atiypd() noexcept;
+    void rr_atiypd() noexcept;
+    void sla_atiypd() noexcept;
+    void sra_atiypd() noexcept;
+    void sll_atiypd() noexcept;
+    void srl_atiypd() noexcept;
 
-    void bit_x_atiypd();
-    void res_x_atiypd();
-    void set_x_atiypd();
+    void bit_x_atiypd() noexcept;
+    void res_x_atiypd() noexcept;
+    void set_x_atiypd() noexcept;
 
 
     using CpuFun = decltype(std::mem_fn(&z80cpu::nop));

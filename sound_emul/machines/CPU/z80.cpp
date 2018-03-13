@@ -91,7 +91,7 @@ const std::array<unsigned, 256> z80cpu::instructionTimingsED = {{
 }};
 
 
-unsigned z80cpu::get_instruction_timing(int instructionPointer) {
+unsigned z80cpu::get_instruction_timing(int instructionPointer) noexcept {
     int instruction = memory->at(instructionPointer);
 
     if (instruction == 0xcb) {
@@ -125,7 +125,7 @@ unsigned z80cpu::get_instruction_timing(int instructionPointer) {
     return instructionTimingsRegular[instruction] + get_conditional_timing(instruction);
 }
 
-unsigned z80cpu::get_conditional_timing(const int instruction) {
+unsigned z80cpu::get_conditional_timing(const int instruction) noexcept {
     switch (instruction) {
         case 0x10:  // djnz
             if (regB) return 5;
@@ -195,18 +195,17 @@ unsigned z80cpu::get_conditional_timing(const int instruction) {
     return 0;
 }
 
-void z80cpu::setPC(int startAddress) {
+void z80cpu::setPC(int startAddress) noexcept {
     regPC = startAddress & 0xffff;
     instructionCycles = get_instruction_timing(regPC);
-    return;
 }
 
-void z80cpu::setSP(int address) {
+void z80cpu::setSP(int address) noexcept {
     regSP = address & 0xffff;
     return;
 }
 
-int z80cpu::getPC() {
+int z80cpu::getPC() noexcept {
     return regPC;
 }
 
@@ -222,7 +221,7 @@ int z80cpu::maskable_interrupt() {
 }
 
 
-void z80cpu::execute_cycle() {
+void z80cpu::execute_cycle() noexcept {
     if (instructionCycles) {
         instructionCycles--;
         return;
@@ -233,8 +232,6 @@ void z80cpu::execute_cycle() {
     cpu_instructions[(memory->at(regPC)) & 0xff](this);
     instructionCycles = get_instruction_timing(regPC);
     regPC &= 0xffff;
-
-    return;
 }
 
 
@@ -295,7 +292,7 @@ void z80cpu::execute_debug() {
     regPC &= 0xffff;
 }
 
-void z80cpu::debugger_print_flags(const int flagRegister) {
+void z80cpu::debugger_print_flags(const int flagRegister) noexcept {
     if (flagRegister & 0x80) {
         cout << "S";
     } else {
@@ -339,7 +336,7 @@ void z80cpu::debugger_print_flags(const int flagRegister) {
 }
 
 
-void z80cpu::reset() {
+void z80cpu::reset() noexcept {
     regA = 0;
     regB = 0;
     regC = 0;
