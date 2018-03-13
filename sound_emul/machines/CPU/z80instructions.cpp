@@ -35,10 +35,7 @@
 // done daa
 // done res (iyx+d) instruction timing wrong, sets flags <- instruction not triggered!
 // TODO(utz): some instruction timings still seem wrong
-// TODO(utz): seperate tick calculation, run instructions at the end of the count
-// TODO(utz): with tick count known in advance, it should suffice to run execute_tick() only when tick count has expired
-// TODO(utz): maybe: with instructions run at end of tick count, register pointer could be calculated in advance,
-//      which would allow i* ops to be generic, but would overall slow down execution -> perhaps not worth it
+// done: seperate tick calculation, run instructions at the end of the count
 // TODO(utz): add interrupts
 // TODO(utz): regQ emulation
 
@@ -53,17 +50,16 @@
 // GENERIC 16-BIT REGISTER
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_r16_nn() {
+void z80cpu::ld_r16_nn() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     *(reg + 1) = memory->at((regPC + 1) & 0xffff);
     *reg = memory->at((regPC + 2) & 0xffff);
 
     regPC += 3;
-    return 10;
 }
 
-int z80cpu::add_hl_r16() {
+void z80cpu::add_hl_r16() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     regMEMPTR = (regL + (regH << 8) + 1) & 0xffff;
@@ -81,10 +77,9 @@ int z80cpu::add_hl_r16() {
     regH &= 0xff;
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::inc_r16() {
+void z80cpu::inc_r16() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     *(reg + 1) += 1;
@@ -93,10 +88,9 @@ int z80cpu::inc_r16() {
     *(reg + 1) &= 0xff;
 
     regPC++;
-    return 6;
 }
 
-int z80cpu::dec_r16() {
+void z80cpu::dec_r16() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     *reg -= 1;
@@ -105,11 +99,10 @@ int z80cpu::dec_r16() {
     *reg &= 0xff;
 
     regPC++;
-    return 6;
 }
 
 
-int z80cpu::pop_r16() {
+void z80cpu::pop_r16() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     *(reg + 1) = memory->at(regSP);
@@ -117,10 +110,9 @@ int z80cpu::pop_r16() {
     regSP = (regSP + 2) & 0xffff;
 
     regPC++;
-    return 10;
 }
 
-int z80cpu::push_r16() {
+void z80cpu::push_r16() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     regSP = (regSP - 2) & 0xffff;
@@ -128,14 +120,13 @@ int z80cpu::push_r16() {
     memory->at((regSP + 1) & 0xffff) = *reg;
 
     regPC++;
-    return 11;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // GENERIC 8-BIT REGISTER
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::inc_r8() {
+void z80cpu::inc_r8() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     regF = (regF & 1) | (((*reg & 0xf) + 1) & 0x10);        // H,N,(C)
@@ -147,10 +138,9 @@ int z80cpu::inc_r8() {
     if (!*reg) regF |= 0x40;                                // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::dec_r8() {
+void z80cpu::dec_r8() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     regF = (regF & 1) | (((*reg & 0xf) - 1) & 0x10) | 2;    // H,N,(C)
@@ -162,34 +152,29 @@ int z80cpu::dec_r8() {
     if (!*reg) regF |= 0x40;                                // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_r8_n() {
+void z80cpu::ld_r8_n() {
     *regPtr[(memory->at(regPC) >> 3) & 0x7] = memory->at((regPC + 1) & 0xffff);
     regPC += 2;
-    return 7;
 }
 
-int z80cpu::ld_r8_r8() {
+void z80cpu::ld_r8_r8() {
     *regPtr[(memory->at(regPC) >> 3) & 0x7] = *regPtr[memory->at(regPC) & 0x7];
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_r8_athl() {
+void z80cpu::ld_r8_athl() {
     *regPtr[(memory->at(regPC) >> 3) & 0x7] = memory->at(regL + (regH << 8));
     regPC++;
-    return 7;
 }
 
-int z80cpu::ld_athl_r8() {
+void z80cpu::ld_athl_r8() {
     memory->at(regL + (regH << 8)) = *regPtr[memory->at(regPC) & 0x7];
     regPC++;
-    return 7;
 }
 
-int z80cpu::adx_a_r8() {
+void z80cpu::adx_a_r8() {
     int *reg = regPtr[memory->at(regPC) & 0x7];
     // performs add_a_r8 when bit 3 of opcode is reset, else adc_a_r8
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
@@ -203,10 +188,9 @@ int z80cpu::adx_a_r8() {
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::sbx_a_r8() {
+void z80cpu::sbx_a_r8() {
     int *reg = regPtr[memory->at(regPC) & 0x7];
     // performs sub_r8 when bit 3 of opcode is reset, else sbc_a_r8
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
@@ -220,37 +204,33 @@ int z80cpu::sbx_a_r8() {
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::and_r8() {
+void z80cpu::and_r8() {
     regA &= *regPtr[memory->at(regPC) & 0x7];
     regF = (regA & 0xa8) | parityTable[regA] | 0x10;    // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                            // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::xor_r8() {
+void z80cpu::xor_r8() {
     regA = (regA ^ *regPtr[memory->at(regPC) & 0x7]) & 0xff;
     regF = (regA & 0xa8) | parityTable[regA];       // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::or_r8() {
+void z80cpu::or_r8() {
     regA = (regA | *regPtr[memory->at(regPC) & 0x7]) & 0xff;
     regF = (regA & 0xa8) | parityTable[regA];       // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::cp_r8() {
+void z80cpu::cp_r8() {
     int *reg = regPtr[memory->at(regPC) & 0x7];
 
     regF = (((regA - *reg) & 0x100) >> 8) | (((regA & 0xf) - (*reg & 0xf)) & 0x10)      // H,C
@@ -259,7 +239,6 @@ int z80cpu::cp_r8() {
     if (!(regA - *reg)) regF |= 0x40;                                                   // Z
 
     regPC++;
-    return 4;
 }
 
 
@@ -267,34 +246,30 @@ int z80cpu::cp_r8() {
 // GENERIC CONDITIONAL
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::jr_cc_n() {
+void z80cpu::jr_cc_n() {
     if (((regF & conditionCodes[(memory->at(regPC) & 0x10) >> 4]) && (memory->at(regPC) & 8))
         || ((!(regF & conditionCodes[(memory->at(regPC) & 0x10) >> 4])) && (!(memory->at(regPC) & 8)))) {
         regPC++;
         regPC = (regPC + 1 + (((-(memory->at(regPC) >> 7)) & 0xffffff00) | memory->at(regPC))) & 0xffff;
 
         regMEMPTR = regPC;
-        return 12;
+    } else {
+        regPC += 2;
     }
-
-    regPC += 2;
-    return 7;
 }
 
-int z80cpu::ret_cc() {
+void z80cpu::ret_cc() {
     if (((regF & conditionCodes[(memory->at(regPC) & 0x30) >> 4]) && (memory->at(regPC) & 8))
         || ((!(regF & conditionCodes[(memory->at(regPC) & 0x30) >> 4])) && (!(memory->at(regPC) & 8)))) {
         regPC = memory->at(regSP) + (memory->at((regSP + 1) & 0xffff) << 8);
         regMEMPTR = regPC;
         regSP = (regSP + 2) & 0xffff;
-        return 11;
+    } else {
+        regPC++;
     }
-
-    regPC++;
-    return 5;
 }
 
-int z80cpu::jp_cc_nn() {
+void z80cpu::jp_cc_nn() {
     regMEMPTR = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
 
     if (((regF & conditionCodes[(memory->at(regPC) & 0x30) >> 4]) && (memory->at(regPC) & 8))
@@ -303,11 +278,9 @@ int z80cpu::jp_cc_nn() {
     } else {
         regPC += 3;
     }
-
-    return 10;
 }
 
-int z80cpu::call_cc_nn() {
+void z80cpu::call_cc_nn() {
     regMEMPTR = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
 
     if (((regF & conditionCodes[(memory->at(regPC) & 0x30) >> 4]) && (memory->at(regPC) & 8))
@@ -317,11 +290,9 @@ int z80cpu::call_cc_nn() {
         memory->at((regSP + 1) & 0xffff) = ((regPC + 3) & 0xff00) >> 8;
 
         regPC = regMEMPTR;
-        return 17;
+    } else {
+        regPC += 3;
     }
-
-    regPC += 3;
-    return 10;
 }
 
 
@@ -329,33 +300,29 @@ int z80cpu::call_cc_nn() {
 // GENERIC MISC
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::rst_xx() {
+void z80cpu::rst_xx() {
     regPC = memory->at(regPC) & 0x38;
     regMEMPTR = regPC;
-
-    return 11;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // group 0x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::nop() {
+void z80cpu::nop() {
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_atbc_a() {
+void z80cpu::ld_atbc_a() {
     memory->at(regC + (regB << 8)) = regA;
 
     regMEMPTR = ((regC + 1) & 0xff) | (regA * 0x100);
     if (cpuType == Z80Type::BM1) regMEMPTR &= 0xff;
 
     regPC++;
-    return 7;
 }
 
-int z80cpu::rlca() {
+void z80cpu::rlca() {
     int carry = 0;
     if (regA & 0x80) carry = 1;
 
@@ -364,10 +331,9 @@ int z80cpu::rlca() {
     regF = (regF & 0xd5) | (regA & 0x28) | carry;       // set 5,3,N,C flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::ex_af_af() {
+void z80cpu::ex_af_af() {
     int temp = regA;
     regA = regAs;
     regAs = temp;
@@ -375,103 +341,85 @@ int z80cpu::ex_af_af() {
     regF = regFs;
     regFs = temp;
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_a_atbc() {
+void z80cpu::ld_a_atbc() {
     regA = memory->at(regC + (regB << 8));
 
     regMEMPTR = (regC + (regB << 8) + 1) & 0xffff;
 
     regPC++;
-    return 7;
 }
 
-int z80cpu::rrca() {
+void z80cpu::rrca() {
     int carry = regA & 1;
     regA = (regA >> 1) | (carry * 0x80);
 
     regF = (regF & 0xd5) | (regA & 0x28) | carry;       // set 5,3,N,C flag
 
     regPC++;
-    return 4;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // group 1x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::djnz() {
+void z80cpu::djnz() {
     regB = (regB - 1) & 0xff;
 
     if (regB) {
         regPC++;
         regPC = (regPC + 1 + (((-(memory->at(regPC) >> 7)) & 0xffffff00) | memory->at(regPC))) & 0xffff;
-
-        regMEMPTR = regPC;
-        return 13;
+    } else {
+        regPC += 2;
     }
 
-    regPC += 2;
-
     regMEMPTR = regPC;
-    return 8;
 }
 
-int z80cpu::ld_atde_a() {
+void z80cpu::ld_atde_a() {
     memory->at(regE + (regD << 8)) = regA;
 
     regMEMPTR = ((regE + 1) & 0xff) | (regA << 8);
     if (cpuType == Z80Type::BM1) regMEMPTR &= 0xff;
 
     regPC++;
-    return 7;
 }
 
-int z80cpu::rla() {
+void z80cpu::rla() {
     int carry = 0;
     if (regA & 0x80) carry = 1;
 
     regA = (regA << 1) + (regF & 1);
-
     regF = (regF & 0xd5) | (regA & 0x28) | carry;       // set 5,3,N,C flag
-
     regPC++;
-    return 4;
 }
 
-int z80cpu::jr() {
+void z80cpu::jr() {
     regPC++;
     regPC = (regPC + 1 + (((-(memory->at(regPC) >> 7)) & 0xffffff00) | memory->at(regPC))) & 0xffff;
-
     regMEMPTR = regPC;
-    return 12;
 }
 
-int z80cpu::ld_a_atde() {
+void z80cpu::ld_a_atde() {
     regA = memory->at(regE + (regD << 8));
-
     regMEMPTR = (regE + (regD << 8) + 1) & 0xffff;
-
     regPC++;
-    return 7;
 }
 
-int z80cpu::rra() {
+void z80cpu::rra() {
     int carry = regA & 1;
+
     regA = (regA >> 1) | ((regF & 1) * 0x80);
-
     regF = (regF & 0xd5) | (regA & 0x28) | carry;       // set 5,3,N,C flag
-
     regPC++;
-    return 4;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // group 2x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_atnn_hl() {
+void z80cpu::ld_atnn_hl() {
     int addr = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
     regMEMPTR = (addr + 1) & 0xffff;
 
@@ -479,10 +427,9 @@ int z80cpu::ld_atnn_hl() {
     memory->at(regMEMPTR) = regH;
 
     regPC += 3;
-    return 16;
 }
 
-int z80cpu::daa() {
+void z80cpu::daa() {
     int temp = 0;
     int carry = regF & 1;
 
@@ -502,10 +449,9 @@ int z80cpu::daa() {
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_hl_atnn() {
+void z80cpu::ld_hl_atnn() {
     int addr = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
     regMEMPTR = (addr + 1) & 0xffff;
 
@@ -513,16 +459,12 @@ int z80cpu::ld_hl_atnn() {
     regH = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 16;
 }
 
-int z80cpu::cpl() {
+void z80cpu::cpl() {
     regA = (~regA) & 0xff;
-
     regF = ((regF & 0xd7) | (regA & 0x28)) | 0x12;      // set 5,H,3,N flags
-
     regPC++;
-    return 4;
 }
 
 
@@ -530,28 +472,25 @@ int z80cpu::cpl() {
 // block 3x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_sp_nn() {
+void z80cpu::ld_sp_nn() {
     regSP = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
 
     regPC += 3;
-    return 10;
 }
 
-int z80cpu::ld_atnn_a() {
+void z80cpu::ld_atnn_a() {
     regMEMPTR = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
     memory->at(regMEMPTR) = regA;
     regMEMPTR = (regMEMPTR + 1) & 0xffff;
     regPC += 3;
-    return 13;
 }
 
-int z80cpu::inc_sp() {
+void z80cpu::inc_sp() {
     regSP = (regSP + 1) & 0xffff;
     regPC++;
-    return 6;
 }
 
-int z80cpu::inc_athl() {
+void z80cpu::inc_athl() {
     int regHL = regL + (regH << 8);
 
     regF = (regF & 1) | (((memory->at(regHL) & 0xf) + 1) & 0x10);       // H,N,(C)
@@ -563,10 +502,9 @@ int z80cpu::inc_athl() {
     if (!memory->at(regHL)) regF |= 0x40;                               // Z
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::dec_athl() {
+void z80cpu::dec_athl() {
     int regHL = regL + (regH << 8);
 
     regF = (regF & 1) | (((memory->at(regHL) & 0xf) - 1) & 0x10) | 2;   // H,N,(C)
@@ -578,22 +516,19 @@ int z80cpu::dec_athl() {
     if (!memory->at(regHL)) regF |= 0x40;                               // Z
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::ld_athl_n() {
+void z80cpu::ld_athl_n() {
     memory->at(regL + (regH << 8)) = memory->at((regPC + 1) & 0xffff);
     regPC++;
-    return 10;
 }
 
-int z80cpu::scf() {
+void z80cpu::scf() {
     regF = (regF & 0xc5) | (regA & 0x28) | 1;       // set 5,H,3,N,C flags
     regPC++;
-    return 4;
 }
 
-int z80cpu::add_hl_sp() {
+void z80cpu::add_hl_sp() {
     int sp_lo = regSP & 0xff;
     int sp_hi = regSP >> 8;
 
@@ -611,31 +546,27 @@ int z80cpu::add_hl_sp() {
     regH &= 0xff;
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::ld_a_atnn() {
+void z80cpu::ld_a_atnn() {
     regMEMPTR = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
     regA = memory->at(regMEMPTR);
 
     regMEMPTR = (regMEMPTR + 1) & 0xffff;
 
     regPC += 3;
-    return 13;
 }
 
-int z80cpu::dec_sp() {
+void z80cpu::dec_sp() {
     regSP = (regSP - 1) & 0xffff;
 
     regPC++;
-    return 6;
 }
 
-int z80cpu::ccf() {
+void z80cpu::ccf() {
     regF = ((regF & 0xc5) | (regA & 0x28) | ((regF & 1) << 4)) ^ 1;     // set 5,H,3,N,C flags
 
     regPC++;
-    return 4;
 }
 
 
@@ -643,9 +574,8 @@ int z80cpu::ccf() {
 // block 7x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::halt() {
+void z80cpu::halt() {
     regPC++;    // TODO(utz): instruction currently disabled, acts as nop
-    return 4;
 }
 
 
@@ -653,7 +583,7 @@ int z80cpu::halt() {
 // block 8x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::adx_a_athl() {
+void z80cpu::adx_a_athl() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
     int addval = memory->at(regL + (regH << 8));
 
@@ -666,14 +596,13 @@ int z80cpu::adx_a_athl() {
     if (!regA) regF |= 0x40;        // set Z flag
 
     regPC++;
-    return 7;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // block 9x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::sbx_a_athl() {
+void z80cpu::sbx_a_athl() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
     int subval = memory->at(regL + (regH << 8));
 
@@ -686,29 +615,26 @@ int z80cpu::sbx_a_athl() {
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 7;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // block Ax
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::and_athl() {
+void z80cpu::and_athl() {
     regA &= memory->at(regL + (regH << 8));
     regF = (regA & 0xa8) | parityTable[regA] | 0x10;    // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                            // set Z flag
 
     regPC++;
-    return 7;
 }
 
-int z80cpu::xor_athl() {
+void z80cpu::xor_athl() {
     regA = (regA ^ memory->at(regL + (regH << 8))) & 0xff;
     regF = (regA & 0xa8) | parityTable[regA];   // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                    // set Z flag
 
     regPC++;
-    return 7;
 }
 
 
@@ -716,16 +642,15 @@ int z80cpu::xor_athl() {
 // block Bx
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::or_athl() {
+void z80cpu::or_athl() {
     regA = (regA | memory->at(regL + (regH << 8))) & 0xff;
     regF = (regA & 0xa8) | parityTable[regA];       // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 7;
 }
 
-int z80cpu::cp_athl() {
+void z80cpu::cp_athl() {
     int cpval = memory->at(regL + (regH << 8));
 
     regF = (((regA - cpval) & 0x100) >> 8) | (((regA & 0xf) - (cpval & 0xf)) & 0x10)    // H,C
@@ -734,7 +659,6 @@ int z80cpu::cp_athl() {
     if (!(regA - cpval)) regF |= 0x40;                                                  // Z
 
     regPC++;
-    return 7;
 }
 
 
@@ -742,47 +666,42 @@ int z80cpu::cp_athl() {
 // block Cx
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::jp_nn() {
+void z80cpu::jp_nn() {
     regPC = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
     regMEMPTR = regPC;
-    return 10;
 }
 
-int z80cpu::ret() {
+void z80cpu::ret() {
     regPC = memory->at(regSP) + (memory->at((regSP + 1) & 0xffff) << 8);
     regMEMPTR = regPC;
     regSP = (regSP + 2) & 0xffff;
-    return 11;
 }
 
-int z80cpu::prefix_cb() {
+void z80cpu::prefix_cb() {
     regPC = (regPC + 1) & 0xffff;
-    int ticks;
 
     if (memory->at(regPC) >= 0xc0) {
-        ticks = cpu_instructions_cb_set[memory->at(regPC) & 0x7](this);
+        cpu_instructions_cb_set[memory->at(regPC) & 0x7](this);
     } else if (memory->at(regPC) >= 0x80) {
-        ticks = cpu_instructions_cb_res[memory->at(regPC) & 0x7](this);
+        cpu_instructions_cb_res[memory->at(regPC) & 0x7](this);
     } else if (memory->at(regPC) >= 0x40) {
-        ticks = cpu_instructions_cb_bit[memory->at(regPC) & 0x7](this);
+        cpu_instructions_cb_bit[memory->at(regPC) & 0x7](this);
     } else {
-        ticks = cpu_instructions_cb[static_cast<unsigned>(memory->at(regPC))](this);
+        cpu_instructions_cb[static_cast<unsigned>(memory->at(regPC))](this);
     }
 
     regPC++;
-    return 4 + ticks;
 }
 
-int z80cpu::call_nn() {
+void z80cpu::call_nn() {
     regSP = (regSP - 2) & 0xffff;
     memory->at(regSP) = (regPC + 3) & 0xff;
     memory->at((regSP + 1) & 0xffff) = ((regPC + 3) & 0xff00) >> 8;
     regPC = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
     regMEMPTR = regPC;
-    return 17;
 }
 
-int z80cpu::adx_a_n() {
+void z80cpu::adx_a_n() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
     int addval = memory->at((regPC + 1) & 0xffff);
 
@@ -795,7 +714,6 @@ int z80cpu::adx_a_n() {
     if (!regA) regF |= 0x40;        // set Z flag
 
     regPC += 2;
-    return 7;
 }
 
 
@@ -803,17 +721,16 @@ int z80cpu::adx_a_n() {
 // block Dx
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::out_atn_a() {
+void z80cpu::out_atn_a() {
     regMEMPTR = (memory->at((regPC + 1) & 0xffff) + 1) & 0xff;
     if (cpuType != Z80Type::BM1) regMEMPTR |= (regA * 0x100);
 
     outputPorts[memory->at((regPC + 1) & 0xffff) + (regA << 8)] = regA;
     outputPortsShort[memory->at((regPC + 1) & 0xffff)] = regA;
     regPC += 2;
-    return 11;
 }
 
-int z80cpu::exx() {
+void z80cpu::exx() {
     int temp = regB;
     regB = regBs;
     regBs = temp;
@@ -834,26 +751,23 @@ int z80cpu::exx() {
     regLs = temp;
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::in_a_atn() {                    // TODO(utz): temporary solution!
+void z80cpu::in_a_atn() {                    // TODO(utz): temporary solution!
     regMEMPTR = ((regA << 8) + memory->at((regPC + 1) & 0xffff) + 1) & 0xffff;
 
     regA = inputPorts[memory->at((regPC + 1) & 0xffff) + (regA << 8)]
         | inputPortsShort[memory->at((regPC + 1) & 0xffff)];
 
     regPC += 2;
-    return 11;
 }
 
-int z80cpu::prefix_dd() {
+void z80cpu::prefix_dd() {
     regPC = (regPC + 1) & 0xffff;
-    int ticks = cpu_instructions_dd[static_cast<unsigned>(memory->at(regPC))](this);
-    return 4 + ticks;
+    cpu_instructions_dd[static_cast<unsigned>(memory->at(regPC))](this);
 }
 
-int z80cpu::sbx_a_n() {
+void z80cpu::sbx_a_n() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
     int subval = memory->at((regPC + 1) & 0xffff);
 
@@ -866,7 +780,6 @@ int z80cpu::sbx_a_n() {
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC += 2;
-    return 7;
 }
 
 
@@ -874,7 +787,7 @@ int z80cpu::sbx_a_n() {
 // block Ex
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ex_atsp_hl() {
+void z80cpu::ex_atsp_hl() {
     int temp = regL;
     regL = memory->at(regSP);
     memory->at(regSP) = temp;
@@ -884,24 +797,21 @@ int z80cpu::ex_atsp_hl() {
     memory->at((regSP + 1) & 0xffff) = temp;
 
     regPC++;
-    return 19;
 }
 
-int z80cpu::and_n() {
+void z80cpu::and_n() {
     regA &= memory->at((regPC + 1) & 0xffff);
     regF = (regA & 0xa8) | parityTable[regA] | 0x10;    // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                            // set Z flag
 
     regPC += 2;
-    return 7;
 }
 
-int z80cpu::jp_athl() {
+void z80cpu::jp_athl() {
     regPC = regL + (regH << 8);
-    return 4;
 }
 
-int z80cpu::ex_de_hl() {
+void z80cpu::ex_de_hl() {
     int temp = regD;
     regD = regH;
     regH = temp;
@@ -910,32 +820,25 @@ int z80cpu::ex_de_hl() {
     regL = temp;
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::prefix_ed() {
+void z80cpu::prefix_ed() {
     regPC++;
     regR = (regR & 0x80) | ((regR + 1) & 0x7f);
 
-    int ticks;
-
     if ((memory->at(regPC) < 0x40) | (memory->at(regPC) > 0xbb)) {      // skip useless instructions
-        ticks = 4;
         regPC++;
     } else {
-        ticks = cpu_instructions_ed[static_cast<unsigned>(memory->at(regPC) - 0x40)](this);
+        cpu_instructions_ed[static_cast<unsigned>(memory->at(regPC) - 0x40)](this);
     }
-
-    return 4 + ticks;
 }
 
-int z80cpu::xor_n() {
+void z80cpu::xor_n() {
     regA = (regA ^ memory->at((regPC + 1) & 0xffff)) & 0xff;
     regF = (regA & 0xa8) | parityTable[regA];       // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC += 2;
-    return 7;
 }
 
 
@@ -943,64 +846,57 @@ int z80cpu::xor_n() {
 // block Fx
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::pop_af() {
+void z80cpu::pop_af() {
     regF = memory->at(regSP);
     regA = memory->at((regSP + 1) & 0xffff);
     regSP = (regSP + 2) & 0xffff;
 
     regPC++;
-    return 10;
 }
 
-int z80cpu::di() {
+void z80cpu::di() {
     interruptsEnabled = false;
     regIFF1 = false;
     regIFF2 = false;
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::push_af() {
+void z80cpu::push_af() {
     regSP = (regSP - 2) & 0xffff;
     memory->at(regSP) = regF;
     memory->at((regSP + 1) & 0xffff) = regA;
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::or_n() {
+void z80cpu::or_n() {
     regA |= memory->at((regPC + 1) & 0xffff);
     regF = (regA & 0xa8) | parityTable[regA];   // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                    // set Z flag
 
     regPC += 2;
-    return 7;
 }
 
-int z80cpu::ld_sp_hl() {
+void z80cpu::ld_sp_hl() {
     regSP = regL + (regH << 8);
     regPC++;
-    return 6;
 }
 
-int z80cpu::ei() {
+void z80cpu::ei() {
     interruptsEnabled = false;
     regIFF1 = true;
     regIFF2 = true;
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::prefix_fd() {
+void z80cpu::prefix_fd() {
     regPC = (regPC + 1) & 0xffff;
-    int ticks = cpu_instructions_fd[static_cast<unsigned>(memory->at(regPC))](this);
-    return 4 + ticks;
+    cpu_instructions_fd[static_cast<unsigned>(memory->at(regPC))](this);
 }
 
-int z80cpu::cp_n() {
+void z80cpu::cp_n() {
     int cpval = memory->at((regPC + 1) & 0xffff);
 
     regF = (((regA - cpval) & 0x100) >> 8) | (((regA & 0xf) - (cpval & 0xf)) & 0x10)    // H,C
@@ -1009,7 +905,6 @@ int z80cpu::cp_n() {
     if (!(regA - cpval)) regF |= 0x40;                                                  // Z
 
     regPC += 2;
-    return 7;
 }
 
 
@@ -1024,7 +919,7 @@ int z80cpu::cp_n() {
 // GENERIC
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::in_r8_atc() {
+void z80cpu::in_r8_atc() {
     regMEMPTR = (regC + (regB << 8) + 1) & 0xffff;
 
     int inval = (inputPorts[regC + (regB << 8)] | inputPortsShort[regC]) & 0xff;
@@ -1033,10 +928,9 @@ int z80cpu::in_r8_atc() {
     regF = (regF & 1) | (inval & 0xa8) | ((~(inval ^ (inval >> 4) ^ (inval >> 2) ^ (inval >> 1)) & 1) << 2);
 
     regPC++;
-    return 8;
 }
 
-int z80cpu::out_atc_r8() {
+void z80cpu::out_atc_r8() {
     regMEMPTR = (regC + (regB << 8) + 1) & 0xffff;
 
     if (cpuType == Z80Type::NMOS) {
@@ -1049,10 +943,9 @@ int z80cpu::out_atc_r8() {
     outputPortsShort[regC] = *regPtr[(memory->at(regPC) >> 3) & 7];
 
     regPC++;
-    return 8;
 }
 
-int z80cpu::adc_hl_r16() {
+void z80cpu::adc_hl_r16() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     regL = regL + *reg + (regF & 1);
@@ -1070,10 +963,9 @@ int z80cpu::adc_hl_r16() {
     if (!(regH | regL)) regF |= 0x40;           // set Z flag
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::sbc_hl_r16() {
+void z80cpu::sbc_hl_r16() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     regL = regL - *(reg + 1) - (regF & 1);
@@ -1091,10 +983,9 @@ int z80cpu::sbc_hl_r16() {
     if (!(regH | regL)) regF |= 0x40;                   // set Z flag
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::ld_atnn_r16() {
+void z80cpu::ld_atnn_r16() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     int addr = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
@@ -1104,10 +995,9 @@ int z80cpu::ld_atnn_r16() {
     memory->at(regMEMPTR) = *reg;
 
     regPC += 3;
-    return 16;
 }
 
-int z80cpu::ld_r16_atnn() {
+void z80cpu::ld_r16_atnn() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     int addr = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
@@ -1117,16 +1007,15 @@ int z80cpu::ld_r16_atnn() {
     *(reg - 1) = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 16;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // block ED 4x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::neg() {
+void z80cpu::neg() {
     regF = (((((~regA) & 0xff) + 1) & 0x100) >> 8)
-           | (((((~regA) & 0xf) + 1) & 0x10) >> 4) | (((((~regA) & 0x7f) + 1) & 0x80) >> 4);    // set H,V,C flags
+        | (((((~regA) & 0xf) + 1) & 0x10) >> 4) | (((((~regA) & 0x7f) + 1) & 0x80) >> 4);    // set H,V,C flags
 
     regA = (-(regA)) & 0xff;
 
@@ -1134,45 +1023,34 @@ int z80cpu::neg() {
     if (!regA) regF |= 0x40;        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::retn() {
+void z80cpu::retn() {
     regPC = memory->at(regSP) + memory->at((regSP + 1) & 0xffff);
     regSP = (regSP + 2) & 0xffff;
 
     regIFF1 = regIFF2;
-
-    return 10;
 }
 
-int z80cpu::im0() {
+void z80cpu::im0() {
     interruptMode = 0;
-
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_i_a() {
+void z80cpu::ld_i_a() {
     regI = regA;
-
     regPC++;
-    return 5;
 }
 
-int z80cpu::reti() {
+void z80cpu::reti() {
     regPC = memory->at(regSP) + memory->at((regSP + 1) & 0xffff);
     regSP = (regSP + 2) & 0xffff;
-
     regIFF1 = regIFF2;
-
-    return 10;
 }
 
-int z80cpu::ld_r_a() {
+void z80cpu::ld_r_a() {
     regR = regA;
     regPC++;
-    return 5;
 }
 
 
@@ -1180,13 +1058,12 @@ int z80cpu::ld_r_a() {
 // block ED 5x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::im1() {
+void z80cpu::im1() {
     interruptMode = 1;
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_a_i() {
+void z80cpu::ld_a_i() {
     regA = regI;
 
     regF = (regF & 1) | (regA & 0xa8);  // set S,Z,5,H,3,N flags
@@ -1194,16 +1071,14 @@ int z80cpu::ld_a_i() {
     if (regIFF2) regF |= 4;             // set P/V flag
 
     regPC++;
-    return 5;
 }
 
-int z80cpu::im2() {
+void z80cpu::im2() {
     interruptMode = 2;
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_a_r() {
+void z80cpu::ld_a_r() {
     regA = regR;
 
     regF = (regF & 1) | (regA & 0xa8);  // set S,Z,5,H,3,N flags
@@ -1211,7 +1086,6 @@ int z80cpu::ld_a_r() {
     if (regIFF2) regF |= 4;             // set P/V flag
 
     regPC++;
-    return 5;
 }
 
 
@@ -1219,7 +1093,7 @@ int z80cpu::ld_a_r() {
 // block ED 6x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::rrd() {
+void z80cpu::rrd() {
     regMEMPTR = (regL + (regH << 8) + 1) & 0xffff;
 
     int temp = regA & 0xf;
@@ -1228,11 +1102,9 @@ int z80cpu::rrd() {
     memory->at(regL + (regH << 8)) = ((memory->at(regL + (regH << 8)) >> 4) | (temp << 4)) & 0xff;
 
     regF = (regF & 1) | (regA & 0xa8) | ((~(regA ^ (regA >> 4) ^ (regA >> 2) ^ (regA >> 1)) & 1) << 2);     // set flags
-
-    return 14;
 }
 
-int z80cpu::rld() {
+void z80cpu::rld() {
     regMEMPTR = (regL + (regH << 8) + 1) & 0xffff;
 
     int temp = regA & 0xf;
@@ -1241,8 +1113,6 @@ int z80cpu::rld() {
     memory->at(regL + (regH << 8)) = ((memory->at(regL + (regH << 8)) << 4) | temp) & 0xff;
 
     regF = (regF & 1) | (regA & 0xa8) | ((~(regA ^ (regA >> 4) ^ (regA >> 2) ^ (regA >> 1)) & 1) << 2);     // set flags
-
-    return 14;
 }
 
 
@@ -1250,7 +1120,7 @@ int z80cpu::rld() {
 // block ED 7x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::sbc_hl_sp() {
+void z80cpu::sbc_hl_sp() {
     int sp_lo = regSP & 0xff;
     int sp_hi = regSP >> 8;
 
@@ -1269,10 +1139,9 @@ int z80cpu::sbc_hl_sp() {
     if (!(regH | regL)) regF |= 0x40;                   // set Z flag
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::ld_atnn_sp() {
+void z80cpu::ld_atnn_sp() {
     int addr = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
 
     regMEMPTR = (addr + 1) & 0xffff;
@@ -1280,10 +1149,9 @@ int z80cpu::ld_atnn_sp() {
     memory->at(regMEMPTR) = (regSP & 0xff00) >> 8;
 
     regPC += 3;
-    return 16;
 }
 
-int z80cpu::adc_hl_sp() {
+void z80cpu::adc_hl_sp() {
     int sp_lo = regSP & 0xff;
     int sp_hi = regSP >> 8;
 
@@ -1302,17 +1170,15 @@ int z80cpu::adc_hl_sp() {
     if (!(regH | regL)) regF |= 0x40;           // set Z flag
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::ld_sp_atnn() {
+void z80cpu::ld_sp_atnn() {
     int addr = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
 
     regMEMPTR = (addr + 1) & 0xffff;
     regSP = memory->at(addr) + (memory->at(regMEMPTR) << 8);
 
     regPC += 3;
-    return 16;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1320,7 +1186,7 @@ int z80cpu::ld_sp_atnn() {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-int z80cpu::ldi() {
+void z80cpu::ldi() {
     int temp = regE + (regD << 8);
     int ftr = memory->at(regL + (regH << 8)) + regA;
 
@@ -1341,10 +1207,9 @@ int z80cpu::ldi() {
     if (!(regC | regB)) regF |= 4;                          // set P/V flag
 
     regPC++;
-    return 12;
 }
 
-int z80cpu::cpi() {
+void z80cpu::cpi() {
     int cp = (regA - memory->at(regL + (regH << 8))) & 0xff;
 
     regMEMPTR = (regMEMPTR + 1) & 0xffff;
@@ -1362,10 +1227,9 @@ int z80cpu::cpi() {
     if (!(regC | regB)) regF |= 4;                      // PV flag
 
     regPC++;
-    return 12;
 }
 
-int z80cpu::ini() {
+void z80cpu::ini() {
     regMEMPTR = (regC + (regB << 8) + 1) & 0xffff;
 
     int regHL = regL + (regH << 8);
@@ -1387,10 +1251,9 @@ int z80cpu::ini() {
     // TODO(utz): P/V flag
 
     regPC++;
-    return 12;
 }
 
-int z80cpu::outi() {
+void z80cpu::outi() {
     regMEMPTR = (regC + (regB << 8) + 1) & 0xffff;
 
     int regHL = regL + (regH << 8);
@@ -1412,10 +1275,9 @@ int z80cpu::outi() {
     // TODO(utz): P/V flag
 
     regPC++;
-    return 12;
 }
 
-int z80cpu::ldd() {
+void z80cpu::ldd() {
     int temp = regE + (regD * 0x100);
     int ftr = memory->at(regL + (regH << 8)) + regA;
 
@@ -1436,10 +1298,9 @@ int z80cpu::ldd() {
     if (!(regC | regB)) regF |= 4;                          // set P/V flag
 
     regPC++;
-    return 12;
 }
 
-int z80cpu::cpd() {
+void z80cpu::cpd() {
     int cp = (regA - memory->at(regL + (regH << 8))) & 0xff;
 
     regMEMPTR = (regMEMPTR - 1) & 0xffff;
@@ -1458,10 +1319,9 @@ int z80cpu::cpd() {
     if (!(regC | regB)) regF |= 4;                      // PV flag
 
     regPC++;
-    return 12;
 }
 
-int z80cpu::ind() {
+void z80cpu::ind() {
     regMEMPTR = (regC + (regB << 8) - 1) & 0xffff;
 
     int regHL = regL + (regH << 8);
@@ -1483,10 +1343,9 @@ int z80cpu::ind() {
     // TODO(utz): P/V flag
 
     regPC++;
-    return 12;
 }
 
-int z80cpu::outd() {
+void z80cpu::outd() {
     regMEMPTR = (regC + (regB << 8) - 1) & 0xffff;
 
     int regHL = regL + (regH << 8);
@@ -1510,7 +1369,6 @@ int z80cpu::outd() {
     // TODO(utz): P/V flag
 
     regPC++;
-    return 12;
 }
 
 
@@ -1519,96 +1377,77 @@ int z80cpu::outd() {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-int z80cpu::ldir() {
+void z80cpu::ldir() {
     if ((regB | regC)) {
         ldi();
         regPC = (regPC - 2) & 0xffff;
-        return 17;
+    } else {
+        regPC++;
     }
-
-    regPC++;
-    return 12;
 }
 
-int z80cpu::cpir() {
+void z80cpu::cpir() {
     if ((regB | regC)) {
         cpi();
         regPC = (regPC - 2) & 0xffff;
-        return 17;
+    } else {
+        regPC++;
     }
-
-    regPC++;
-    return 12;
 }
 
-int z80cpu::inir() {
+void z80cpu::inir() {
     if (regB) {
         ini();
         regPC = (regPC - 2) & 0xffff;
-        return 17;
+    } else {
+        regPC++;
     }
-
-    regPC++;
-    return 12;
 }
 
-int z80cpu::otir() {
+void z80cpu::otir() {
     if (regB) {
         outi();
         regPC = (regPC - 2) & 0xffff;
-        return 17;
+    } else {
+        regPC++;
     }
-
-    regPC++;
-    return 12;
 }
 
-int z80cpu::lddr() {
+void z80cpu::lddr() {
     if ((regB | regC)) {
         ldd();
         regPC = (regPC - 2) & 0xffff;
-        return 17;
+    } else {
+         regPC++;
     }
-
-    regPC++;
-    return 12;
 }
 
-int z80cpu::cpdr() {
+void z80cpu::cpdr() {
     if ((regB | regC)) {
         cpd();
         regPC = (regPC - 2) & 0xffff;
-        return 17;
+    } else {
+        regPC++;
     }
-
-    regPC++;
-    return 12;
 }
 
-int z80cpu::indr() {
+void z80cpu::indr() {
     if (regB) {
         ind();
         regPC = (regPC - 2) & 0xffff;
-        return 17;
+    } else {
+        regPC++;
     }
-
-    regPC++;
-    return 12;
 }
 
-int z80cpu::otdr() {
+void z80cpu::otdr() {
     if (regB) {
         outd();
         regPC = (regPC - 2) & 0xffff;
-        return 17;
+    } else {
+        regPC++;
     }
-
-    regPC++;
-    return 12;
 }
-
-
-
 
 
 
@@ -1622,7 +1461,7 @@ int z80cpu::otdr() {
 // CB 0x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::rlc_r8() {
+void z80cpu::rlc_r8() {
     int *reg = regPtr[memory->at(regPC) & 0x7];
 
     *reg = *reg << 1;
@@ -1630,11 +1469,9 @@ int z80cpu::rlc_r8() {
 
     regF = (*reg & 0xa9) | ((~(*reg ^ (*reg >> 4) ^ (*reg >> 2) ^ (*reg >> 1)) & 1) << 2);      // S,5,H,3,P,N,C
     if (!*reg) regF |= 0x40;        // Z
-
-    return 4;
 }
 
-int z80cpu::rlc_athl() {
+void z80cpu::rlc_athl() {
     (memory->at(regL + (regH << 8))) = (memory->at(regL + (regH << 8))) << 1;
     (memory->at(regL + (regH << 8))) = ((memory->at(regL + (regH << 8)))
         | ((memory->at(regL + (regH << 8))) >> 8)) & 0xff;
@@ -1644,11 +1481,9 @@ int z80cpu::rlc_athl() {
            | ((~((memory->at(regL + (regH << 8))) ^ ((memory->at(regL + (regH << 8))) >> 4)
            ^ ((memory->at(regL + (regH << 8))) >> 2) ^ ((memory->at(regL + (regH << 8))) >> 1)) & 1) << 2);
     if (!(memory->at(regL + (regH << 8)))) regF |= 0x40;        // Z
-
-    return 11;
 }
 
-int z80cpu::rrc_r8() {
+void z80cpu::rrc_r8() {
     int *reg = regPtr[memory->at(regPC) & 0x7];
 
     int oldcarry = *reg & 1;
@@ -1657,11 +1492,9 @@ int z80cpu::rrc_r8() {
 
     regF = (*reg & 0xa8) | oldcarry | ((~(*reg ^ (*reg >> 4) ^ (*reg >> 2) ^ (*reg >> 1)) & 1) << 2);   // S,5,H,3,P,N,C
     if (!*reg) regF |= 0x40;        // Z
-
-    return 4;
 }
 
-int z80cpu::rrc_athl() {
+void z80cpu::rrc_athl() {
     int oldcarry = memory->at(regL + (regH << 8)) & 1;
     memory->at(regL + (regH << 8)) = memory->at(regL + (regH << 8)) >> 1;
     memory->at(regL + (regH << 8)) |= (oldcarry << 8);
@@ -1670,8 +1503,6 @@ int z80cpu::rrc_athl() {
         | ((~(memory->at(regL + (regH << 8)) ^ (memory->at(regL + (regH << 8)) >> 4)
         ^ (memory->at(regL + (regH << 8)) >> 2) ^ (memory->at(regL + (regH << 8)) >> 1)) & 1) << 2);    // S,5,H,3,P,N,C
     if (!memory->at(regL + (regH << 8))) regF |= 0x40;      // Z
-
-    return 11;
 }
 
 
@@ -1679,7 +1510,7 @@ int z80cpu::rrc_athl() {
 // CB 1x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::rl_r8() {
+void z80cpu::rl_r8() {
     int *reg = regPtr[memory->at(regPC) & 0x7];
 
     int oldcarry = regF & 1;
@@ -1691,11 +1522,9 @@ int z80cpu::rl_r8() {
 
     regF = (*reg & 0xa8) | oldcarry | ((~(*reg ^ (*reg >> 4) ^ (*reg >> 2) ^ (*reg >> 1)) & 1) << 2);   // S,5,H,3,P,N,C
     if (!*reg) regF |= 0x40;        // Z
-
-    return 4;
 }
 
-int z80cpu::rl_athl() {
+void z80cpu::rl_athl() {
     int oldcarry = regF & 1;
 
     memory->at(regL + (regH << 8)) = ((memory->at(regL + (regH << 8)) << 1) | oldcarry);
@@ -1707,11 +1536,9 @@ int z80cpu::rl_athl() {
            | ((~(memory->at(regL + (regH << 8)) ^ (memory->at(regL + (regH << 8)) >> 4)
            ^ (memory->at(regL + (regH << 8)) >> 2) ^ (memory->at(regL + (regH << 8)) >> 1)) & 1) << 2);
     if (!memory->at(regL + (regH << 8))) regF |= 0x40;  // Z
-
-    return 11;
 }
 
-int z80cpu::rr_r8() {
+void z80cpu::rr_r8() {
     int *reg = regPtr[memory->at(regPC) & 0x7];
 
     int newcarry = *reg & 1;
@@ -1720,11 +1547,9 @@ int z80cpu::rr_r8() {
 
     regF = (*reg & 0xa8) | newcarry | ((~(*reg ^ (*reg >> 4) ^ (*reg >> 2) ^ (*reg >> 1)) & 1) << 2);   // S,5,H,3,P,N,C
     if (!*reg) regF |= 0x40;    // Z
-
-    return 4;
 }
 
-int z80cpu::rr_athl() {
+void z80cpu::rr_athl() {
     int newcarry = memory->at(regL + (regH << 8)) & 1;
 
     memory->at(regL + (regH << 8)) = ((memory->at(regL + (regH << 8)) >> 1) | ((regF & 1) << 7));
@@ -1733,8 +1558,6 @@ int z80cpu::rr_athl() {
         | ((~(memory->at(regL + (regH << 8)) ^ (memory->at(regL + (regH << 8)) >> 4)
         ^ (memory->at(regL + (regH << 8)) >> 2) ^ (memory->at(regL + (regH << 8)) >> 1)) & 1) << 2);    // S,5,H,3,P,N,C
     if (!memory->at(regL + (regH << 8))) regF |= 0x40;      // Z
-
-    return 11;
 }
 
 
@@ -1742,7 +1565,7 @@ int z80cpu::rr_athl() {
 // CB 2x/CB 3x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::slx_r8() {
+void z80cpu::slx_r8() {
     int *reg = regPtr[memory->at(regPC) & 0x7];
 
     regF = *reg >> 7;
@@ -1751,11 +1574,9 @@ int z80cpu::slx_r8() {
 
     regF = regF | (*reg & 0xa8) | ((~(*reg ^ (*reg >> 4) ^ (*reg >> 2) ^ (*reg >> 1)) & 1) << 2);       // S,5,H,3,P,N,C
     if (!*reg) regF |= 0x40;        // Z
-
-    return 4;
 }
 
-int z80cpu::slx_athl() {
+void z80cpu::slx_athl() {
     regF = memory->at(regL + (regH << 8)) >> 7;
 
     memory->at(regL + (regH << 8)) = ((memory->at(regL + (regH << 8)) << 1) | ((memory->at(regPC) >> 4) & 1)) & 0xff;
@@ -1764,11 +1585,9 @@ int z80cpu::slx_athl() {
         | ((~(memory->at(regL + (regH << 8)) ^ (memory->at(regL + (regH << 8)) >> 4)
         ^ (memory->at(regL + (regH << 8)) >> 2) ^ (memory->at(regL + (regH << 8)) >> 1)) & 1) << 2);    // S,5,H,3,P,N,C
     if (!memory->at(regL + (regH << 8))) regF |= 0x40;      // Z
-
-    return 11;
 }
 
-int z80cpu::sra_r8() {
+void z80cpu::sra_r8() {
     int *reg = regPtr[memory->at(regPC) & 0x7];
 
     regF = *reg & 1;
@@ -1777,11 +1596,9 @@ int z80cpu::sra_r8() {
 
     regF = regF | (*reg & 0xa8) | ((~(*reg ^ (*reg >> 4) ^ (*reg >> 2) ^ (*reg >> 1)) & 1) << 2);       // S,5,H,3,P,N,C
     if (!*reg) regF |= 0x40;                // Z
-
-    return 4;
 }
 
-int z80cpu::sra_athl() {
+void z80cpu::sra_athl() {
     regF = memory->at(regL + (regH << 8)) & 1;
 
     memory->at(regL + (regH << 8)) = (memory->at(regL + (regH << 8)) & 0x80) | (memory->at(regL + (regH << 8)) >> 1);
@@ -1790,12 +1607,10 @@ int z80cpu::sra_athl() {
         | ((~(memory->at(regL + (regH << 8)) ^ (memory->at(regL + (regH << 8)) >> 4)
         ^ (memory->at(regL + (regH << 8)) >> 2) ^ (memory->at(regL + (regH << 8)) >> 1)) & 1) << 2);    // S,5,H,3,P,N,C
     if (!memory->at(regL + (regH << 8))) regF |= 0x40;      // Z
-
-    return 11;
 }
 
 
-int z80cpu::srl_r8() {
+void z80cpu::srl_r8() {
     int *reg = regPtr[memory->at(regPC) & 0x7];
 
     regF = *reg & 1;
@@ -1804,11 +1619,9 @@ int z80cpu::srl_r8() {
 
     regF = regF | (*reg & 0xa8) | ((~(*reg ^ (*reg >> 4) ^ (*reg >> 2) ^ (*reg >> 1)) & 1) << 2);       // S,5,H,3,P,N,C
     if (!*reg) regF |= 0x40;        // Z
-
-    return 4;
 }
 
-int z80cpu::srl_athl() {
+void z80cpu::srl_athl() {
     regF = memory->at(regL + (regH << 8)) & 1;
 
     memory->at(regL + (regH << 8)) = (memory->at(regL + (regH << 8)) >> 1);
@@ -1817,8 +1630,6 @@ int z80cpu::srl_athl() {
         | ((~(memory->at(regL + (regH << 8)) ^ (memory->at(regL + (regH << 8)) >> 4)
         ^ (memory->at(regL + (regH << 8)) >> 2) ^ (memory->at(regL + (regH << 8)) >> 1)) & 1) << 2);    // S,5,H,3,P,N,C
     if (!memory->at(regL + (regH << 8))) regF |= 0x40;      // Z
-
-    return 11;
 }
 
 
@@ -1826,7 +1637,7 @@ int z80cpu::srl_athl() {
 // CB 4x..7x (BIT)
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::bit_x_r8() {
+void z80cpu::bit_x_r8() {
     regF = (regF & 1) | 0x10;       // set H flag
     // set Z,PV flags
     if (!(*regPtr[memory->at(regPC) & 0x7] & (1 << ((memory->at(regPC) - 0x40) >> 3)))) {
@@ -1836,17 +1647,13 @@ int z80cpu::bit_x_r8() {
         else if (((memory->at(regPC) - 0x40) >> 3) == 5) regF |= 0x20;
         else if (((memory->at(regPC) - 0x40) >> 3) == 3) regF |= 0x8;
     }
-
-    return 4;
 }
 
-int z80cpu::bit_x_athl() {
+void z80cpu::bit_x_athl() {
     regF = (regF & 1) | 0x10 | ((regMEMPTR >> 8) & 0x28);           // set 5,H,3, preserve C
     // set Z,PV flags
     if (!(memory->at(regL + (regH << 8)) & (1 << ((memory->at(regPC) - 0x40) >> 3)))) regF |= 0x44;
     else if (((memory->at(regPC) - 0x40) >> 3) == 7) regF |= 0x80;
-
-    return 8;
 }
 
 
@@ -1854,14 +1661,12 @@ int z80cpu::bit_x_athl() {
 // CB 8x..Bx (RES)
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::res_x_r8() {
+void z80cpu::res_x_r8() {
     *regPtr[memory->at(regPC) & 0x7] &= (((1 << ((memory->at(regPC) - 0x80) >> 3)) ^ 0xff) & 0xff);
-    return 4;
 }
 
-int z80cpu::res_x_athl() {
+void z80cpu::res_x_athl() {
     memory->at(regL + (regH << 8)) &= (((1 << ((memory->at(regPC) - 0x80) >> 3)) ^ 0xff) & 0xff);
-    return 11;
 }
 
 
@@ -1869,14 +1674,12 @@ int z80cpu::res_x_athl() {
 // CB Cx..Fx (SET)
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::set_x_r8() {
+void z80cpu::set_x_r8() {
     *regPtr[memory->at(regPC) & 0x7] |= (1 << ((memory->at(regPC) - 0xc0) >> 3));
-    return 4;
 }
 
-int z80cpu::set_x_athl() {
+void z80cpu::set_x_athl() {
     memory->at(regL + (regH << 8)) |= (1 << ((memory->at(regPC) - 0xc0) >> 3));
-    return 11;
 }
 
 
@@ -1890,31 +1693,26 @@ int z80cpu::set_x_athl() {
 // GENERIC
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_r8_atixpd() {
+void z80cpu::ld_r8_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
     *regPtr[(memory->at(regPC) >> 3) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 2;
-    return 15;
 }
 
-int z80cpu::ld_r8_ixh() {
+void z80cpu::ld_r8_ixh() {
     *regPtr[(memory->at(regPC) >> 3) & 0x7] = regIXH;
-
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_r8_ixl() {
+void z80cpu::ld_r8_ixl() {
     *regPtr[(memory->at(regPC) >> 3) & 0x7] = regIXL;
-
     regPC++;
-    return 4;
 }
 
-int z80cpu::add_ix_r16() {
+void z80cpu::add_ix_r16() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     regMEMPTR = (regIXL + (regIXH << 8) + 1) & 0xffff;
@@ -1931,21 +1729,19 @@ int z80cpu::add_ix_r16() {
     regIXH &= 0xff;
 
     regPC++;
-    return 11;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // DD 2x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_ix_nn() {
+void z80cpu::ld_ix_nn() {
     regIXL = memory->at((regPC + 1) & 0xffff);
     regIXH = memory->at((regPC + 2) & 0xffff);
     regPC += 3;
-    return 10;
 }
 
-int z80cpu::ld_atnn_ix() {
+void z80cpu::ld_atnn_ix() {
     int addr = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
     regMEMPTR = (addr + 1) & 0xffff;
 
@@ -1953,20 +1749,18 @@ int z80cpu::ld_atnn_ix() {
     memory->at(regMEMPTR) = regIXH;
 
     regPC += 3;
-    return 16;
 }
 
-int z80cpu::inc_ix() {
+void z80cpu::inc_ix() {
     regIXL++;
 
     regIXH = (regIXH + (regIXL >> 8)) & 0xff;
     regIXL &= 0xff;
 
     regPC++;
-    return 6;
 }
 
-int z80cpu::inc_ixh() {
+void z80cpu::inc_ixh() {
     regF = (regF & 1) | (((regIXH & 0xf) + 1) & 0x10);      // H,N,(C)
 
     regIXH = (regIXH + 1) & 0xff;
@@ -1976,10 +1770,9 @@ int z80cpu::inc_ixh() {
     if (!regIXH) regF |= 0x40;                              // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::dec_ixh() {
+void z80cpu::dec_ixh() {
     regF = (regF & 1) | (((regIXH & 0xf) - 1) & 0x10) | 2;  // H,N,(C)
     if (regIXH == 0x80) regF |= 4;                          // V
 
@@ -1989,16 +1782,14 @@ int z80cpu::dec_ixh() {
     if (!regIXH) regF |= 0x40;                              // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_ixh_n() {
+void z80cpu::ld_ixh_n() {
     regIXH = memory->at((regPC + 1) & 0xffff);
     regPC += 2;
-    return 4;
 }
 
-int z80cpu::add_ix_ix() {
+void z80cpu::add_ix_ix() {
     regMEMPTR = (regIXL + (regIXH << 8) + 1) & 0xffff;
 
     int temp = regIXL;
@@ -2014,10 +1805,9 @@ int z80cpu::add_ix_ix() {
     regIXH &= 0xff;
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::ld_ix_atnn() {
+void z80cpu::ld_ix_atnn() {
     int addr = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
 
     regMEMPTR = (addr + 1) & 0xffff;
@@ -2025,20 +1815,18 @@ int z80cpu::ld_ix_atnn() {
     regIXH = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 16;
 }
 
-int z80cpu::dec_ix() {
+void z80cpu::dec_ix() {
     regIXL--;
     regIXH -= (regIXL >> 8);
     regIXL &= 0xff;
     regIXH &= 0xff;
 
     regPC++;
-    return 6;
 }
 
-int z80cpu::inc_ixl() {
+void z80cpu::inc_ixl() {
     regF = (regF & 1) | (((regIXL & 0xf) + 1) & 0x10);      // H,N,(C)
 
     regIXL = (regIXL + 1) & 0xff;
@@ -2048,10 +1836,9 @@ int z80cpu::inc_ixl() {
     if (!regIXL) regF |= 0x40;                              // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::dec_ixl() {
+void z80cpu::dec_ixl() {
     regF = (regF & 1) | (((regIXL & 0xf) - 1) & 0x10) | 2;  // H,N,(C)
     if (regIXL == 0x80) regF |= 4;                          // V
 
@@ -2061,13 +1848,11 @@ int z80cpu::dec_ixl() {
     if (!regIXL) regF |= 0x40;                              // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_ixl_n() {
+void z80cpu::ld_ixl_n() {
     regIXL = memory->at((regPC + 1) & 0xffff);
     regPC += 2;
-    return 4;
 }
 
 
@@ -2076,7 +1861,7 @@ int z80cpu::ld_ixl_n() {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-int z80cpu::inc_atixpd() {
+void z80cpu::inc_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -2089,10 +1874,9 @@ int z80cpu::inc_atixpd() {
     if (!memory->at(regMEMPTR)) regF |= 0x40;                           // Z
 
     regPC += 2;
-    return 19;
 }
 
-int z80cpu::dec_atixpd() {
+void z80cpu::dec_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -2105,20 +1889,18 @@ int z80cpu::dec_atixpd() {
     if (!memory->at(regMEMPTR)) regF |= 0x40;                               // Z
 
     regPC += 2;
-    return 19;
 }
 
-int z80cpu::ld_atixpd_n() {
+void z80cpu::ld_atixpd_n() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
     memory->at(regMEMPTR) = memory->at((regPC + 1) & 0xffff);
 
     regPC += 2;
-    return 15;
 }
 
-int z80cpu::add_ix_sp() {
+void z80cpu::add_ix_sp() {
     int sp_lo = regSP & 0xff;
     int sp_hi = regSP >> 8;
 
@@ -2136,7 +1918,6 @@ int z80cpu::add_ix_sp() {
     regIXH &= 0xff;
 
     regPC++;
-    return 11;
 }
 
 
@@ -2144,28 +1925,24 @@ int z80cpu::add_ix_sp() {
 // DD 6x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_ixh_r8() {
+void z80cpu::ld_ixh_r8() {
     regIXH = *regPtr[memory->at(regPC) & 0x7];
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_ixh_ixl() {
+void z80cpu::ld_ixh_ixl() {
     regIXH = regIXL;
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_ixl_r8() {
+void z80cpu::ld_ixl_r8() {
     regIXL = *regPtr[memory->at(regPC) & 0x7];
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_ixl_ixh() {
+void z80cpu::ld_ixl_ixh() {
     regIXL = regIXH;
     regPC++;
-    return 4;
 }
 
 
@@ -2173,14 +1950,13 @@ int z80cpu::ld_ixl_ixh() {
 // DD 7x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_atixpd_r8() {
+void z80cpu::ld_atixpd_r8() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
     memory->at(regMEMPTR) = *regPtr[memory->at(regPC) & 0x7];
 
     regPC += 2;
-    return 15;
 }
 
 
@@ -2188,7 +1964,7 @@ int z80cpu::ld_atixpd_r8() {
 // DD 8x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::adx_a_ixh() {
+void z80cpu::adx_a_ixh() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regF = (((regA + regIXH + oldcarry) & 0x100) >> 8) | (((regA & 0xf) + (regIXH & 0xf) + oldcarry) & 0x10)
@@ -2200,11 +1976,10 @@ int z80cpu::adx_a_ixh() {
     if (!regA) regF |= 0x40;            // set Z flag
 
     regPC++;
-    return 4;
 }
 
 
-int z80cpu::adx_a_ixl() {
+void z80cpu::adx_a_ixl() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regF = (((regA + regIXL + oldcarry) & 0x100) >> 8) | (((regA & 0xf) + (regIXL & 0xf) + oldcarry) & 0x10)
@@ -2216,10 +1991,9 @@ int z80cpu::adx_a_ixl() {
     if (!regA) regF |= 0x40;            // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::adx_a_atixpd() {
+void z80cpu::adx_a_atixpd() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
@@ -2236,14 +2010,13 @@ int z80cpu::adx_a_atixpd() {
     if (!regA) regF |= 0x40;            // set Z flag
 
     regPC += 2;
-    return 19;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // DD 9x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::sbx_a_ixh() {
+void z80cpu::sbx_a_ixh() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regF = (((regA - regIXH - oldcarry) & 0x100) >> 8) | (((regA & 0xf) - (regIXH & 0xf) - oldcarry) & 0x10)
@@ -2255,10 +2028,9 @@ int z80cpu::sbx_a_ixh() {
     if (!regA) regF |= 0x40;            // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::sbx_a_ixl() {
+void z80cpu::sbx_a_ixl() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regF = (((regA - regIXL - oldcarry) & 0x100) >> 8) | (((regA & 0xf) - (regIXL & 0xf) - oldcarry) & 0x10)
@@ -2270,10 +2042,9 @@ int z80cpu::sbx_a_ixl() {
     if (!regA) regF |= 0x40;        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::sbx_a_atixpd() {
+void z80cpu::sbx_a_atixpd() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
@@ -2290,32 +2061,29 @@ int z80cpu::sbx_a_atixpd() {
     if (!regA) regF |= 0x40;
 
     regPC += 2;
-    return 15;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // DD Ax
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::and_ixh() {
+void z80cpu::and_ixh() {
     regA &= regIXH;
     regF = (regA & 0xa8) | parityTable[regA] | 0x10;    // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                            // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::and_ixl() {
+void z80cpu::and_ixl() {
     regA &= regIXL;
     regF = (regA & 0xa8) | parityTable[regA] | 0x10;    // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                            // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::and_atixpd() {
+void z80cpu::and_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -2324,28 +2092,25 @@ int z80cpu::and_atixpd() {
     if (!regA) regF |= 0x40;                            // set Z flag
 
     regPC += 2;
-    return 15;
 }
 
-int z80cpu::xor_ixh() {
+void z80cpu::xor_ixh() {
     regA = (regA ^ regIXH) & 0xff;
     regF = (regA & 0xa8) | parityTable[regA];       // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::xor_ixl() {
+void z80cpu::xor_ixl() {
     regA = (regA ^ regIXL) & 0xff;
     regF = (regA & 0xa8) | parityTable[regA];       // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::xor_atixpd() {
+void z80cpu::xor_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -2354,7 +2119,6 @@ int z80cpu::xor_atixpd() {
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC += 2;
-    return 15;
 }
 
 
@@ -2362,25 +2126,23 @@ int z80cpu::xor_atixpd() {
 // DD Bx
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::or_ixh() {
+void z80cpu::or_ixh() {
     regA = (regA | regIXH) & 0xff;
     regF = (regA & 0xa8) | parityTable[regA];       // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::or_ixl() {
+void z80cpu::or_ixl() {
     regA = (regA | regIXL) & 0xff;
     regF = (regA & 0xa8) | parityTable[regA];       // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::or_atixpd() {
+void z80cpu::or_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -2389,30 +2151,27 @@ int z80cpu::or_atixpd() {
     if (!regA) regF |= 0x40;                        // set Z flag
 
     regPC++;
-    return 15;
 }
 
-int z80cpu::cp_ixh() {
+void z80cpu::cp_ixh() {
     regF = (((regA - regIXH) & 0x100) >> 8) | (((regA & 0xf) - (regIXH & 0xf)) & 0x10)  // H,C
         | ((((regA ^ regIXH) & (regA ^ (regA - regIXH))) & 0x80) >> 5) | 2              // V,N
         | ((regA - regIXH) & 0x80) | (regIXH & 0x28);                                   // S,5,3 flags
     if (!(regA - regIXH)) regF |= 0x40;                                                 // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::cp_ixl() {
+void z80cpu::cp_ixl() {
     regF = (((regA - regIXL) & 0x100) >> 8) | (((regA & 0xf) - (regIXL & 0xf)) & 0x10)  // H,C
         | ((((regA ^ regIXL) & (regA ^ (regA - regIXL))) & 0x80) >> 5) | 2              // V,N
         | ((regA - regIXL) & 0x80) | (regIXL & 0x28);                                   // S,5,3 flags
     if (!(regA - regIXL)) regF |= 0x40;                                                 // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::cp_atixpd() {
+void z80cpu::cp_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -2424,7 +2183,6 @@ int z80cpu::cp_atixpd() {
     if (!(regA - cpval)) regF |= 0x40;                                                  // Z
 
     regPC += 2;
-    return 15;
 }
 
 
@@ -2432,20 +2190,16 @@ int z80cpu::cp_atixpd() {
 // DD Cx
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::prefix_ddcb() {
-    int ticks;
-
+void z80cpu::prefix_ddcb() {
     if (memory->at((regPC + 2) & 0xffff) >= 0xc0) {
-        ticks = set_x_atixpd();
+        set_x_atixpd();
     } else if (memory->at((regPC + 2) & 0xffff) >= 0x80) {
-        ticks = res_x_atixpd();
+        res_x_atixpd();
     } else if (memory->at((regPC + 2) & 0xffff) >= 0x40) {
-        ticks = bit_x_atixpd();
+        bit_x_atixpd();
     } else {
-        ticks = cpu_instructions_ddcb[static_cast<unsigned>(memory->at((regPC + 2) & 0xffff) >> 3)](this);
+        cpu_instructions_ddcb[static_cast<unsigned>(memory->at((regPC + 2) & 0xffff) >> 3)](this);
     }
-
-    return ticks;
 }
 
 
@@ -2453,16 +2207,15 @@ int z80cpu::prefix_ddcb() {
 // DD Ex
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::pop_ix() {
+void z80cpu::pop_ix() {
     regIXL = memory->at(regSP);
     regIXH = memory->at((regSP + 1) & 0xffff);
     regSP = (regSP + 2) & 0xffff;
 
     regPC++;
-    return 10;
 }
 
-int z80cpu::ex_atsp_ix() {
+void z80cpu::ex_atsp_ix() {
     int temp = regIXL;
     regIXL = memory->at(regSP);
     memory->at(regSP) = temp;
@@ -2472,21 +2225,18 @@ int z80cpu::ex_atsp_ix() {
     memory->at((regSP + 1) & 0xffff) = temp;
 
     regPC++;
-    return 19;
 }
 
-int z80cpu::push_ix() {
+void z80cpu::push_ix() {
     regSP = (regSP - 2) & 0xffff;
     memory->at(regSP) = regIXL;
     memory->at((regSP + 1) & 0xffff) = regIXH;
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::jp_atix() {
+void z80cpu::jp_atix() {
     regPC = regIXL + (regIXH << 8);
-    return 4;
 }
 
 
@@ -2494,10 +2244,9 @@ int z80cpu::jp_atix() {
 // DD Fx
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_sp_ix() {
+void z80cpu::ld_sp_ix() {
     regSP = regIXL + (regIXH << 8);
     regPC++;
-    return 6;
 }
 
 
@@ -2512,32 +2261,29 @@ int z80cpu::ld_sp_ix() {
 // GENERIC
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_r8_atiypd() {
+void z80cpu::ld_r8_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
     *regPtr[(memory->at(regPC) >> 3) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 2;
-    return 15;
 }
 
 
-int z80cpu::ld_r8_iyh() {
+void z80cpu::ld_r8_iyh() {
     *regPtr[(memory->at(regPC) >> 3) & 0x7] = regIYH;
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_r8_iyl() {
+void z80cpu::ld_r8_iyl() {
     *regPtr[(memory->at(regPC) >> 3) & 0x7] = regIYL;
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::add_iy_r16() {
+void z80cpu::add_iy_r16() {
     int *reg = regPtr[(memory->at(regPC) >> 3) & 0x7];
 
     regMEMPTR = (regIYL + (regIYH << 8) + 1) & 0xffff;
@@ -2554,21 +2300,19 @@ int z80cpu::add_iy_r16() {
     regIYH &= 0xff;
 
     regPC++;
-    return 11;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // FD 2x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_iy_nn() {
+void z80cpu::ld_iy_nn() {
     regIYL = memory->at((regPC + 1) & 0xffff);
     regIYH = memory->at((regPC + 2) & 0xffff);
     regPC += 3;
-    return 10;
 }
 
-int z80cpu::ld_atnn_iy() {
+void z80cpu::ld_atnn_iy() {
     int addr = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
 
     regMEMPTR = (addr + 1) & 0xffff;
@@ -2576,20 +2320,18 @@ int z80cpu::ld_atnn_iy() {
     memory->at(regMEMPTR) = regIYH;
 
     regPC += 3;
-    return 16;
 }
 
-int z80cpu::inc_iy() {
+void z80cpu::inc_iy() {
     regIYL++;
     regIYH += (regIYL >> 8);
     regIYL &= 0xff;
     regIYH &= 0xff;
 
     regPC++;
-    return 6;
 }
 
-int z80cpu::inc_iyh() {
+void z80cpu::inc_iyh() {
     regF = (regF & 1) | (((regIYH & 0xf) + 1) & 0x10);      // H,N,(C)
 
     regIYH = (regIYH + 1) & 0xff;
@@ -2599,10 +2341,9 @@ int z80cpu::inc_iyh() {
     if (!regIYH) regF |= 0x40;              // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::dec_iyh() {
+void z80cpu::dec_iyh() {
     regF = (regF & 1) | (((regIYH & 0xf) - 1) & 0x10) | 2;      // H,N,(C)
     if (regIYH == 0x80) regF |= 4;          // V
 
@@ -2612,16 +2353,14 @@ int z80cpu::dec_iyh() {
     if (!regIYH) regF |= 0x40;              // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_iyh_n() {
+void z80cpu::ld_iyh_n() {
     regIYH = memory->at((regPC + 1) & 0xffff);
     regPC += 2;
-    return 4;
 }
 
-int z80cpu::add_iy_iy() {
+void z80cpu::add_iy_iy() {
     regMEMPTR = (regIYL + (regIYH << 8) + 1) & 0xffff;
 
     int temp = regIYL;
@@ -2637,10 +2376,9 @@ int z80cpu::add_iy_iy() {
     regIYH &= 0xff;
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::ld_iy_atnn() {
+void z80cpu::ld_iy_atnn() {
     int addr = memory->at((regPC + 1) & 0xffff) + (memory->at((regPC + 2) & 0xffff) << 8);
 
     regMEMPTR = (addr + 1) & 0xffff;
@@ -2648,20 +2386,18 @@ int z80cpu::ld_iy_atnn() {
     regIYH = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 16;
 }
 
-int z80cpu::dec_iy() {
+void z80cpu::dec_iy() {
     regIYL--;
     regIYH -= (regIYL >> 8);
     regIYL &= 0xff;
     regIYH &= 0xff;
 
     regPC++;
-    return 6;
 }
 
-int z80cpu::inc_iyl() {
+void z80cpu::inc_iyl() {
     regF = (regF & 1) | (((regIYL & 0xf) + 1) & 0x10);      // H,N,(C)
 
     regIYL = (regIYL + 1) & 0xff;
@@ -2671,10 +2407,9 @@ int z80cpu::inc_iyl() {
     if (!regIYL) regF |= 0x40;              // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::dec_iyl() {
+void z80cpu::dec_iyl() {
     regF = (regF & 1) | (((regIYL & 0xf) - 1) & 0x10) | 2;      // H,N,(C)
     if (regIYL == 0x80) regF |= 4;          // V
 
@@ -2684,13 +2419,11 @@ int z80cpu::dec_iyl() {
     if (!regIYL) regF |= 0x40;              // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_iyl_n() {
+void z80cpu::ld_iyl_n() {
     regIYL = memory->at((regPC + 1) & 0xffff);
     regPC += 2;
-    return 4;
 }
 
 
@@ -2699,7 +2432,7 @@ int z80cpu::ld_iyl_n() {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-int z80cpu::inc_atiypd() {
+void z80cpu::inc_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -2712,10 +2445,9 @@ int z80cpu::inc_atiypd() {
     if (!memory->at(regMEMPTR)) regF |= 0x40;           // Z
 
     regPC += 2;
-    return 19;
 }
 
-int z80cpu::dec_atiypd() {
+void z80cpu::dec_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -2728,20 +2460,18 @@ int z80cpu::dec_atiypd() {
     if (!memory->at(regMEMPTR)) regF |= 0x40;           // Z
 
     regPC += 2;
-    return 19;
 }
 
-int z80cpu::ld_atiypd_n() {
+void z80cpu::ld_atiypd_n() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
     memory->at(regMEMPTR) = memory->at((regPC + 1) & 0xffff);
 
     regPC += 2;
-    return 15;
 }
 
-int z80cpu::add_iy_sp() {
+void z80cpu::add_iy_sp() {
     int sp_lo = regSP & 0xff;
     int sp_hi = regSP >> 8;
 
@@ -2759,7 +2489,6 @@ int z80cpu::add_iy_sp() {
     regIYH &= 0xff;
 
     regPC++;
-    return 11;
 }
 
 
@@ -2768,28 +2497,24 @@ int z80cpu::add_iy_sp() {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-int z80cpu::ld_iyh_r8() {
+void z80cpu::ld_iyh_r8() {
     regIYH = *regPtr[memory->at(regPC) & 0x7];
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_iyh_iyl() {
+void z80cpu::ld_iyh_iyl() {
     regIYH = regIYL;
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_iyl_r8() {
+void z80cpu::ld_iyl_r8() {
     regIYL = *regPtr[memory->at(regPC) & 0x7];
     regPC++;
-    return 4;
 }
 
-int z80cpu::ld_iyl_iyh() {
+void z80cpu::ld_iyl_iyh() {
     regIYL = regIYH;
     regPC++;
-    return 4;
 }
 
 
@@ -2797,14 +2522,13 @@ int z80cpu::ld_iyl_iyh() {
 // FD 7x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_atiypd_r8() {
+void z80cpu::ld_atiypd_r8() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
     memory->at(regMEMPTR) = *regPtr[memory->at(regPC) & 0x7];
 
     regPC += 2;
-    return 15;
 }
 
 
@@ -2813,7 +2537,7 @@ int z80cpu::ld_atiypd_r8() {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-int z80cpu::adx_a_iyh() {
+void z80cpu::adx_a_iyh() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regF = (((regA + regIYH + oldcarry) & 0x100) >> 8) | (((regA & 0xf) + (regIYH & 0xf) + oldcarry) & 0x10)
@@ -2825,11 +2549,10 @@ int z80cpu::adx_a_iyh() {
     if (!regA) regF |= 0x40;                // set Z flag
 
     regPC++;
-    return 4;
 }
 
 
-int z80cpu::adx_a_iyl() {
+void z80cpu::adx_a_iyl() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regF = (((regA + regIYL + oldcarry) & 0x100) >> 8) | (((regA & 0xf) + (regIYL & 0xf) + oldcarry) & 0x10)
@@ -2841,10 +2564,9 @@ int z80cpu::adx_a_iyl() {
     if (!regA) regF |= 0x40;                // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::adx_a_atiypd() {
+void z80cpu::adx_a_atiypd() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
@@ -2861,7 +2583,6 @@ int z80cpu::adx_a_atiypd() {
     if (!regA) regF |= 0x40;                // set Z flag
 
     regPC += 2;
-    return 15;
 }
 
 
@@ -2870,7 +2591,7 @@ int z80cpu::adx_a_atiypd() {
 // FD 9x
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::sbx_a_iyh() {
+void z80cpu::sbx_a_iyh() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regF = (((regA - regIYH - oldcarry) & 0x100) >> 8) | (((regA & 0xf) - (regIYH & 0xf) - oldcarry) & 0x10)
@@ -2882,10 +2603,9 @@ int z80cpu::sbx_a_iyh() {
     if (!regA) regF |= 0x40;        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::sbx_a_iyl() {
+void z80cpu::sbx_a_iyl() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regF = (((regA - regIYL - oldcarry) & 0x100) >> 8) | (((regA & 0xf) - (regIYL & 0xf) - oldcarry) & 0x10)
@@ -2897,10 +2617,9 @@ int z80cpu::sbx_a_iyl() {
     if (!regA) regF |= 0x40;        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::sbx_a_atiypd() {
+void z80cpu::sbx_a_atiypd() {
     int oldcarry = (regF & 1) & (memory->at(regPC) >> 3);
 
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
@@ -2917,7 +2636,6 @@ int z80cpu::sbx_a_atiypd() {
     if (!regA) regF |= 0x40;
 
     regPC += 2;
-    return 15;
 }
 
 
@@ -2925,25 +2643,23 @@ int z80cpu::sbx_a_atiypd() {
 // FD Ax
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::and_iyh() {
+void z80cpu::and_iyh() {
     regA &= regIYH;
     regF = (regA & 0xa8) | parityTable[regA] | 0x10;        // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                                // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::and_iyl() {
+void z80cpu::and_iyl() {
     regA &= regIYL;
     regF = (regA & 0xa8) | parityTable[regA] | 0x10;        // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                                // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::and_atiypd() {
+void z80cpu::and_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -2952,28 +2668,25 @@ int z80cpu::and_atiypd() {
     if (!regA) regF |= 0x40;                                // set Z flag
 
     regPC += 2;
-    return 15;
 }
 
-int z80cpu::xor_iyh() {
+void z80cpu::xor_iyh() {
     regA = (regA ^ regIYH) & 0xff;
     regF = (regA & 0xa8) | ((~(regA ^ (regA >> 4) ^ (regA >> 2) ^ (regA >> 1)) & 1) << 2);  // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                                                                // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::xor_iyl() {
+void z80cpu::xor_iyl() {
     regA = (regA ^ regIYL) & 0xff;
     regF = (regA & 0xa8) | ((~(regA ^ (regA >> 4) ^ (regA >> 2) ^ (regA >> 1)) & 1) << 2);  // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                                                                // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::xor_atiypd() {
+void z80cpu::xor_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -2982,7 +2695,6 @@ int z80cpu::xor_atiypd() {
     if (!regA) regF |= 0x40;                                                                // set Z flag
 
     regPC += 2;
-    return 15;
 }
 
 
@@ -2990,25 +2702,23 @@ int z80cpu::xor_atiypd() {
 // FD Bx
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::or_iyh() {
+void z80cpu::or_iyh() {
     regA = (regA | regIYH) & 0xff;
     regF = (regA & 0xa8) | ((~(regA ^ (regA >> 4) ^ (regA >> 2) ^ (regA >> 1)) & 1) << 2);  // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;        // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::or_iyl() {
+void z80cpu::or_iyl() {
     regA = (regA | regIYL) & 0xff;
     regF = (regA & 0xa8) | ((~(regA ^ (regA >> 4) ^ (regA >> 2) ^ (regA >> 1)) & 1) << 2);  // set S,5,H,3,P,N,C flags
     if (!regA) regF |= 0x40;                                                                // set Z flag
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::or_atiypd() {
+void z80cpu::or_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3017,30 +2727,27 @@ int z80cpu::or_atiypd() {
     if (!regA) regF |= 0x40;                                                                // set Z flag
 
     regPC++;
-    return 15;
 }
 
-int z80cpu::cp_iyh() {
+void z80cpu::cp_iyh() {
     regF = (((regA - regIYH) & 0x100) >> 8) | (((regA & 0xf) - (regIYH & 0xf)) & 0x10)      // H,C
            | ((((regA ^ regIYH) & (regA ^ (regA - regIYH))) & 0x80) >> 5) | 2               // V,N
            | ((regA - regIYH) & 0x80) | (regIYH & 0x28);                                    // S,5,3 flags
     if (!(regA - regIYH)) regF |= 0x40;                                                     // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::cp_iyl() {
+void z80cpu::cp_iyl() {
     regF = (((regA - regIYL) & 0x100) >> 8) | (((regA & 0xf) - (regIYL & 0xf)) & 0x10)      // H,C
            | ((((regA ^ regIYL) & (regA ^ (regA - regIYL))) & 0x80) >> 5) | 2               // V,N
            | ((regA - regIYL) & 0x80) | (regIYL & 0x28);                                    // S,5,3 flags
     if (!(regA - regIYL)) regF |= 0x40;                                                     // Z
 
     regPC++;
-    return 4;
 }
 
-int z80cpu::cp_atiypd() {
+void z80cpu::cp_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3052,7 +2759,6 @@ int z80cpu::cp_atiypd() {
     if (!(regA - cpval)) regF |= 0x40;                                                      // Z
 
     regPC += 2;
-    return 15;
 }
 
 
@@ -3060,20 +2766,16 @@ int z80cpu::cp_atiypd() {
 // FD Cx
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::prefix_fdcb() {
-    int ticks;
-
+void z80cpu::prefix_fdcb() {
     if (memory->at((regPC + 2) & 0xffff) >= 0xc0) {
-        ticks = set_x_atiypd();
+        set_x_atiypd();
     } else if (memory->at((regPC + 2) & 0xffff) >= 0x80) {
-        ticks = res_x_atiypd();
+        res_x_atiypd();
     } else if (memory->at((regPC + 2) & 0xffff) >= 0x40) {
-        ticks = bit_x_atiypd();
+        bit_x_atiypd();
     } else {
-        ticks = cpu_instructions_fdcb[static_cast<unsigned>(memory->at((regPC + 2) & 0xffff) >> 3)](this);
+        cpu_instructions_fdcb[static_cast<unsigned>(memory->at((regPC + 2) & 0xffff) >> 3)](this);
     }
-
-    return ticks;
 }
 
 
@@ -3081,16 +2783,15 @@ int z80cpu::prefix_fdcb() {
 // FD Ex
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::pop_iy() {
+void z80cpu::pop_iy() {
     regIYL = memory->at(regSP);
     regIYH = memory->at((regSP + 1) & 0xffff);
     regSP = (regSP + 2) & 0xffff;
 
     regPC++;
-    return 10;
 }
 
-int z80cpu::ex_atsp_iy() {
+void z80cpu::ex_atsp_iy() {
     int temp = regIYL;
     regIYL = memory->at(regSP);
     memory->at(regSP) = temp;
@@ -3100,21 +2801,18 @@ int z80cpu::ex_atsp_iy() {
     memory->at((regSP + 1) & 0xffff) = temp;
 
     regPC++;
-    return 19;
 }
 
-int z80cpu::push_iy() {
+void z80cpu::push_iy() {
     regSP = (regSP - 2) & 0xffff;
     memory->at(regSP) = regIYL;
     memory->at((regSP + 1) & 0xffff) = regIYH;
 
     regPC++;
-    return 11;
 }
 
-int z80cpu::jp_atiy() {
+void z80cpu::jp_atiy() {
     regPC = regIYL + (regIYH << 8);
-    return 4;
 }
 
 
@@ -3122,11 +2820,9 @@ int z80cpu::jp_atiy() {
 // FD Fx
 ////////////////////////////////////////////////////////////////////////////////
 
-int z80cpu::ld_sp_iy() {
+void z80cpu::ld_sp_iy() {
     regSP = regIYL + (regIYH << 8);
-
     regPC++;
-    return 6;
 }
 
 
@@ -3137,7 +2833,7 @@ int z80cpu::ld_sp_iy() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-int z80cpu::rlc_atixpd() {
+void z80cpu::rlc_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3152,10 +2848,9 @@ int z80cpu::rlc_atixpd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::rrc_atixpd() {
+void z80cpu::rrc_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3171,10 +2866,9 @@ int z80cpu::rrc_atixpd() {
     *regPtr[memory->at((regPC + 1) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::rl_atixpd() {
+void z80cpu::rl_atixpd() {
     int oldcarry = regF & 1;
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
@@ -3192,10 +2886,9 @@ int z80cpu::rl_atixpd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::rr_atixpd() {
+void z80cpu::rr_atixpd() {
     int newcarry = memory->at(regMEMPTR) & 1;
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
@@ -3210,10 +2903,9 @@ int z80cpu::rr_atixpd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::sla_atixpd() {
+void z80cpu::sla_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3229,10 +2921,9 @@ int z80cpu::sla_atixpd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::sra_atixpd() {
+void z80cpu::sra_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3248,10 +2939,9 @@ int z80cpu::sra_atixpd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::sll_atixpd() {
+void z80cpu::sll_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
     | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3267,10 +2957,9 @@ int z80cpu::sll_atixpd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::srl_atixpd() {
+void z80cpu::srl_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3286,10 +2975,9 @@ int z80cpu::srl_atixpd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::bit_x_atixpd() {
+void z80cpu::bit_x_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3299,20 +2987,18 @@ int z80cpu::bit_x_atixpd() {
     else if (((memory->at((regPC + 2) & 0xffff) - 0x40) >> 3) == 7) regF |= 0x80;
 
     regPC += 3;
-    return 16;
 }
 
-int z80cpu::res_x_atixpd() {
+void z80cpu::res_x_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
     memory->at(regMEMPTR) &= (((1 << ((memory->at((regPC + 2) & 0xffff) - 0x80) >> 3)) ^ 0xff) & 0xff);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::set_x_atixpd() {
+void z80cpu::set_x_atixpd() {
     regMEMPTR = (regIXL + (regIXH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3321,7 +3007,6 @@ int z80cpu::set_x_atixpd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
 
@@ -3333,7 +3018,7 @@ int z80cpu::set_x_atixpd() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-int z80cpu::rlc_atiypd() {
+void z80cpu::rlc_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3348,10 +3033,9 @@ int z80cpu::rlc_atiypd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::rrc_atiypd() {
+void z80cpu::rrc_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3367,10 +3051,9 @@ int z80cpu::rrc_atiypd() {
     *regPtr[memory->at((regPC + 1) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::rl_atiypd() {
+void z80cpu::rl_atiypd() {
     int oldcarry = regF & 1;
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
@@ -3388,10 +3071,9 @@ int z80cpu::rl_atiypd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::rr_atiypd() {
+void z80cpu::rr_atiypd() {
     int newcarry = memory->at(regMEMPTR) & 1;
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
@@ -3406,10 +3088,9 @@ int z80cpu::rr_atiypd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::sla_atiypd() {
+void z80cpu::sla_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3425,10 +3106,9 @@ int z80cpu::sla_atiypd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::sra_atiypd() {
+void z80cpu::sra_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
     | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3444,10 +3124,9 @@ int z80cpu::sra_atiypd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::sll_atiypd() {
+void z80cpu::sll_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3463,10 +3142,9 @@ int z80cpu::sll_atiypd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::srl_atiypd() {
+void z80cpu::srl_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3482,10 +3160,9 @@ int z80cpu::srl_atiypd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::bit_x_atiypd() {
+void z80cpu::bit_x_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3495,20 +3172,18 @@ int z80cpu::bit_x_atiypd() {
     else if (((memory->at((regPC + 2) & 0xffff) - 0x40) >> 3) == 7) regF |= 0x80;
 
     regPC += 3;
-    return 16;
 }
 
-int z80cpu::res_x_atiypd() {
+void z80cpu::res_x_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
     memory->at(regMEMPTR) &= (((1 << ((memory->at((regPC + 2) & 0xffff) - 0x80) >> 3)) ^ 0xff) & 0xff);
 
     regPC += 3;
-    return 19;
 }
 
-int z80cpu::set_x_atiypd() {
+void z80cpu::set_x_atiypd() {
     regMEMPTR = (regIYL + (regIYH << 8) + (((-(memory->at((regPC + 1) & 0xffff) >> 7)) & 0xffffff00)
         | memory->at((regPC + 1) & 0xffff))) & 0xffff;
 
@@ -3517,5 +3192,4 @@ int z80cpu::set_x_atiypd() {
     *regPtr[memory->at((regPC + 2) & 0xffff) & 0x7] = memory->at(regMEMPTR);
 
     regPC += 3;
-    return 19;
 }

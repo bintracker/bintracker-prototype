@@ -9,10 +9,8 @@
 using namespace std;
 
 
-z80cpu::z80cpu(std::array<int, 0x10000> *mem, Z80Type z80type) {
-    memory = mem;
+z80cpu::z80cpu(std::array<int, 0x10000> *mem, Z80Type z80type): memory(mem) {
     cpuType = z80type;
-
     inputPorts.fill(0);
     inputPortsShort.fill(0);
     outputPorts.fill(0);
@@ -21,9 +19,6 @@ z80cpu::z80cpu(std::array<int, 0x10000> *mem, Z80Type z80type) {
     reset();
 }
 
-
-z80cpu::~z80cpu() {
-}
 
 const std::array<const int, 4> z80cpu::conditionCodes = {{0x40, 0x01, 0x04, 0x80}};
 const std::array<int, 256> z80cpu::parityTable = z80cpu::init_parity_table();
@@ -40,9 +35,169 @@ std::array<int, 256> z80cpu::init_parity_table() {
     return pTab;
 }
 
+const std::array<unsigned, 256> z80cpu::instructionTimingsRegular = {{
+    4, 10, 7, 6, 4, 4, 7, 4, 4, 11, 7, 6, 4, 4, 7, 4,
+    8, 10, 7, 6, 4, 4, 7, 4, 12, 11, 7, 6, 4, 4, 7, 4,
+    7, 10, 16, 6, 4, 4, 7, 4, 7, 11, 16, 6, 4, 4, 7, 4,
+    7, 10, 13, 6, 7, 7, 10, 4, 7, 11, 13, 6, 4, 4, 7, 4,
+    4, 4, 4, 4, 4, 4, 7, 4, 4, 4, 4, 4, 4, 4, 7, 4,
+    4, 4, 4, 4, 4, 4, 7, 4, 4, 4, 4, 4, 4, 4, 7, 4,
+    4, 4, 4, 4, 4, 4, 7, 4, 4, 4, 4, 4, 4, 4, 7, 4,
+    7, 7, 7, 7, 7, 7, 4, 7, 4, 4, 4, 4, 4, 4, 7, 4,
+    4, 4, 4, 4, 4, 4, 7, 4, 4, 4, 4, 4, 4, 4, 7, 4,
+    4, 4, 4, 4, 4, 4, 7, 4, 4, 4, 4, 4, 4, 4, 7, 4,
+    4, 4, 4, 4, 4, 4, 7, 4, 4, 4, 4, 4, 4, 4, 7, 4,
+    4, 4, 4, 4, 4, 4, 7, 4, 4, 4, 4, 4, 4, 4, 7, 4,
+    5, 10, 10, 10, 10, 11, 7, 11, 5, 10, 10, 4, 10, 17, 7, 11,
+    5, 10, 10, 11, 10, 11, 7, 11, 5, 4, 10, 11, 10, 4, 7, 11,
+    5, 10, 10, 19, 10, 11, 7, 11, 5, 4, 10, 4, 10, 4, 7, 11,
+    5, 10, 10, 4, 10, 11, 7, 11, 5, 6, 10, 4, 10, 4, 7, 11
+}};
+const std::array<unsigned, 256> z80cpu::instructionTimingsDD_FD = {{
+    4, 10, 7, 6, 4, 4, 7, 4, 4, 11, 7, 6, 4, 4, 7, 4,
+    8, 10, 7, 6, 4, 4, 7, 4, 12, 11, 7, 6, 4, 4, 7, 4,
+    7, 10, 16, 6, 4, 4, 7, 4, 7, 11, 16, 6, 4, 4, 7, 4,
+    7, 10, 13, 6, 19, 19, 15, 4, 7, 11, 7, 6, 4, 4, 7, 4,
+    4, 4, 4, 4, 4, 4, 15, 4, 4, 4, 4, 4, 4, 4, 15, 4,
+    4, 4, 4, 4, 4, 4, 15, 4, 4, 4, 4, 4, 4, 4, 15, 4,
+    4, 4, 4, 4, 4, 4, 15, 4, 4, 4, 4, 4, 4, 4, 15, 4,
+    15, 15, 15, 15, 15, 15, 4, 15, 4, 4, 4, 4, 4, 4, 15, 4,
+    4, 4, 4, 4, 4, 4, 15, 4, 4, 4, 4, 4, 4, 4, 15, 4,
+    4, 4, 4, 4, 4, 4, 15, 4, 4, 4, 4, 4, 4, 4, 15, 4,
+    4, 4, 4, 4, 4, 4, 15, 4, 4, 4, 4, 4, 4, 4, 15, 4,
+    4, 4, 4, 4, 4, 4, 15, 4, 4, 4, 4, 4, 4, 4, 15, 4,
+    5, 10, 10, 10, 5, 11, 7, 11, 5, 10, 10, 4, 10, 17, 7, 11,
+    5, 10, 10, 11, 5, 11, 7, 11, 5, 4, 10, 11, 10, 4, 7, 11,
+    5, 10, 10, 19, 10, 11, 7, 11, 5, 4, 10, 4, 10, 4, 7, 11,
+    5, 10, 10, 4, 10, 11, 7, 11, 10, 6, 10, 4, 10, 4, 7, 11
+}};
+const std::array<unsigned, 256> z80cpu::instructionTimingsED = {{
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    8, 8, 11, 16, 4, 10, 4, 5, 8, 8, 11, 16, 4, 10, 4, 5,
+    8, 8, 11, 16, 4, 10, 4, 5, 8, 8, 11, 16, 4, 10, 4, 5,
+    8, 8, 11, 16, 4, 10, 4, 14, 8, 8, 11, 16, 4, 10, 4, 14,
+    8, 8, 11, 16, 4, 10, 4, 4, 8, 8, 11, 16, 4, 10, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    12, 12, 12, 12, 4, 4, 4, 4, 12, 12, 12, 12, 4, 4, 4, 4,
+    12, 12, 12, 12, 4, 4, 4, 4, 12, 12, 12, 12, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+}};
+
+
+unsigned z80cpu::get_instruction_timing(int instructionPointer) {
+    int instruction = memory->at(instructionPointer);
+
+    if (instruction == 0xcb) {
+        return 8;
+    } else if (instruction == 0xeb) {
+        instructionPointer = (instructionPointer + 1) & 0xffff;
+        instruction = memory->at(instructionPointer);
+        unsigned cycles = 4;
+        if (instruction == 0xb0 || instruction == 0xb1 || instruction == 0xb8 || instruction == 0xb9) {
+            if (regB | regC) cycles += 5;
+        } else if (instruction == 0xb2 || instruction == 0xb3 || instruction == 0xba || instruction == 0xbb) {
+            if (regB) cycles += 5;
+        }
+        return cycles + instructionTimingsED[instruction];
+    } else if (instruction == 0xdd || instruction == 0xfd) {
+        unsigned cycles = 0;
+        do {
+            ++instructionPointer;
+            instruction = memory->at(instructionPointer);
+            cycles += 4;
+        } while (instructionPointer >= 0xffff && (instruction == 0xdd || instruction == 0xfd));
+        if (instruction == 0xcb) {          // ddcb/fdcb prefix
+            instructionPointer = (instructionPointer + 1) & 0xffff;
+            instruction = memory->at(instructionPointer);
+            if (instruction < 0x40 || instruction > 0x7f) return cycles + 19;
+            return cycles + 16;
+        }
+        return cycles + instructionTimingsDD_FD[instruction] + get_conditional_timing(instruction);     // dd/fd prefix
+    }
+
+    return instructionTimingsRegular[instruction] + get_conditional_timing(instruction);
+}
+
+unsigned z80cpu::get_conditional_timing(const int instruction) {
+    switch (instruction) {
+        case 0x10:  // djnz
+            if (regB) return 5;
+            break;
+        case 0x20:  // jr nz
+            if (!(regF & 0x40)) return 5;
+            break;
+        case 0x28:  // jr z
+            if (regF & 0x40) return 5;
+            break;
+        case 0x30:  // jr nc
+            if (!(regF & 1)) return 5;
+            break;
+        case 0x38:  // jr c
+            if (regF & 1) return 5;
+            break;
+        case 0xc0:  // ret nz
+            if (!(regF & 0x40)) return 6;
+            break;
+        case 0xc4:  // call nz
+            if (!(regF & 0x40)) return 7;
+            break;
+        case 0xc8:  // ret z
+            if (regF & 0x40) return 6;
+            break;
+        case 0xcc:  // call z
+            if (regF & 0x40) return 7;
+            break;
+        case 0xd0:  // ret nc
+            if (!(regF & 1)) return 6;
+            break;
+        case 0xd4:  // call nc
+            if (!(regF & 1)) return 7;
+            break;
+        case 0xd8:  // ret c
+            if (regF & 1) return 6;
+            break;
+        case 0xdc:  // call c
+            if (regF & 1) return 7;
+            break;
+        case 0xe0:  // ret po
+            if (!(regF & 4)) return 6;
+            break;
+        case 0xe4:  // call po
+            if (!(regF & 4)) return 7;
+            break;
+        case 0xe8:  // ret pe
+            if (regF & 4) return 6;
+            break;
+        case 0xec:  // call pe
+            if (regF & 4) return 7;
+            break;
+        case 0xf0:  // ret p
+            if (!(regF & 0x80)) return 6;
+            break;
+        case 0xf4:  // call p
+            if (!(regF & 0x80)) return 7;
+            break;
+        case 0xf8:  // ret m
+            if (regF & 0x80) return 6;
+            break;
+        case 0xfc:  // call m
+            if (regF & 0x80) return 7;
+            break;
+    }
+
+    return 0;
+}
 
 void z80cpu::setPC(int startAddress) {
     regPC = startAddress & 0xffff;
+    instructionCycles = get_instruction_timing(regPC);
     return;
 }
 
@@ -75,7 +230,8 @@ void z80cpu::execute_cycle() {
 
     regR = ((regR & 0x80) | ((regR & 0x7f) + 1));
 
-    instructionCycles = cpu_instructions[(memory->at(regPC)) & 0xff](this);
+    cpu_instructions[(memory->at(regPC)) & 0xff](this);
+    instructionCycles = get_instruction_timing(regPC);
     regPC &= 0xffff;
 
     return;
@@ -108,7 +264,7 @@ void z80cpu::execute_debug() {
         << "\tIFF2: " << regIFF2 << "\tMEMPTR: " << setfill('0') << setw(4) << regMEMPTR << endl;
 
 
-    instructionCycles = 0;
+    instructionCycles = get_instruction_timing(regPC);
 
     cout << hex << "at " << setfill('0') << setw(4) << regPC;
     cout << " exec " << setfill('0') << setw(2) << memory->at(regPC);
@@ -132,9 +288,9 @@ void z80cpu::execute_debug() {
 
     regR = ((regR & 0x80) | ((regR & 0x7f) + 1));
 
-    int ticks = cpu_instructions[static_cast<unsigned>(memory->at(regPC))](this);
+    cpu_instructions[static_cast<unsigned>(memory->at(regPC))](this);
 
-    cout << dec << ", ticks: " << ticks << hex << endl;
+    cout << dec << ", ticks: " << instructionCycles << hex << endl;
 
     regPC &= 0xffff;
 }
@@ -218,5 +374,5 @@ void z80cpu::reset() {
     regIFF1 = false;
     regIFF2 = false;
 
-    instructionCycles = 0;
+    instructionCycles = get_instruction_timing(regPC);
 }

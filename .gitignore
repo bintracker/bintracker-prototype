@@ -20,6 +20,8 @@ CMakeFiles/
 *.cmake
 Makefile
 CMakeCache.txt
+compile_commands.json
 /resources/gui/repl
 /bintracker
 /run_checks.sh
+/run-clang-tidy.py

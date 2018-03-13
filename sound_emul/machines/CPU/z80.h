@@ -28,11 +28,11 @@ class z80cpu {
     int maskable_interrupt();
 
     z80cpu(std::array<int, 0x10000> *mem, Z80Type z80Type);
-    ~z80cpu();
+    ~z80cpu() = default;
 
  private:
     std::array<int, 0x10000> *memory;
-    int instructionCycles;
+    unsigned instructionCycles;
 
     Z80Type cpuType;
 
@@ -74,342 +74,346 @@ class z80cpu {
     static const std::array<const int, 4> conditionCodes;
     // used as lookup by z80 instructions that set the parity flag
     static const std::array<int, 256> parityTable;
+    static const std::array<unsigned, 256> instructionTimingsRegular;
+    static const std::array<unsigned, 256> instructionTimingsDD_FD;
+    static const std::array<unsigned, 256> instructionTimingsED;
 
     static std::array<int, 256> init_parity_table();
-
     void debugger_print_flags(const int flagRegister);
+    unsigned get_instruction_timing(int instructionPointer);
+    unsigned get_conditional_timing(const int instruction);
 
     // generic 16-bit register instructions
-    int ld_r16_nn();
-    int add_hl_r16();
-    int inc_r16();
-    int dec_r16();
-    int pop_r16();
-    int push_r16();
+    void ld_r16_nn();
+    void add_hl_r16();
+    void inc_r16();
+    void dec_r16();
+    void pop_r16();
+    void push_r16();
 
     // generic 8-bit register instructions
-    int inc_r8();
-    int dec_r8();
-    int ld_r8_n();
-    int ld_r8_r8();
-    int ld_r8_athl();
-    int ld_athl_r8();
-    int adx_a_r8();
-    int sbx_a_r8();
-    int and_r8();
-    int xor_r8();
-    int or_r8();
-    int cp_r8();
+    void inc_r8();
+    void dec_r8();
+    void ld_r8_n();
+    void ld_r8_r8();
+    void ld_r8_athl();
+    void ld_athl_r8();
+    void adx_a_r8();
+    void sbx_a_r8();
+    void and_r8();
+    void xor_r8();
+    void or_r8();
+    void cp_r8();
 
     // generic conditional instructions
-    int jr_cc_n();
-    int ret_cc();
-    int jp_cc_nn();
-    int call_cc_nn();
+    void jr_cc_n();
+    void ret_cc();
+    void jp_cc_nn();
+    void call_cc_nn();
 
     // misc generic instructions
-    int rst_xx();
+    void rst_xx();
 
     // regular (non-prefixed) instructions
-    int nop();
-    int ld_atbc_a();
-    int rlca();
-    int ex_af_af();
-    int ld_a_atbc();
-    int rrca();
+    void nop();
+    void ld_atbc_a();
+    void rlca();
+    void ex_af_af();
+    void ld_a_atbc();
+    void rrca();
 
-    int djnz();
-    int ld_atde_a();
-    int rla();
-    int jr();
-    int ld_a_atde();
-    int rra();
+    void djnz();
+    void ld_atde_a();
+    void rla();
+    void jr();
+    void ld_a_atde();
+    void rra();
 
-    int ld_atnn_hl();
-    int daa();
-    int ld_hl_atnn();
-    int cpl();
+    void ld_atnn_hl();
+    void daa();
+    void ld_hl_atnn();
+    void cpl();
 
-    int ld_sp_nn();
-    int ld_atnn_a();
-    int inc_sp();
-    int inc_athl();
-    int dec_athl();
-    int ld_athl_n();
-    int scf();
-    int add_hl_sp();
-    int ld_a_atnn();
-    int dec_sp();
-    int ccf();
+    void ld_sp_nn();
+    void ld_atnn_a();
+    void inc_sp();
+    void inc_athl();
+    void dec_athl();
+    void ld_athl_n();
+    void scf();
+    void add_hl_sp();
+    void ld_a_atnn();
+    void dec_sp();
+    void ccf();
 
-    int halt();
+    void halt();
 
-    int adx_a_athl();
+    void adx_a_athl();
 
-    int sbx_a_athl();
+    void sbx_a_athl();
 
-    int and_athl();
-    int xor_athl();
+    void and_athl();
+    void xor_athl();
 
-    int or_athl();
-    int cp_athl();
+    void or_athl();
+    void cp_athl();
 
-    int jp_nn();
-    int ret();
-    int prefix_cb();
-    int call_nn();
-    int adx_a_n();
+    void jp_nn();
+    void ret();
+    void prefix_cb();
+    void call_nn();
+    void adx_a_n();
 
-    int out_atn_a();
-    int exx();
-    int in_a_atn();
-    int prefix_dd();
-    int sbx_a_n();
+    void out_atn_a();
+    void exx();
+    void in_a_atn();
+    void prefix_dd();
+    void sbx_a_n();
 
-    int ex_atsp_hl();
-    int and_n();
-    int jp_athl();
-    int ex_de_hl();
-    int prefix_ed();
-    int xor_n();
+    void ex_atsp_hl();
+    void and_n();
+    void jp_athl();
+    void ex_de_hl();
+    void prefix_ed();
+    void xor_n();
 
-    int pop_af();
-    int di();
-    int push_af();
-    int or_n();
-    int ld_sp_hl();
-    int ei();
-    int prefix_fd();
-    int cp_n();
+    void pop_af();
+    void di();
+    void push_af();
+    void or_n();
+    void ld_sp_hl();
+    void ei();
+    void prefix_fd();
+    void cp_n();
 
 
     // prefix ED
-    int in_r8_atc();
-    int out_atc_r8();
-    int sbc_hl_r16();
-    int adc_hl_r16();
-    int ld_atnn_r16();
-    int ld_r16_atnn();
+    void in_r8_atc();
+    void out_atc_r8();
+    void sbc_hl_r16();
+    void adc_hl_r16();
+    void ld_atnn_r16();
+    void ld_r16_atnn();
 
-    int neg();
-    int retn();
-    int im0();
-    int ld_i_a();
-    int reti();
-    int ld_r_a();
+    void neg();
+    void retn();
+    void im0();
+    void ld_i_a();
+    void reti();
+    void ld_r_a();
 
-    int im1();
-    int ld_a_i();
-    int im2();
-    int ld_a_r();
+    void im1();
+    void ld_a_i();
+    void im2();
+    void ld_a_r();
 
-    int rrd();
-    int rld();
+    void rrd();
+    void rld();
 
-    int sbc_hl_sp();
-    int ld_atnn_sp();
-    int adc_hl_sp();
-    int ld_sp_atnn();
+    void sbc_hl_sp();
+    void ld_atnn_sp();
+    void adc_hl_sp();
+    void ld_sp_atnn();
 
-    int ldi();
-    int cpi();
-    int ini();
-    int outi();
-    int ldd();
-    int cpd();
-    int ind();
-    int outd();
+    void ldi();
+    void cpi();
+    void ini();
+    void outi();
+    void ldd();
+    void cpd();
+    void ind();
+    void outd();
 
-    int ldir();
-    int cpir();
-    int inir();
-    int otir();
-    int lddr();
-    int cpdr();
-    int indr();
-    int otdr();
+    void ldir();
+    void cpir();
+    void inir();
+    void otir();
+    void lddr();
+    void cpdr();
+    void indr();
+    void otdr();
 
     // prefix CB
-    int rlc_r8();
-    int rlc_athl();
-    int rrc_r8();
-    int rrc_athl();
+    void rlc_r8();
+    void rlc_athl();
+    void rrc_r8();
+    void rrc_athl();
 
-    int rl_r8();
-    int rl_athl();
-    int rr_r8();
-    int rr_athl();
+    void rl_r8();
+    void rl_athl();
+    void rr_r8();
+    void rr_athl();
 
-    int sra_r8();
-    int sra_athl();
+    void sra_r8();
+    void sra_athl();
 
-    int slx_r8();
-    int slx_athl();
-    int srl_r8();
-    int srl_athl();
+    void slx_r8();
+    void slx_athl();
+    void srl_r8();
+    void srl_athl();
 
-    int bit_x_r8();
-    int bit_x_athl();
+    void bit_x_r8();
+    void bit_x_athl();
 
-    int res_x_r8();
-    int res_x_athl();
+    void res_x_r8();
+    void res_x_athl();
 
-    int set_x_r8();
-    int set_x_athl();
+    void set_x_r8();
+    void set_x_athl();
 
 
     // prefix DD
-    int add_ix_r16();
-    int ld_r8_atixpd();
-    int ld_r8_ixh();
-    int ld_r8_ixl();
+    void add_ix_r16();
+    void ld_r8_atixpd();
+    void ld_r8_ixh();
+    void ld_r8_ixl();
 
-    int ld_ix_nn();
-    int ld_atnn_ix();
-    int inc_ix();
-    int inc_ixh();
-    int dec_ixh();
-    int ld_ixh_n();
-    int add_ix_ix();
-    int ld_ix_atnn();
-    int dec_ix();
-    int inc_ixl();
-    int dec_ixl();
-    int ld_ixl_n();
+    void ld_ix_nn();
+    void ld_atnn_ix();
+    void inc_ix();
+    void inc_ixh();
+    void dec_ixh();
+    void ld_ixh_n();
+    void add_ix_ix();
+    void ld_ix_atnn();
+    void dec_ix();
+    void inc_ixl();
+    void dec_ixl();
+    void ld_ixl_n();
 
-    int inc_atixpd();
-    int dec_atixpd();
-    int ld_atixpd_n();
-    int add_ix_sp();
+    void inc_atixpd();
+    void dec_atixpd();
+    void ld_atixpd_n();
+    void add_ix_sp();
 
-    int ld_ixh_r8();
-    int ld_ixh_ixl();
-    int ld_ixl_r8();
-    int ld_ixl_ixh();
+    void ld_ixh_r8();
+    void ld_ixh_ixl();
+    void ld_ixl_r8();
+    void ld_ixl_ixh();
 
-    int ld_atixpd_r8();
+    void ld_atixpd_r8();
 
-    int adx_a_ixh();
-    int adx_a_ixl();
-    int adx_a_atixpd();
+    void adx_a_ixh();
+    void adx_a_ixl();
+    void adx_a_atixpd();
 
-    int sbx_a_ixh();
-    int sbx_a_ixl();
-    int sbx_a_atixpd();
+    void sbx_a_ixh();
+    void sbx_a_ixl();
+    void sbx_a_atixpd();
 
-    int and_ixh();
-    int and_ixl();
-    int and_atixpd();
-    int xor_ixh();
-    int xor_ixl();
-    int xor_atixpd();
+    void and_ixh();
+    void and_ixl();
+    void and_atixpd();
+    void xor_ixh();
+    void xor_ixl();
+    void xor_atixpd();
 
-    int or_ixh();
-    int or_ixl();
-    int or_atixpd();
-    int cp_ixh();
-    int cp_ixl();
-    int cp_atixpd();
+    void or_ixh();
+    void or_ixl();
+    void or_atixpd();
+    void cp_ixh();
+    void cp_ixl();
+    void cp_atixpd();
 
-    int prefix_ddcb();
+    void prefix_ddcb();
 
-    int pop_ix();
-    int ex_atsp_ix();
-    int push_ix();
-    int jp_atix();
+    void pop_ix();
+    void ex_atsp_ix();
+    void push_ix();
+    void jp_atix();
 
-    int ld_sp_ix();
+    void ld_sp_ix();
 
 
     // prefix FD
-    int add_iy_r16();
-    int ld_r8_atiypd();
-    int ld_r8_iyh();
-    int ld_r8_iyl();
+    void add_iy_r16();
+    void ld_r8_atiypd();
+    void ld_r8_iyh();
+    void ld_r8_iyl();
 
-    int ld_iy_nn();
-    int ld_atnn_iy();
-    int inc_iy();
-    int inc_iyh();
-    int dec_iyh();
-    int ld_iyh_n();
-    int add_iy_iy();
-    int ld_iy_atnn();
-    int dec_iy();
-    int inc_iyl();
-    int dec_iyl();
-    int ld_iyl_n();
+    void ld_iy_nn();
+    void ld_atnn_iy();
+    void inc_iy();
+    void inc_iyh();
+    void dec_iyh();
+    void ld_iyh_n();
+    void add_iy_iy();
+    void ld_iy_atnn();
+    void dec_iy();
+    void inc_iyl();
+    void dec_iyl();
+    void ld_iyl_n();
 
-    int inc_atiypd();
-    int dec_atiypd();
-    int ld_atiypd_n();
-    int add_iy_sp();
+    void inc_atiypd();
+    void dec_atiypd();
+    void ld_atiypd_n();
+    void add_iy_sp();
 
-    int ld_iyh_r8();
-    int ld_iyh_iyl();
-    int ld_iyl_r8();
-    int ld_iyl_iyh();
+    void ld_iyh_r8();
+    void ld_iyh_iyl();
+    void ld_iyl_r8();
+    void ld_iyl_iyh();
 
-    int ld_atiypd_r8();
+    void ld_atiypd_r8();
 
-    int adx_a_iyh();
-    int adx_a_iyl();
-    int adx_a_atiypd();
+    void adx_a_iyh();
+    void adx_a_iyl();
+    void adx_a_atiypd();
 
-    int sbx_a_iyh();
-    int sbx_a_iyl();
-    int sbx_a_atiypd();
+    void sbx_a_iyh();
+    void sbx_a_iyl();
+    void sbx_a_atiypd();
 
-    int and_iyh();
-    int and_iyl();
-    int and_atiypd();
-    int xor_iyh();
-    int xor_iyl();
-    int xor_atiypd();
+    void and_iyh();
+    void and_iyl();
+    void and_atiypd();
+    void xor_iyh();
+    void xor_iyl();
+    void xor_atiypd();
 
-    int or_iyh();
-    int or_iyl();
-    int or_atiypd();
-    int cp_iyh();
-    int cp_iyl();
-    int cp_atiypd();
+    void or_iyh();
+    void or_iyl();
+    void or_atiypd();
+    void cp_iyh();
+    void cp_iyl();
+    void cp_atiypd();
 
-    int prefix_fdcb();
+    void prefix_fdcb();
 
-    int pop_iy();
-    int ex_atsp_iy();
-    int push_iy();
-    int jp_atiy();
+    void pop_iy();
+    void ex_atsp_iy();
+    void push_iy();
+    void jp_atiy();
 
-    int ld_sp_iy();
+    void ld_sp_iy();
 
     // prefix DDCB
-    int rlc_atixpd();
-    int rrc_atixpd();
-    int rl_atixpd();
-    int rr_atixpd();
-    int sla_atixpd();
-    int sra_atixpd();
-    int sll_atixpd();
-    int srl_atixpd();
+    void rlc_atixpd();
+    void rrc_atixpd();
+    void rl_atixpd();
+    void rr_atixpd();
+    void sla_atixpd();
+    void sra_atixpd();
+    void sll_atixpd();
+    void srl_atixpd();
 
-    int bit_x_atixpd();
-    int res_x_atixpd();
-    int set_x_atixpd();
+    void bit_x_atixpd();
+    void res_x_atixpd();
+    void set_x_atixpd();
 
     // prefix FDCB
-    int rlc_atiypd();
-    int rrc_atiypd();
-    int rl_atiypd();
-    int rr_atiypd();
-    int sla_atiypd();
-    int sra_atiypd();
-    int sll_atiypd();
-    int srl_atiypd();
+    void rlc_atiypd();
+    void rrc_atiypd();
+    void rl_atiypd();
+    void rr_atiypd();
+    void sla_atiypd();
+    void sra_atiypd();
+    void sll_atiypd();
+    void srl_atiypd();
 
-    int bit_x_atiypd();
-    int res_x_atiypd();
-    int set_x_atiypd();
+    void bit_x_atiypd();
+    void res_x_atiypd();
+    void set_x_atiypd();
 
 
     using CpuFun = decltype(std::mem_fn(&z80cpu::nop));
