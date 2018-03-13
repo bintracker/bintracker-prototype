@@ -3,8 +3,6 @@
 #include <iostream>
 #include "z80.h"
 
-#pragma clang diagnostic ignored "-Wsign-conversion"
-
 // done generic conditionals: evaluates as true if cond=!flag and flag is set
 // done conditional still not working
 // done 16-bit arithmetic can be made generic, register address decoding is same as for 8-bit...
