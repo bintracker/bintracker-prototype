@@ -8,6 +8,7 @@
 
 
 enum class Z80Type {NMOS, CMOS, BM1};
+enum class Z80InterruptType {NONE, NMI, REGULAR};
 
 class z80cpu {
  public:
@@ -24,8 +25,8 @@ class z80cpu {
 
     void execute_cycle() noexcept;
     void execute_debug();
-    int non_maskable_interrupt();
-    int maskable_interrupt();
+    void request_non_maskable_interrupt() noexcept;
+    void request_maskable_interrupt() noexcept;
 
     z80cpu(std::array<int, 0x10000> *mem, Z80Type z80Type);
     ~z80cpu() = default;
@@ -65,8 +66,9 @@ class z80cpu {
     int regMEMPTR;
     bool regIFF1;
     bool regIFF2;
-    bool interruptsEnabled;
     int interruptMode;
+    Z80InterruptType interruptTypeRequested;
+    Z80InterruptType interruptTypeAcknowledged;
 
     int regDummy;   // dummy register for generic instructions
 
@@ -82,6 +84,8 @@ class z80cpu {
     void debugger_print_flags(const int flagRegister) noexcept;
     unsigned get_instruction_timing(int instructionPointer) noexcept;
     unsigned get_conditional_timing(const int instruction) noexcept;
+    unsigned acknowledge_interrupt_and_get_timing() noexcept;
+    void do_interrupt() noexcept;
 
     // generic 16-bit register instructions
     void ld_r16_nn() noexcept;

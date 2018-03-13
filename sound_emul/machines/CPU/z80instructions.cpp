@@ -34,7 +34,7 @@
 // done res (iyx+d) instruction timing wrong, sets flags <- instruction not triggered!
 // TODO(utz): some instruction timings still seem wrong
 // done: seperate tick calculation, run instructions at the end of the count
-// TODO(utz): add interrupts
+// done: add interrupts
 // TODO(utz): regQ emulation
 
 
@@ -573,7 +573,7 @@ void z80cpu::ccf() noexcept {
 ////////////////////////////////////////////////////////////////////////////////
 
 void z80cpu::halt() noexcept {
-    regPC++;    // TODO(utz): instruction currently disabled, acts as nop
+    return;
 }
 
 
@@ -853,7 +853,7 @@ void z80cpu::pop_af() noexcept {
 }
 
 void z80cpu::di() noexcept {
-    interruptsEnabled = false;
+//    interruptsEnabled = false;
     regIFF1 = false;
     regIFF2 = false;
 
@@ -882,7 +882,7 @@ void z80cpu::ld_sp_hl() noexcept {
 }
 
 void z80cpu::ei() noexcept {
-    interruptsEnabled = false;
+//    interruptsEnabled = false;
     regIFF1 = true;
     regIFF2 = true;
 

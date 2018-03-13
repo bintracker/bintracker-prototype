@@ -210,16 +210,51 @@ int z80cpu::getPC() noexcept {
 }
 
 
-int z80cpu::non_maskable_interrupt() {
-    // TODO(utz)
-    return 0;
+void z80cpu::request_non_maskable_interrupt() noexcept {
+    interruptTypeRequested = Z80InterruptType::NMI;
 }
 
-int z80cpu::maskable_interrupt() {
-    // TODO(utz)
-    return 0;
+void z80cpu::request_maskable_interrupt() noexcept {
+    if (interruptTypeRequested != Z80InterruptType::NMI) interruptTypeRequested = Z80InterruptType::REGULAR;
 }
 
+unsigned z80cpu::acknowledge_interrupt_and_get_timing() noexcept {
+    interruptTypeAcknowledged = interruptTypeRequested;
+    interruptTypeRequested = Z80InterruptType::NONE;
+    if (interruptTypeAcknowledged == Z80InterruptType::NMI) return 11;
+    if (interruptMode == 0 || !regIFF1) {
+        interruptTypeAcknowledged = Z80InterruptType::NONE;
+        return get_instruction_timing(regPC);
+    } else if (interruptMode == 1) {
+        return 13;
+    } else {
+        return 19;
+    }
+}
+
+void z80cpu::do_interrupt() noexcept {
+    regSP = (regSP - 2) & 0xffff;
+    memory->at(regSP) = regPC & 0xff;
+    memory->at((regSP + 1) & 0xffff) = (regPC & 0xff00) >> 8;
+
+    if (interruptTypeRequested == Z80InterruptType::NMI) {
+        regPC = 0x66;
+        regMEMPTR = regPC;
+        regIFF1 = false;
+    } else {
+        if (interruptMode == 1) {
+            regPC = 0x38;
+            regMEMPTR = regPC;
+        } else {
+            regMEMPTR = (regI << 8) | 0xff;
+            regPC = (memory->at(regMEMPTR) << 8) | memory->at(regMEMPTR);
+            regMEMPTR = regPC;
+        }
+    }
+
+    interruptTypeAcknowledged = Z80InterruptType::NONE;
+    instructionCycles = get_instruction_timing(regPC);
+}
 
 void z80cpu::execute_cycle() noexcept {
     if (instructionCycles) {
@@ -229,8 +264,16 @@ void z80cpu::execute_cycle() noexcept {
 
     regR = ((regR & 0x80) | ((regR & 0x7f) + 1));
 
-    cpu_instructions[(memory->at(regPC)) & 0xff](this);
-    instructionCycles = get_instruction_timing(regPC);
+    if (interruptTypeAcknowledged == Z80InterruptType::NONE) {
+        cpu_instructions[(memory->at(regPC)) & 0xff](this);
+    } else {
+        do_interrupt();
+    }
+    if (interruptTypeRequested == Z80InterruptType::NONE) {
+        instructionCycles = get_instruction_timing(regPC);
+    } else {
+        instructionCycles = acknowledge_interrupt_and_get_timing();
+    }
     regPC &= 0xffff;
 }
 
@@ -257,7 +300,7 @@ void z80cpu::execute_debug() {
     cout << "\tBC': " << setfill('0') << setw(2) << regBs << setfill('0') << setw(2) << regCs;
     cout << "\tDE': " << setfill('0') << setw(2) << regDs << setfill('0') << setw(2) << regEs;
     cout << "\tHL': " << setfill('0') << setw(2) << regHs << setfill('0') << setw(2) << regLs << endl;
-    cout << boolalpha << "EI: " << interruptsEnabled << "\tIM: " << interruptMode << "\tIFF1: " << regIFF1
+    cout << boolalpha << "EI: " << regIFF1 << "\tIM: " << interruptMode << "\tIFF1: " << regIFF1
         << "\tIFF2: " << regIFF2 << "\tMEMPTR: " << setfill('0') << setw(4) << regMEMPTR << endl;
 
 
@@ -337,12 +380,12 @@ void z80cpu::debugger_print_flags(const int flagRegister) noexcept {
 
 
 void z80cpu::reset() noexcept {
-    regA = 0;
+    regA = 0xff;
     regB = 0;
     regC = 0;
     regD = 0;
     regE = 0;
-    regF = 0;
+    regF = 0xff;
     regH = 0;
     regL = 0;
     regAs = 0;
@@ -359,15 +402,16 @@ void z80cpu::reset() noexcept {
     regIXL = 0;
     regIYH = 0;
     regIYL = 0;
-    regSP = 0;
+    regSP = 0xffff;
     regPC = 0;
 
     regMEMPTR = 0;
     regQ = 0;
     regDummy = 0;
 
-    interruptsEnabled = false;
     interruptMode = 0;
+    interruptTypeRequested = Z80InterruptType::NONE;
+    interruptTypeRequested = Z80InterruptType::NONE;
     regIFF1 = false;
     regIFF2 = false;
 
