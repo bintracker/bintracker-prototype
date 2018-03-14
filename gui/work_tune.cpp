@@ -5,7 +5,6 @@
 //#include <map>
 #include <set>
 #include <algorithm>
-//#include <iomanip>
 
 #include "gui.h"
 //#include "worktune.h"
@@ -14,21 +13,20 @@
 Datablock_Field::Datablock_Field(mdCommand *command_): command(command_), dataString(""),
 	printString((command->mdCmdType == MD_WORD) ? "..." : ".."), arg1(""), arg2(""), modifier("") {}
 
-Datablock_Field::Datablock_Field(const Datablock_Field &field): command(field.command), dataString(field.dataString),
-	printString(field.printString), arg1(field.arg1), arg2(field.arg2), modifier(field.modifier) {}
+//Datablock_Field::Datablock_Field(const Datablock_Field &field): command(field.command), dataString(field.dataString),
+//	printString(field.printString), arg1(field.arg1), arg2(field.arg2), modifier(field.modifier) {}
+//
+//Datablock_Field& Datablock_Field::operator=(const Datablock_Field &field) {
+//
+//    command = field.command;
+//    dataString = field.dataString;
+//	printString = field.printString;
+//	arg1 = field.arg1;
+//	arg2 = field.arg2;
+//	modifier = field.modifier;
+//	return *this;
+//}
 
-Datablock_Field& Datablock_Field::operator=(const Datablock_Field &field) {
-
-    command = field.command;
-    dataString = field.dataString;
-	printString = field.printString;
-	arg1 = field.arg1;
-	arg2 = field.arg2;
-	modifier = field.modifier;
-	return *this;
-}
-
-Datablock_Field::~Datablock_Field() {}
 
 void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 
@@ -160,48 +158,39 @@ Datablock_Column::Datablock_Column(mdCommand *command_): command(command_) {
 	width = ((command->mdCmdType == MD_WORD) && (command->allowModifiers || command->isBlkReference)) ? 90.0f : 50.0f;
 }
 
-Datablock_Column::Datablock_Column(const Datablock_Column &col):
-    command(col.command), width(col.width), columnData(col.columnData) {}
+//Datablock_Column::Datablock_Column(const Datablock_Column &col):
+//    command(col.command), width(col.width), columnData(col.columnData) {}
 
 
-Datablock_Column& Datablock_Column::operator=(const Datablock_Column &col) {
-
-    command = col.command;
-    width = col.width;
-    columnData = col.columnData;
-	return *this;
-}
-
-Datablock_Column::~Datablock_Column() {}
+//Datablock_Column& Datablock_Column::operator=(const Datablock_Column &col) {
+//
+//    command = col.command;
+//    width = col.width;
+//    columnData = col.columnData;
+//	return *this;
+//}
 
 
 
 Datablock::Datablock(const string &title): name(title) {}
 
-Datablock::Datablock(const Datablock &blk): name(blk.name), columns(blk.columns) {}
+//Datablock::Datablock(const Datablock &blk): name(blk.name), columns(blk.columns) {}
 
-Datablock& Datablock::operator=(const Datablock &blk) {
-
-    name = blk.name;
-    columns = blk.columns;
-	return *this;
-}
-
-Datablock::~Datablock() {}
+//Datablock& Datablock::operator=(const Datablock &blk) {
+//
+//    name = blk.name;
+//    columns = blk.columns;
+//	return *this;
+//}
 
 
-Datablock_Type::Datablock_Type() {}
+//Datablock_Type::Datablock_Type(const Datablock_Type &blkType): blocks(blkType.blocks), commands(blkType.commands) {}
 
-Datablock_Type::Datablock_Type(const Datablock_Type &blkType): blocks(blkType.blocks), commands(blkType.commands) {}
-
-Datablock_Type& Datablock_Type::operator=(const Datablock_Type &blkType) {
-
-    blocks = blkType.blocks;
-    commands = blkType.commands;
-    return *this;
-}
-
-Datablock_Type::~Datablock_Type() {}
+//Datablock_Type& Datablock_Type::operator=(const Datablock_Type &blkType) {
+//    blocks = blkType.blocks;
+//    commands = blkType.commands;
+//    return *this;
+//}
 
 
 Work_Tune::Work_Tune(): infilePath(""), savefilePath("") {

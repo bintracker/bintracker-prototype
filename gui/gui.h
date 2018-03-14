@@ -95,9 +95,9 @@ public:
 	float y;
 
 	Point(const float &xpos = 0.0f, const float &ypos = 0.0f);
-	Point(const Point &pt);
-	Point& operator=(const Point &pt);
-	~Point();
+	Point(const Point &pt) = default;
+	Point& operator=(const Point &pt) = default;
+	~Point() = default;
 };
 
 
@@ -108,9 +108,9 @@ public:
 	Point bottomRight;
 
 	Area();
-	Area(const Area &area);
+	Area(const Area &area) = default;
 	Area& operator=(const Area &area);
-	~Area();
+	~Area() = default;
 	void set(const Point &top_left, const Point &bottom_right);
 	void clear(const ALLEGRO_COLOR &bgcolor);
 };
@@ -140,7 +140,7 @@ public:
 
 	Block_Tab(const float &xpos = 0.0f, const string &title_ = "");
 	Block_Tab(const Block_Tab &tab);
-	~Block_Tab();
+	~Block_Tab() = default;
 };
 
 
@@ -191,9 +191,9 @@ public:
 	Area referenceDataArea;
 
 	Global_Settings();
-	Global_Settings(const Global_Settings &settings) =delete;
-	Global_Settings& operator=(const Global_Settings &settings) =delete;
-	~Global_Settings();
+	Global_Settings(const Global_Settings &settings) = delete;
+	Global_Settings& operator=(const Global_Settings &settings) = delete;
+	~Global_Settings() = default;
 };
 
 
@@ -305,8 +305,8 @@ class Changelog_Entry {
 public:
 	Changelog_Entry(Work_Tune *tune = nullptr, Display_Status *status = nullptr);
 	Changelog_Entry(const Changelog_Entry &entry);
-	Changelog_Entry& operator=(const Changelog_Entry &entry);
-	~Changelog_Entry();
+	Changelog_Entry& operator=(const Changelog_Entry &entry) = default;
+	~Changelog_Entry() = default;
 	void retrieve(Work_Tune *tune, Display_Status *status);
 
 private:
@@ -342,7 +342,7 @@ public:
     unsigned selectedOption;
 
     Options_Dropdown();
-    ~Options_Dropdown();
+    ~Options_Dropdown() = default;
     void activate(const vector<string> &_options, const string &_userEntry);
     void collapse();
     void select_next();

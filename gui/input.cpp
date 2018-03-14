@@ -216,10 +216,12 @@ void Main_Window::scroll_down(const unsigned &amount) {
         if (status.get_current_blocktype() == 0) {
 
             if (currentTune.sequence.size() <= status.visibleReferenceRowsMax
-                || currentTune.sequence.size() - status.get_visible_first_reference_row() <= status.visibleReferenceRowsMax)
-            return;
+                || currentTune.sequence.size() - status.get_visible_first_reference_row()
+                <= status.visibleReferenceRowsMax)
+                return;
 
-            lines = currentTune.sequence.size() - status.get_visible_first_reference_row() - status.visibleReferenceRowsMax;
+            lines = currentTune.sequence.size() - status.get_visible_first_reference_row()
+                - status.visibleReferenceRowsMax;
             if (lines > amount) lines = amount;
 
             status.visibleFirstReferenceRows[0] += lines;
@@ -342,7 +344,7 @@ void Main_Window::scroll_drag_v(const int &mouseY) {
                 if (static_cast<float>(mouseY) <= status.mouseDragBeginY - status.vScrollbarBlkStep
                     && status.get_visible_first_row() > 0) {
 
-                    unsigned lines = static_cast<unsigned>(0.5f + (status.mouseDragBeginY - static_cast<float>(mouseY))
+                    auto lines = static_cast<unsigned>(0.5f + (status.mouseDragBeginY - static_cast<float>(mouseY))
                         / status.vScrollbarBlkStep);
                     status.mouseDragBeginY = static_cast<float>(mouseY);
                     scroll_up(lines);
@@ -351,7 +353,7 @@ void Main_Window::scroll_drag_v(const int &mouseY) {
                     && status.get_visible_first_row() + status.visibleRowsMax
                     < status.get_current_block_pointer()->columns[0].columnData.size()) {
 
-                    unsigned lines = static_cast<unsigned>(0.5f + (static_cast<float>(mouseY) - status.mouseDragBeginY)
+                    auto lines = static_cast<unsigned>(0.5f + (static_cast<float>(mouseY) - status.mouseDragBeginY)
                         / status.vScrollbarBlkStep);
                     status.mouseDragBeginY = static_cast<float>(mouseY);
                     scroll_down(lines);
@@ -391,7 +393,7 @@ void Main_Window::scroll_drag_v(const int &mouseY) {
             if (static_cast<float>(mouseY) <= status.mouseDragBeginY - status.vScrollbarRefStep
                 && status.get_visible_first_reference_row() > 0) {
 
-                unsigned lines = static_cast<unsigned>(0.5f + (status.mouseDragBeginY - static_cast<float>(mouseY))
+                auto lines = static_cast<unsigned>(0.5f + (status.mouseDragBeginY - static_cast<float>(mouseY))
                     / status.vScrollbarRefStep);
                 status.mouseDragBeginY = static_cast<float>(mouseY);
                 scroll_up(lines);
@@ -400,7 +402,7 @@ void Main_Window::scroll_drag_v(const int &mouseY) {
                 && status.vScrollbarRefSize + status.vScrollbarRefStart
                 < referencePanel.totalArea.bottomRight.y - SMALL_BUTTON_SIZE()) {
 
-                unsigned lines = static_cast<unsigned>(0.5f + (static_cast<float>(mouseY) - status.mouseDragBeginY)
+                auto lines = static_cast<unsigned>(0.5f + (static_cast<float>(mouseY) - status.mouseDragBeginY)
                     / status.vScrollbarRefStep);
                 status.mouseDragBeginY = static_cast<float>(mouseY);
                 scroll_down(lines);
@@ -560,7 +562,7 @@ void Main_Window::select_prev_block() {
     if (status.get_current_blocktype() == 0) {
 
         //seek backward from pos
-        for (int pos = static_cast<int>(status.get_current_reference_row()); pos >= 0; pos--) {
+        for (auto pos = static_cast<int>(status.get_current_reference_row()); pos >= 0; pos--) {
 
             if (currentTune.sequence[static_cast<unsigned>(pos)]
                 != currentTune.sequence[status.get_current_reference_row()]) {
@@ -1742,16 +1744,18 @@ void Main_Window::interpolate_selection(const unsigned &interpolationType) {
                     long endValue = currentTune.musicdataBinary.evalExpr(status.get_current_block_pointer()
                         ->columns[col].columnData[nextField].dataString);
 
-                    float nextValue = static_cast<float>(startValue);
+                    auto nextValue = static_cast<float>(startValue);
 
                     if (interpolationType == LINEAR) {
 
-                        increment = static_cast<float>(endValue - startValue) / static_cast<float>(nextField - searchBegin);
+                        increment = static_cast<float>(endValue - startValue)
+                            / static_cast<float>(nextField - searchBegin);
 
                         for (unsigned row = searchBegin + 1; row < nextField; row++) {
                             nextValue += increment;
                             status.get_current_block_pointer()->columns[col].columnData[row]
-                                .set(currentTune.get_note_data_string(static_cast<unsigned>(nextValue + 0.5f)), settings.hexMode);
+                                .set(currentTune.get_note_data_string(static_cast<unsigned>(nextValue + 0.5f)),
+                                settings.hexMode);
                         }
                     }
 
@@ -1816,7 +1820,7 @@ void Main_Window::interpolate_selection(const unsigned &interpolationType) {
                     }
 
 
-                    float nextValue = static_cast<float>(startValue);
+                    auto nextValue = static_cast<float>(startValue);
 
                     if (interpolationType == LINEAR) {
 
@@ -2037,14 +2041,11 @@ void Main_Window::transpose(const int &amount) {
                     && status.get_current_block_pointer()->columns[col].columnData[row].arg1 != "rest"
                     && status.get_current_block_pointer()->columns[col].columnData[row].arg1 != "noise") {
 
-                    int index = static_cast<signed>(currentTune.get_note_index(status.get_current_block_pointer()
+                    auto index = static_cast<int>(currentTune.get_note_index(status.get_current_block_pointer()
                         ->columns[col].columnData[row].arg1));
-//                    cout << "arg1: " << status.get_current_block_pointer()->columns[col].columnData[row].arg1 << ", index: " << index << " + amount: " << amount << ", divider: " << currentTune.freqDividers[(index + amount)] << endl;
                     if ((index + amount) < 0 || (index + amount) >= static_cast<int>(currentTune.freqDividers.size())
                         || currentTune.freqDividers[(index + amount)] == 0) {
-
-                            outOfRangeCount++;
-//                            cout << "out of range" << endl;
+                        outOfRangeCount++;
                     }
                 }
             }
@@ -2053,9 +2054,7 @@ void Main_Window::transpose(const int &amount) {
 
 
     if (outOfRangeCount) {
-        if (!display_msg_confirm_out_of_range_transpose(outOfRangeCount)) {
-            return;
-        }
+        if (!display_msg_confirm_out_of_range_transpose(outOfRangeCount)) return;
     }
 
 
@@ -2094,7 +2093,7 @@ void Main_Window::expand_block() {
     if (status.currentTab == 0) return;
 
     unsigned len = status.get_current_block_pointer()->columns[0].columnData.size() * status.expandFactor;
-    unsigned maxLen = static_cast<unsigned>(currentTune.config.blockTypes[status.get_current_blocktype()].blkMaxLength);
+    auto maxLen = static_cast<unsigned>(currentTune.config.blockTypes[status.get_current_blocktype()].blkMaxLength);
     if (maxLen != 0 && len > maxLen) return;
 
     cancel_data_input();

@@ -8,8 +8,6 @@ using namespace std;
 
 mdSequence::mdSequence(): mdSequenceLength(0), mdSequenceLoopPosition(0), sequenceString("") {}
 
-mdSequence::~mdSequence() {}
-
 
 void mdSequence::read(string *sequenceBlock, const unsigned &sequenceBlockLength, const mdConfig &config) {
 

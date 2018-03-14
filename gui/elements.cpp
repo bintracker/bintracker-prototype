@@ -10,9 +10,6 @@ Options_Dropdown::Options_Dropdown() : userEntry("") {
 }
 
 
-Options_Dropdown::~Options_Dropdown() {}
-
-
 void Options_Dropdown::activate(const vector<string> &_options, const string &_userEntry) {
 
     isActive = true;
@@ -98,33 +95,6 @@ Changelog_Entry::Changelog_Entry(const Changelog_Entry &entry) {
 	currentReferenceRows = entry.currentReferenceRows;
 }
 
-Changelog_Entry& Changelog_Entry::operator=(const Changelog_Entry &entry) {
-
-    lastUsed = entry.lastUsed;
-	globalConstants = entry.globalConstants;
-	sequence = entry.sequence;
-	blockTypes = entry.blockTypes;
-	sequenceLoopPoint = entry.sequenceLoopPoint;
-
-	currentTab = entry.currentTab;
-	visibleGlobalsFirst = entry.visibleGlobalsFirst;
-	currentGlobal = entry.currentGlobal;
-	focusBlock = entry.focusBlock;
-
-    visibleFirstColumns = entry.visibleFirstColumns;
-	visibleLastColumns = entry.visibleLastColumns;
-	visibleFirstRows = entry.visibleFirstRows;
-	currentBlocks = entry.currentBlocks;
-	currentCsrColumns = entry.currentCsrColumns;
-	currentCsrRows = entry.currentCsrRows;
-	visibleFirstReferenceRows = entry.visibleFirstReferenceRows;
-	currentReferenceRows = entry.currentReferenceRows;
-
-    return *this;
-}
-
-Changelog_Entry::~Changelog_Entry() {}
-
 
 void Changelog_Entry::retrieve(Work_Tune *tune, Display_Status *status) {
 
@@ -151,19 +121,19 @@ void Changelog_Entry::retrieve(Work_Tune *tune, Display_Status *status) {
 
 
 Point::Point(const float &xpos, const float &ypos): x(xpos), y(ypos) {}
-Point::Point(const Point &pt): x(pt.x), y(pt.y) {}
-Point& Point::operator=(const Point& pt) {
-
-	x = pt.x;
-	y = pt.y;
-	return *this;
-}
-Point::~Point() {}
+//Point::Point(const Point &pt): x(pt.x), y(pt.y) {}
+//Point& Point::operator=(const Point& pt) {
+//
+//	x = pt.x;
+//	y = pt.y;
+//	return *this;
+//}
+//Point::~Point() {}
 
 
 
 Area::Area(): topLeft(0.0f, 0.0f), bottomRight(0.0f, 0.0f) {}
-Area::Area(const Area &area): topLeft(area.topLeft), bottomRight(area.bottomRight) {}
+//Area::Area(const Area &area): topLeft(area.topLeft), bottomRight(area.bottomRight) {}
 
 Area& Area::operator=(const Area& area) {
 
@@ -172,7 +142,6 @@ Area& Area::operator=(const Area& area) {
 	bottomRight = area.bottomRight;
 	return *this;
 }
-Area::~Area() {}
 
 void Area::set(const Point &tl, const Point &br) {
 
@@ -281,9 +250,6 @@ Block_Tab::Block_Tab(const Block_Tab &tab): title(tab.title) {
 	xpos = tab.xpos;
 	xsize = tab.xsize;
 }
-
-Block_Tab::~Block_Tab() {}
-
 
 
 Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
@@ -518,6 +484,3 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
 		referencePanelArea.bottomRight.y - DEFAULT_MARGIN()));
 
 }
-
-Global_Settings::~Global_Settings() {}
-

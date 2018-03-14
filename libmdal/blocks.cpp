@@ -243,10 +243,6 @@ mdBlockList::mdBlockList(const string &blockTypeIdentifier): blockTypeID(blockTy
 
 mdBlockList::mdBlockList(const mdBlockList &lst): blockTypeID(lst.blockTypeID), referenceCount(lst.referenceCount) {}
 
-mdBlockList::~mdBlockList() {
-
-}
-
 
 void mdBlockList::addReference(const string &title, bool seqStart) {
 

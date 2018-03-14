@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
-#include <stdio.h>
+#include <cstdio>
 //#include <samplerate.h>
 //#include <chrono>
 
@@ -42,9 +42,9 @@ Virtual_ZX48::Virtual_ZX48() : cpu(&memory, Z80Type::NMOS) {
 }
 
 
-Virtual_ZX48::~Virtual_ZX48() {
-
-}
+//Virtual_ZX48::~Virtual_ZX48() {
+//
+//}
 
 
 bool Virtual_ZX48::has_stopped() { return prgmHasFinished; }

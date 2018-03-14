@@ -32,8 +32,6 @@ mdCommand::mdCommand(): description(""), referenceBlkID(""), mdCmdDefaultValStri
     upperRangeLimit = 0;
 }
 
-mdCommand::~mdCommand() {}
-
 
 void mdCommand::resetToDefault() {		//TODO: keep an eye on this to see if it really is useful
 

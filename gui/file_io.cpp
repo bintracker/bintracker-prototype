@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
+#include <cstdio>
 
 #include "gui.h"
 
@@ -540,16 +540,16 @@ void Main_Window::export_zxspectrum_tap() {
 			cbheader[21] = static_cast<char>(currentTune.engineSize + currentTune.musicdataBinary.binLength + 2);
 			cbheader[22] = static_cast<char>((currentTune.engineSize + currentTune.musicdataBinary.binLength + 2) >> 8);
 
-//			SAVEFILE.write(&genericLoader[0], 156);
             for (auto&& it: basicLoader) SAVEFILE << it;
 			SAVEFILE.write(&cbheader[0], 24);
 			SAVEFILE.write(currentTune.engineCode, currentTune.engineSize);
 			SAVEFILE.write(currentTune.musicdataBinary.binData, currentTune.musicdataBinary.binLength);
 
-			//generate checksum
+			// generate checksum
 			checksum = -1;
 			for (int i = 0; i < currentTune.engineSize; i++) checksum ^= currentTune.engineCode[i];
-			for (int i = 0; i < currentTune.musicdataBinary.binLength; i++) checksum ^= currentTune.musicdataBinary.binData[i];
+			for (int i = 0; i < currentTune.musicdataBinary.binLength; i++)
+                checksum ^= currentTune.musicdataBinary.binData[i];
 			SAVEFILE.write(&checksum, 1);
 		}
 	}

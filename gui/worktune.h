@@ -21,9 +21,9 @@ public:
 	string modifier;
 
 	Datablock_Field(mdCommand *command_ = nullptr);
-	Datablock_Field(const Datablock_Field &field);
-	Datablock_Field& operator=(const Datablock_Field &field);
-	~Datablock_Field();
+	Datablock_Field(const Datablock_Field &field) = default;
+	Datablock_Field& operator=(const Datablock_Field &field) = default;
+	~Datablock_Field() = default;
 	void set(const string &dataString_, const bool &hexMode);
 	void remove_modifier();
 };
@@ -37,9 +37,9 @@ public:
 	vector<Datablock_Field> columnData;
 
 	Datablock_Column(mdCommand *command_ = nullptr);
-	Datablock_Column(const Datablock_Column &col);
-	Datablock_Column& operator=(const Datablock_Column &col);
-	~Datablock_Column();
+	Datablock_Column(const Datablock_Column &col) = default;
+	Datablock_Column& operator=(const Datablock_Column &col) = default;
+	~Datablock_Column() = default;
 };
 
 
@@ -50,9 +50,9 @@ public:
 	vector<Datablock_Column> columns;
 
 	Datablock(const string &title = "");
-	Datablock(const Datablock &blk);
-	Datablock& operator=(const Datablock &blk);
-	~Datablock();
+	Datablock(const Datablock &blk) = default;
+	Datablock& operator=(const Datablock &blk) = default;
+	~Datablock() = default;
 };
 
 
@@ -62,10 +62,10 @@ public:
 	vector<Datablock> blocks;
 	vector<mdCommand*> commands;
 
-	Datablock_Type();
-	Datablock_Type(const Datablock_Type &blkType);
-	Datablock_Type& operator=(const Datablock_Type &blkType);
-	~Datablock_Type();
+//	Datablock_Type() = default;
+//	Datablock_Type(const Datablock_Type &blkType);
+//	Datablock_Type& operator=(const Datablock_Type &blkType) = default;
+//	~Datablock_Type() = default;
 };
 
 

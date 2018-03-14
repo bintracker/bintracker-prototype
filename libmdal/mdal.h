@@ -128,7 +128,7 @@ class mdSequence {
     std::vector<std::vector<std::string>> sequenceData;
 
     mdSequence();
-    ~mdSequence();
+    ~mdSequence() = default;
     void read(std::string* sequenceBlock, const unsigned &sequenceBlockLength, const mdConfig &config);
     friend std::ostream& operator<<(std::ostream& os, const mdSequence &seq);
 
@@ -147,7 +147,7 @@ class mdBlockList {
 
     mdBlockList(const std::string &blockTypeIdentifier);
     mdBlockList(const mdBlockList &lst);
-    ~mdBlockList();
+    ~mdBlockList() = default;
 
     void addReference(const std::string &title, bool seqStart);
 };
@@ -215,7 +215,7 @@ class mdCommand {
     std::string mdCmdLastValString;
 
     mdCommand();
-    ~mdCommand();
+    ~mdCommand() = default;
     mdCommand(const mdCommand &cmd) = delete;
 
     void reset();
