@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iostream>
+#include <cmath>
 #include "gui.h"
 
 
@@ -344,7 +345,7 @@ void Main_Window::scroll_drag_v(const int &mouseY) {
                 if (static_cast<float>(mouseY) <= status.mouseDragBeginY - status.vScrollbarBlkStep
                     && status.get_visible_first_row() > 0) {
 
-                    auto lines = static_cast<unsigned>(0.5f + (status.mouseDragBeginY - static_cast<float>(mouseY))
+                    auto lines = static_cast<unsigned>(round(status.mouseDragBeginY - static_cast<float>(mouseY))
                         / status.vScrollbarBlkStep);
                     status.mouseDragBeginY = static_cast<float>(mouseY);
                     scroll_up(lines);
@@ -353,7 +354,7 @@ void Main_Window::scroll_drag_v(const int &mouseY) {
                     && status.get_visible_first_row() + status.visibleRowsMax
                     < status.get_current_block_pointer()->columns[0].columnData.size()) {
 
-                    auto lines = static_cast<unsigned>(0.5f + (static_cast<float>(mouseY) - status.mouseDragBeginY)
+                    auto lines = static_cast<unsigned>(round(static_cast<float>(mouseY) - status.mouseDragBeginY)
                         / status.vScrollbarBlkStep);
                     status.mouseDragBeginY = static_cast<float>(mouseY);
                     scroll_down(lines);
@@ -393,7 +394,7 @@ void Main_Window::scroll_drag_v(const int &mouseY) {
             if (static_cast<float>(mouseY) <= status.mouseDragBeginY - status.vScrollbarRefStep
                 && status.get_visible_first_reference_row() > 0) {
 
-                auto lines = static_cast<unsigned>(0.5f + (status.mouseDragBeginY - static_cast<float>(mouseY))
+                auto lines = static_cast<unsigned>(round(status.mouseDragBeginY - static_cast<float>(mouseY))
                     / status.vScrollbarRefStep);
                 status.mouseDragBeginY = static_cast<float>(mouseY);
                 scroll_up(lines);
@@ -402,7 +403,7 @@ void Main_Window::scroll_drag_v(const int &mouseY) {
                 && status.vScrollbarRefSize + status.vScrollbarRefStart
                 < referencePanel.totalArea.bottomRight.y - SMALL_BUTTON_SIZE()) {
 
-                auto lines = static_cast<unsigned>(0.5f + (static_cast<float>(mouseY) - status.mouseDragBeginY)
+                auto lines = static_cast<unsigned>(round(static_cast<float>(mouseY) - status.mouseDragBeginY)
                     / status.vScrollbarRefStep);
                 status.mouseDragBeginY = static_cast<float>(mouseY);
                 scroll_down(lines);
@@ -1748,7 +1749,7 @@ void Main_Window::interpolate_selection(const unsigned &interpolationType) {
                         for (unsigned row = searchBegin + 1; row < nextField; row++) {
                             nextValue += increment;
                             status.get_current_block_pointer()->columns[col].columnData[row]
-                                .set(currentTune.get_note_data_string(static_cast<unsigned>(nextValue + 0.5f)),
+                                .set(currentTune.get_note_data_string(static_cast<unsigned>(round(nextValue))),
                                 settings.hexMode);
                         }
                     }
@@ -1761,7 +1762,7 @@ void Main_Window::interpolate_selection(const unsigned &interpolationType) {
 
                             nextValue += increment;
                             status.get_current_block_pointer()->columns[col].columnData[row]
-                                .set(currentTune.get_note_data_string(static_cast<unsigned>(nextValue + 0.5f)), settings.hexMode);
+                                .set(currentTune.get_note_data_string(static_cast<unsigned>(round(nextValue))), settings.hexMode);
                             increment /= 2.0f;
                         }
                     }
@@ -1782,7 +1783,7 @@ void Main_Window::interpolate_selection(const unsigned &interpolationType) {
 
                             nextValue += steps[step];
                             status.get_current_block_pointer()->columns[col].columnData[row]
-                                .set(currentTune.get_note_data_string(static_cast<unsigned>(nextValue + 0.5f)), settings.hexMode);
+                                .set(currentTune.get_note_data_string(static_cast<unsigned>(round(nextValue))), settings.hexMode);
                             step--;
                         }
 
@@ -1823,7 +1824,7 @@ void Main_Window::interpolate_selection(const unsigned &interpolationType) {
                         for (unsigned row = searchBegin + 1; row < nextField; row++) {
                             nextValue += increment;
                             status.get_current_block_pointer()->columns[col].columnData[row]
-                                .set(numToStr(static_cast<unsigned>(nextValue + 0.5f), 0, false), settings.hexMode);
+                                .set(numToStr(static_cast<unsigned>(round(nextValue)), 0, false), settings.hexMode);
                         }
                     }
                     else if (interpolationType == LOGARITHMIC) {
@@ -1834,7 +1835,7 @@ void Main_Window::interpolate_selection(const unsigned &interpolationType) {
 
                             nextValue += increment;
                             status.get_current_block_pointer()->columns[col].columnData[row]
-                                .set(numToStr(static_cast<unsigned>(nextValue + 0.5f), 0, false), settings.hexMode);
+                                .set(numToStr(static_cast<unsigned>(round(nextValue)), 0, false), settings.hexMode);
                             increment /= 2.0f;
                         }
                     }
@@ -1855,7 +1856,7 @@ void Main_Window::interpolate_selection(const unsigned &interpolationType) {
 
                             nextValue += steps[step];
                             status.get_current_block_pointer()->columns[col].columnData[row]
-                                .set(numToStr(static_cast<unsigned>(nextValue + 0.5f), 0, false), settings.hexMode);
+                                .set(numToStr(static_cast<unsigned>(round(nextValue)), 0, false), settings.hexMode);
                             step--;
                         }
                     }
