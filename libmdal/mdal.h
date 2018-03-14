@@ -145,7 +145,7 @@ class mdBlockList {
     std::set<std::string> uniqueReferences;
     std::vector<mdBlock> blocks;
 
-    mdBlockList(const std::string &blockTypeIdentifier);
+    mdBlockList(std::string blockTypeIdentifier);
     mdBlockList(const mdBlockList &lst);
     ~mdBlockList() = default;
 
@@ -260,7 +260,7 @@ class mdBlock {
 
     bool firstInSequence;
 
-    mdBlock(const std::string &name, bool seqStart);
+    mdBlock(std::string name, bool seqStart);
     mdBlock(const mdBlock &blk);
     ~mdBlock();
 

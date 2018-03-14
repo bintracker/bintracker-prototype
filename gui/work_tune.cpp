@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <utility>
 #include <vector>
 //#include <map>
 #include <set>
@@ -172,7 +173,7 @@ Datablock_Column::Datablock_Column(mdCommand *command_): command(command_) {
 
 
 
-Datablock::Datablock(const string &title): name(title) {}
+Datablock::Datablock(string title): name(std::move(title)) {}
 
 //Datablock::Datablock(const Datablock &blk): name(blk.name), columns(blk.columns) {}
 

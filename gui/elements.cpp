@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <utility>
 #include "gui.h"
 
 Options_Dropdown::Options_Dropdown() : userEntry("") {
@@ -239,7 +240,7 @@ void Panel::create(const Area &total_area, const int &border_mask, const int &sc
 }
 
 
-Block_Tab::Block_Tab(const float &hpos, const string &title_): title(title_) {
+Block_Tab::Block_Tab(const float &hpos, string title_): title(std::move(title_)) {
 
 	xpos = hpos;
 	xsize = (title.size() * BT_CHAR_WIDTH()) + 2 * DEFAULT_MARGIN();

@@ -138,7 +138,7 @@ public:
 	float xsize;
 	string title;
 
-	Block_Tab(const float &xpos = 0.0f, const string &title_ = "");
+	Block_Tab(const float &xpos = 0.0f, string title_ = "");
 	Block_Tab(const Block_Tab &tab);
 	~Block_Tab() = default;
 };

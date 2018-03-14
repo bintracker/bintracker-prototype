@@ -49,7 +49,7 @@ public:
 	string name;
 	vector<Datablock_Column> columns;
 
-	Datablock(const string &title = "");
+	Datablock(string title = "");
 	Datablock(const Datablock &blk) = default;
 	Datablock& operator=(const Datablock &blk) = default;
 	~Datablock() = default;

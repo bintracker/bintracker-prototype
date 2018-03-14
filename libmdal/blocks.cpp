@@ -1,12 +1,13 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <utility>
 
 #include "mdal.h"
 
 using namespace std;
 
-mdBlock::mdBlock(const string &name, bool seqStart): blkName(name), blkLength(0), blkString("") {
+mdBlock::mdBlock(string name, bool seqStart): blkName(std::move(name)), blkLength(0), blkString("") {
 
 	firstInSequence = seqStart;
 
@@ -239,7 +240,7 @@ ostream& operator<<(ostream& os, const mdBlock &blk) {
 
 
 
-mdBlockList::mdBlockList(const string &blockTypeIdentifier): blockTypeID(blockTypeIdentifier), referenceCount(0) {}
+mdBlockList::mdBlockList(string blockTypeIdentifier): blockTypeID(std::move(blockTypeIdentifier)), referenceCount(0) {}
 
 mdBlockList::mdBlockList(const mdBlockList &lst): blockTypeID(lst.blockTypeID), referenceCount(lst.referenceCount) {}
 
