@@ -29,6 +29,10 @@ class z80cpu {
     void request_maskable_interrupt() noexcept;
 
     z80cpu(std::array<int, 0x10000> *mem, Z80Type z80Type);
+    z80cpu(const z80cpu &) = delete;
+    z80cpu& operator=(const z80cpu &) = delete;
+    z80cpu(z80cpu &&) = delete;
+    z80cpu& operator=(z80cpu &&) = delete;
     ~z80cpu() = default;
 
  private:

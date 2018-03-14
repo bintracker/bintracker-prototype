@@ -6,8 +6,14 @@
 
 #include "z80.h"
 
-using namespace std;
-
+using std::array;
+using std::cout;
+using std::setfill;
+using std::setw;
+using std::hex;
+using std::dec;
+using std::endl;
+using std::boolalpha;
 
 z80cpu::z80cpu(std::array<int, 0x10000> *mem, Z80Type z80type): memory(mem) {
     cpuType = z80type;
