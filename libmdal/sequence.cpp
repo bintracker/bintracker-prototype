@@ -39,7 +39,7 @@ void mdSequence::read(string *sequenceBlock, const unsigned &sequenceBlockLength
 
 			for (auto&& it: sequenceData) {
 
-				size_t kpos = inputString.find_first_of(",");
+				size_t kpos = inputString.find_first_of(',');
 				if (inputString == "") throw (string("Not enough tracks in sequence"));
 				it.push_back(inputString.substr(0, kpos));
 				if (kpos != string::npos) inputString.erase(0, kpos + 1);
@@ -66,7 +66,7 @@ string mdSequence::getSequenceString(const mdConfig &config) {
 
 	for (unsigned i = 0; i < mdSequenceLength; i++) {
 
-		if (i == mdSequenceLoopPosition && config.useSeqLoop) seqString = seqString + "\n" + config.seqLoopLabel;
+		if (i == mdSequenceLoopPosition && config.useSeqLoop) seqString += ("\n" + config.seqLoopLabel);
 
 		seqString += ("\n\t" + config.wordDirective + " ");
 		for (unsigned j = 0; j < config.trackSources.size(); j++) {

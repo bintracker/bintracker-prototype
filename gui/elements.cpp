@@ -292,7 +292,7 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
 
 	for (auto&& it: ini_lines) {
 
-		if (it.substr(it.find_first_of("="), string::npos).size() < 2) {
+		if (it.substr(it.find_first_of('='), string::npos).size() < 2) {
 			cout << "Error: Invalid argument in settings.ini." << endl;
 			break;
 		}

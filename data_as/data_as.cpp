@@ -116,7 +116,7 @@ void Data_Assembly::assemble(const vector<string> &asmLines_, const long &origin
 
 		it.erase(remove_if(it.begin(), it.end(), [](char x){return std::isspace(x);}), it.end());
 
-		if (it.find(";") != string::npos) it.erase(it.find(";"), string::npos);
+		if (it.find(';') != string::npos) it.erase(it.find(';'), string::npos);
 
 		if (it != "") {
 

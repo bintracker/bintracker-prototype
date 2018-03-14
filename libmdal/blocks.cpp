@@ -134,8 +134,8 @@ void mdBlock::read(const string *rawData, const int blockLength, const mdConfig 
 				rowStr.erase(0, temp.size() + 1);
 
 
-				if (rowStr.find_first_of(",") != string::npos) {
-					temp = rowStr.substr(0, rowStr.find_first_of(","));
+				if (rowStr.find_first_of(',') != string::npos) {
+					temp = rowStr.substr(0, rowStr.find_first_of(','));
 					rowStr.erase(0, temp.size() + 1);
 				}
 				else {

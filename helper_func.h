@@ -14,7 +14,7 @@ std::vector<unsigned> generate_random_data(unsigned amount);
 //from MDAL
 std::string trimChars(const std::string& inputString, const char* chars);
 int getType(const std::string& parameter);
-std::string getArgument(std::string token, const std::vector<std::string> &moduleLines);
+std::string getArgument(const std::string& token, const std::vector<std::string> &moduleLines);
 
 
 #endif

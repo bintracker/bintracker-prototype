@@ -24,7 +24,7 @@ bool isNumber(const string &str) {
 //TODO: use compare instead of find
 long strToNum(string str) {
 
-	if (str.find("$") != string::npos) {
+	if (str.find('$') != string::npos) {
 
 		str.erase(0, 1);
 		return stol(str, nullptr, 16);
@@ -96,7 +96,7 @@ int getType(const string& param) {
 	return MD_DEC;
 }
 
-string getArgument(string token, const vector<string> &moduleLines) {
+string getArgument(const string& token, const vector<string> &moduleLines) {
 
 	string tempstr = "";
 

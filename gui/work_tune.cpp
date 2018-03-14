@@ -289,7 +289,8 @@ void Work_Tune::init(const string &infile, const Global_Settings &settings, Disp
 
 		vector<bool> cmdsUsed;
 
-		for (int i = 0; i < config.mdCmdCount; i++) cmdsUsed.push_back(false);
+		cmdsUsed.reserve(config.mdCmdCount);
+        for (int i = 0; i < config.mdCmdCount; i++) cmdsUsed.push_back(false);
 
 		for (int i = 0; i < it.blkFieldCount; i++) {
 
@@ -386,7 +387,7 @@ void Work_Tune::init(const string &infile, const Global_Settings &settings, Disp
 			blockBegin++;
 
 			unsigned blockEnd = blockBegin + 1;
-			for (; (blockEnd < moduleLines.size()) && (moduleLines[blockEnd].find(":") == string::npos); blockEnd++) {};
+			for (; (blockEnd < moduleLines.size()) && (moduleLines[blockEnd].find(':') == string::npos); blockEnd++) {};
 //			blockEnd--;
 
 			for (unsigned i = blockBegin; i < blockEnd; i++) {
@@ -422,8 +423,8 @@ void Work_Tune::init(const string &infile, const Global_Settings &settings, Disp
 						if (pos != string::npos) {
 
 							string fstr = row.substr(pos + cmdName.size(), string::npos);
-							if (fstr.find_first_of(",") != string::npos)
-								fstr = fstr.substr(0, fstr.find_first_of(","));
+							if (fstr.find_first_of(',') != string::npos)
+								fstr = fstr.substr(0, fstr.find_first_of(','));
 
 							field.set(fstr, settings.hexMode);
 						}

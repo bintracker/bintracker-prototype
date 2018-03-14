@@ -152,7 +152,7 @@ unsigned mdModule::getBlockEnd(const unsigned &blockStart, const vector<string> 
 	size_t line;
 	size_t pos = string::npos;
 
-	for (line = blockStart + 1; line < linecount && pos == string::npos; line++) pos = moduleLines[line].find(":");
+	for (line = blockStart + 1; line < linecount && pos == string::npos; line++) pos = moduleLines[line].find(':');
 
 	if (line == linecount) return line - 1;
 	return line - 2;
