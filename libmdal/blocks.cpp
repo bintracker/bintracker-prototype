@@ -54,7 +54,7 @@ void mdBlock::read(const string *rawData, const int blockLength, const mdConfig 
 	for (int i = 0; i < blockLength; i++) {
 
 		string temp = trimChars(rawData[i], " ()\t");
-		if (temp != "") blkLength++;
+		if (!temp.empty()) blkLength++;
 	}
 
 	if (blkConfig.blkMaxLength && blkLength > blkConfig.blkMaxLength) throw (string("Maximum block length exceeded."));
@@ -84,7 +84,7 @@ void mdBlock::read(const string *rawData, const int blockLength, const mdConfig 
 
 //		string rowStr = trimChars(rawData[i], " ()\t");
 		string tempstr = rawData[i];
-		string rowStr = "";
+		string rowStr;
 		int quotes = count(tempstr.begin(), tempstr.end(), '\"');
 		if (!quotes) rowStr = trimChars(tempstr, "()\t ");
 		else {
@@ -97,12 +97,12 @@ void mdBlock::read(const string *rawData, const int blockLength, const mdConfig 
 				rowStr += tempstr.substr(0, pos + 1);
 				tempstr.erase(0, pos + 1);
 			}
-			if (tempstr != "") rowStr += trimChars(tempstr, "()\t ");
+			if (!tempstr.empty()) rowStr += trimChars(tempstr, "()\t ");
 		}
 
 		bool validData = false;
 
-		while (rowStr != "") {
+		while (!rowStr.empty()) {
 
 			validData = true;
 
@@ -202,7 +202,7 @@ void mdBlock::read(const string *rawData, const int blockLength, const mdConfig 
 			string fieldString = blkConfig.blkFieldList[field].getFieldString(requestList, config);		//TODO: ...
 
 
-			if (fieldString != "") {
+			if (!fieldString.empty()) {
 
 				if (!firstSet || lastFieldIsWord != blkConfig.blkFieldList[field].isWord) {
 
@@ -247,7 +247,7 @@ mdBlockList::mdBlockList(const mdBlockList &lst): blockTypeID(lst.blockTypeID), 
 
 void mdBlockList::addReference(const string &title, bool seqStart) {
 
-	if (uniqueReferences.insert(title).second == true) {
+	if (uniqueReferences.insert(title).second) {
 
 		blocks.emplace_back(title, seqStart);
 		referenceCount++;

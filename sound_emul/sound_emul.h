@@ -27,7 +27,7 @@ public:
 //		const int &engineSize_, const int &engineSizeNoLoop_, const unsigned &audioChunkSize_);
 //	void setup_vm(const string &machine, char *engineCode_, char *engineCodeNoLoop_, const int &engineSize_,
 //		const int &engineSizeNoLoop_);
-    void init(Work_Tune *tune, const unsigned &audioChunkSize);
+    void init(Work_Tune *tune, const unsigned &_audioChunkSize);
     void setup_vm();
 	void update_audio();
 	void start(const int &playMode_);

@@ -63,7 +63,7 @@ void mdCommand::reset() {
         } else {
 
             mdCmdIsSetNow = true;
-            if (mdCmdLastValString == "") mdCmdLastValString = getDefaultValString();
+            if (mdCmdLastValString.empty()) mdCmdLastValString = getDefaultValString();
             mdCmdCurrentValString = mdCmdLastValString;
         }
     }
@@ -111,7 +111,7 @@ void mdCommand::set(const string &currentValString) {
 string mdCommand::getValueString() {
 
     if (mdCmdIsSetNow) return mdCmdCurrentValString;
-    if (mdCmdUseLastSet && mdCmdLastValString != "") return mdCmdLastValString;
+    if (mdCmdUseLastSet && !mdCmdLastValString.empty()) return mdCmdLastValString;
     return getDefaultValString();
 }
 

@@ -16,7 +16,7 @@ int main(int argc, char **argv){
 
 		if (!al_init()) throw (string("Allegro initialization failed."));
 
-		string initFile = "";
+		string initFile;
 
 //		for (int i = 1; i < argc; i++) {
 //

@@ -33,11 +33,11 @@ Sound_Emul::~Sound_Emul() {
 
 //void Sound_Emul::init(const string &machine, char *engineCode_, char *engineCodeNoLoop_,
 //	const int &engineSize_, const int &engineSizeNoLoop_, const unsigned &audioChunkSize_) {
-void Sound_Emul::init(Work_Tune *tune, const unsigned &audioChunkSize_) {
+void Sound_Emul::init(Work_Tune *tune, const unsigned &_audioChunkSize) {
 
     currentTune = tune;
 
-	audioChunkSize = audioChunkSize_;
+	audioChunkSize = _audioChunkSize;
 
 	if (!al_install_audio() | !al_reserve_samples(1)) throw (string("Failed to initialize audio system."));
 	//TODO temp solution before fixing emul
@@ -82,7 +82,7 @@ void Sound_Emul::update_audio() {
 
 		if (aBuffer != nullptr) {
 			//clear stream, c++11 style
-		#if __GNUC__ < 5 
+		#if __GNUC__ < 5
 			audioBuffer.str("");
 		#else
 			ostringstream().swap(audioBuffer);

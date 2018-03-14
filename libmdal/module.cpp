@@ -69,7 +69,7 @@ mdModule::mdModule(const vector<string> &moduleLines, const mdConfig &config, bo
 			for (; config.trackSources[i] != config.blockTypes[ts].blockConfigID; ts++) {};
 
 			for (unsigned j = 0; j < seq.mdSequenceLength; j++)
-				moduleBlocks.at(ts).addReference(seq.sequenceData[i][j], (j) ? false : true);
+				moduleBlocks.at(ts).addReference(seq.sequenceData[i][j], (j) == 0);
 		}
 
 

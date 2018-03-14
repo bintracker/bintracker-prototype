@@ -61,9 +61,9 @@ Data_Assembly::~Data_Assembly() {
 //TODO: need proper full expression evaluation on the long run.
 long Data_Assembly::evalExpr(const string &expr) {
 
-	string op = "";
+	string op;
 	string arg1 = trimChars(expr.substr(0, expr.find_first_of("+-/*%|&^")), "()");
-	string arg2 = "";
+	string arg2;
 	long argv1 = 0;
 	long argv2 = 0;
 
@@ -77,26 +77,26 @@ long Data_Assembly::evalExpr(const string &expr) {
 		|| ((arg1.find('$') == string::npos) && (arg1.find_first_not_of("0123456789") == string::npos))) argv1 = strToNum(arg1);
 	else argv1 = symbols[arg1];
 
-	if (arg2 != "") {
+	if (!arg2.empty()) {
 		if (((arg2.find('$') != string::npos) && (arg2.find_first_not_of("$0123456789abcdef") == string::npos))
 			|| ((arg2.find('$') == string::npos) && (arg2.find_first_not_of("0123456789") == string::npos))) argv2 = strToNum(arg2);
 		else argv2 = symbols[arg2];
 	}
 
-	if (op != "") return solve(argv1, argv2, op);
-	else return argv1;
+	if (!op.empty()) return solve(argv1, argv2, op);
+	return argv1;
 }
 
 
 long Data_Assembly::solve(const long &argv1, const long &argv2, const string &op) {
 
 	if (op == "+") return argv1 + argv2;
-	else if (op == "-") return argv1 - argv2;
-	else if (op == "|") return argv1 | argv2;
-	else if (op == "*") return argv1 * argv2;
-	else if (op == "/") return (argv2 == 0) ? argv1 : static_cast<long>(argv1 / argv2);
-	else if (op == "&") return argv1 & argv2;
-	else if (op == "^") return argv1 ^ argv2;
+	if (op == "-") return argv1 - argv2;
+	if (op == "|") return argv1 | argv2;
+	if (op == "*") return argv1 * argv2;
+	if (op == "/") return (argv2 == 0) ? argv1 : static_cast<long>(argv1 / argv2);
+	if (op == "&") return argv1 & argv2;
+	if (op == "^") return argv1 ^ argv2;
 	return -1;
 }
 
@@ -118,7 +118,7 @@ void Data_Assembly::assemble(const vector<string> &asmLines_, const long &origin
 
 		if (it.find(';') != string::npos) it.erase(it.find(';'), string::npos);
 
-		if (it != "") {
+		if (!it.empty()) {
 
 			string tempstr = it;
 
@@ -148,7 +148,7 @@ void Data_Assembly::assemble(const vector<string> &asmLines_, const long &origin
 	//assemble
 	for (auto&& it: asmLines) {
 
-		if (it != "") {
+		if (!it.empty()) {
 
 			int argcount = count(it.begin(), it.end(), ',') + 1;
 

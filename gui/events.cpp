@@ -17,7 +17,7 @@ void Main_Window::handle_event(ALLEGRO_EVENT &ev) {
 					break;
 
 				case MENU_FILE_SAVE:
-					(currentTune.savefilePath == "") ? save_file_as() : save_file();
+					(currentTune.savefilePath.empty()) ? save_file_as() : save_file();
 					break;
 
 				case MENU_FILE_SAVEAS:
@@ -189,8 +189,7 @@ void Main_Window::handle_event(ALLEGRO_EVENT &ev) {
 
 //	al_flush_event_queue(eventQueue);
 
-	return;
-}
+	}
 
 
 void Main_Window::play_from_start() {	//TODO fixed asm address, really???

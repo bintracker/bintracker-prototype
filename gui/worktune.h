@@ -112,18 +112,18 @@ public:
 
 	Work_Tune();
 	~Work_Tune();
-	void init(const string &infile, const Global_Settings &settings, Display_Status *status);
+	void init(const string &infile, const Global_Settings &settings, Display_Status *_status);
 	void replace_reference(const string &original, const string &replacement, const string &blocktypeID);
 	void generate_module_lines();
 	void generate_pattern_lines(unsigned pattern);
-	vector<string> generate_lines_from_pos(const unsigned &block, const unsigned &row, const unsigned &sequencePos);
+	vector<string> generate_lines_from_pos(const unsigned &block, const unsigned &_row, const unsigned &sequencePos);
 	void generate_single_line(const unsigned &block, const unsigned &row);
 	vector<char> reload_data(const int &playMode);
 	string generate_unique_block_name();
 	void update_last_used(const unsigned &block, const unsigned &row);
 
 	unsigned get_frequency_divider(const string &noteName);
-	unsigned get_note_index(const string &noteNames);
+	unsigned get_note_index(const string &noteName);
 	string get_note_data_string(const unsigned &freqDivider);
 
 

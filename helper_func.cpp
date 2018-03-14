@@ -9,16 +9,13 @@
 
 using namespace std;
 
-//TODO: should use $ instead of #
 bool isNumber(const string &str) {
 
-	if (str.size() == 0) return false;
-	if ((str.find_first_not_of("0123456789") == string::npos) ||
+	if (str.empty()) return false;
+	return (str.find_first_not_of("0123456789") == string::npos) ||
 		(((str.substr(0,1) == "#") || (str.substr(0,1) == "$"))
 		&& ((str.substr(1, string::npos)).find_first_not_of("0123456789abcdefABCDEF") == string::npos)
-		&& str.substr(1, string::npos).size())) return true;
-
-	return false;
+		&& !str.substr(1, string::npos).empty());
 }
 
 //TODO: use compare instead of find
@@ -29,7 +26,7 @@ long strToNum(string str) {
 		str.erase(0, 1);
 		return stol(str, nullptr, 16);
 	}
-	else return stol(str, nullptr, 10);
+	return stol(str, nullptr, 10);
 }
 
 
@@ -78,35 +75,35 @@ string trimChars(const string& inputString, const char* chars) {
 }
 
 //TODO: flag strings that start with or contain only numbers as invalid
-int getType(const string& param) {
+int getType(const string& parameter) {
 
 	//cout << "getType: " << param << endl;	//DEBUG ok
 
-	if (param == "true" || param == "false") return MD_BOOL;
-	if (param.find('"') != string::npos) return MD_STRING;
-	if (param.find_first_of('$') != string::npos) {
+	if (parameter == "true" || parameter == "false") return MD_BOOL;
+	if (parameter.find('"') != string::npos) return MD_STRING;
+	if (parameter.find_first_of('$') != string::npos) {
 
-		if (param.find_first_of('$') != 0) return MD_INVALID;
-		string temp = trimChars(param, "$");
+		if (parameter.find_first_of('$') != 0) return MD_INVALID;
+		string temp = trimChars(parameter, "$");
 		if (temp.find_first_not_of("0123456789abcdefABCDEF") != string::npos) return MD_INVALID;
-		else return MD_HEX;
+		return MD_HEX;
 	}
-	if (param.find_first_not_of("0123456789") != string::npos) return MD_INVALID;
+	if (parameter.find_first_not_of("0123456789") != string::npos) return MD_INVALID;
 
 	return MD_DEC;
 }
 
 string getArgument(const string& token, const vector<string> &moduleLines) {
 
-	string tempstr = "";
+	string tempstr;
 
 	for (auto&& it: moduleLines) {
 
-		size_t pos = it.find(token.data());
+		size_t pos = it.find(token);
 		if (pos != string::npos) tempstr = trimChars(it.substr(pos + token.size()), " =");
 	}
 
-	if (tempstr == "") throw ("No " + token + " statement found.");
+	if (tempstr.empty()) throw ("No " + token + " statement found.");
 
 	return tempstr;
 }

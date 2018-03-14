@@ -73,7 +73,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
         if (!mdalconfig) throw (string("Not a valid MDAL configuration."));
 
         string tempstr = mdalconfig.attribute("version").value();
-        if (tempstr == "") throw (string("MDAL_VERSION not specified."));
+        if (tempstr.empty()) throw (string("MDAL_VERSION not specified."));
         if (getType(tempstr) != MD_DEC) throw (string("MDAL_VERSION argument is not a decimal number."));
         if (stoi(tempstr, nullptr, 10) != MDALVERSION) throw ("Unsupported MDAL version " + tempstr + ".");
         if (verbose) cout << "MDAL version: \t\t" << stoi(tempstr, nullptr, 10) << endl;
@@ -85,19 +85,19 @@ void mdConfig::init(const string &configname, bool &verbose) {
 
         tempnode = mdalconfig.child("global");
         tempstr = tempnode.attribute("target").value();
-        if (tempstr != "") targetPlatform = tempstr;
+        if (!tempstr.empty()) targetPlatform = tempstr;
         if (verbose) cout << "target platform:\t" << targetPlatform << endl;
 
         tempstr = tempnode.attribute("word_directive").value();
-        wordDirective = (tempstr == "") ? "dw" : tempstr;
+        wordDirective = (tempstr.empty()) ? "dw" : tempstr;
         if (verbose) cout << "word directive:\t\t" << wordDirective << endl;
 
         tempstr = tempnode.attribute("byte_directive").value();
-        byteDirective = (tempstr == "") ? "db" : tempstr;
+        byteDirective = (tempstr.empty()) ? "db" : tempstr;
         if (verbose) cout << "byte directive:\t\t" << byteDirective << endl;
 
         tempstr = tempnode.attribute("hex_prefix").value();
-        hexPrefix = (tempstr == "") ? "$" : tempstr;
+        hexPrefix = (tempstr.empty()) ? "$" : tempstr;
         if (verbose) cout << "hex prefix:\t\t" << hexPrefix << endl;
 
         if (verbose) cout << "\nSEQUENCE CONFIGURATION\n======================" << endl;
@@ -106,18 +106,18 @@ void mdConfig::init(const string &configname, bool &verbose) {
         if (!tempnode) throw (string("Missing sequence configuration"));
 
         tempstr = tempnode.attribute("label").value();
-        if (tempstr != "") seqLabel = tempstr;
+        if (!tempstr.empty()) seqLabel = tempstr;
         if (verbose) cout << "Sequence label:\t\t" << seqLabel << endl;
 
         tempstr = tempnode.attribute("end").value();
-        if (tempstr != "") {
+        if (!tempstr.empty()) {
             useSeqEnd = true;
             seqEndString = tempstr;
             if (verbose) cout << "Sequence end:\t\t" << seqEndString << endl;
         }
 
         tempstr = tempnode.attribute("max_length").value();
-        if (tempstr != "") {
+        if (!tempstr.empty()) {
 
             if (!isNumber(tempstr)) throw (string("<sequence>: max_length does not specify an integer value."));
             seqMaxLength = static_cast<unsigned>(strToNum(tempstr));
@@ -126,18 +126,18 @@ void mdConfig::init(const string &configname, bool &verbose) {
 
         for (tempnode = mdalconfig.child("sequence").child("track"); tempnode; tempnode = tempnode.next_sibling("track"))
             trackSources.emplace_back(string(tempnode.attribute("from").value()));
-        if (trackSources.size() == 0) throw (string("<sequence>: no <track>s specified."));
+        if (trackSources.empty()) throw (string("<sequence>: no <track>s specified."));
 
         tempnode = mdalconfig.child("sequence").child("loop");
         if (tempnode) {
             tempstr = tempnode.attribute("type").value();
-            if (tempstr == "") throw (string("<sequence><loop>: No loop type specified."));
+            if (tempstr.empty()) throw (string("<sequence><loop>: No loop type specified."));
             if (tempstr != "label" && tempstr != "pointer") throw ("<sequence><loop>: Invalid type \"" + tempstr + "\".");
             useSeqLoop = true;
             if (tempstr == "pointer") useSeqLoopPointer = true;
             if (verbose) cout << "Loop type:\t\t" << tempstr << endl;
             tempstr = tempnode.attribute("label").value();
-            if (tempstr == "") throw (string("<sequence><loop>: No loop label specified."));
+            if (tempstr.empty()) throw (string("<sequence><loop>: No loop label specified."));
             seqLoopLabel = tempstr;
             if (verbose) cout << "Loop label:\t\t" << tempstr << endl;
         }
@@ -156,28 +156,28 @@ void mdConfig::init(const string &configname, bool &verbose) {
         for (tempnode = commands.child("command"); tempnode; tempnode = tempnode.next_sibling("command")) {
 
             tempstr = tempnode.attribute("id").value();
-            if (tempstr == "") throw (string("<command>: missing command id."));
+            if (tempstr.empty()) throw (string("<command>: missing command id."));
             for (auto&& it: reservedKeywords) {
                 if (tempstr == it) throw ("<command>: Reserved keyword \"" + tempstr + "\" used as command name.");
             }
             mdCmdList[cmdNr].mdCmdName = tempstr;
 
             tempstr = tempnode.attribute("size").value();
-            if (tempstr == "") throw (string("<command>: size not specified."));
+            if (tempstr.empty()) throw (string("<command>: size not specified."));
             if (tempstr == "bool") mdCmdList[cmdNr].mdCmdType = MD_BOOL;
             else if (tempstr == "byte") mdCmdList[cmdNr].mdCmdType = MD_BYTE;
             else if (tempstr == "word") mdCmdList[cmdNr].mdCmdType = MD_WORD;
             else throw ("<command>: unknown command type \"" + tempstr + "\".");
 
             tempstr = tempnode.attribute("default").value();
-            if (tempstr == "") tempstr = "0";
+            if (tempstr.empty()) tempstr = "0";
             mdCmdList[cmdNr].setDefault(tempstr);
 
             //TODO could be attr of main command declaration
             pugi::xml_node param = tempnode.child("auto");
             if (param) {
                 tempstr = param.attribute("value").value();
-                if (tempstr == "") throw (string("<command>: missing auto value specification."));
+                if (tempstr.empty()) throw (string("<command>: missing auto value specification."));
                 if (mdCmdList[cmdNr].mdCmdType == MD_BOOL && getType(tempstr) != MD_BOOL)
                     throw (string("<command>: non-boolean value specified as auto value for bool command."));
                 mdCmdList[cmdNr].mdCmdAutoValString = tempstr;
@@ -207,7 +207,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
             param = tempnode.child("reference");
             if (param) {
                 tempstr = param.attribute("to").value();
-                if (tempstr == "") throw (string("<command>: reference used, but no block id given."));
+                if (tempstr.empty()) throw (string("<command>: reference used, but no block id given."));
                 mdCmdList[cmdNr].isBlkReference = true;
                 mdCmdList[cmdNr].referenceBlkID = tempstr;
             }
@@ -216,11 +216,11 @@ void mdConfig::init(const string &configname, bool &verbose) {
             if (param && mdCmdList[cmdNr].mdCmdType != MD_BOOL) {
                 mdCmdList[cmdNr].limitRange = true;
                 tempstr = param.attribute("lower_limit").value();
-                if (tempstr == "") throw (string("<command>: range used, but no lower limit specified."));
+                if (tempstr.empty()) throw (string("<command>: range used, but no lower limit specified."));
                 if (!isNumber(tempstr)) throw (string("<command>: lower limit of range is not an integer."));
                 mdCmdList[cmdNr].lowerRangeLimit = strToNum(tempstr);
                 tempstr = param.attribute("upper_limit").value();
-                if (tempstr == "") throw (string("<command>: range used, but no upper limit specified."));
+                if (tempstr.empty()) throw (string("<command>: range used, but no upper limit specified."));
                 if (!isNumber(tempstr)) throw (string("<command>: upper limit of range is not an integer."));
                 mdCmdList[cmdNr].upperRangeLimit = strToNum(tempstr);
             }
@@ -232,9 +232,9 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 for (; param; param = param.next_sibling("substitute")) {
 
                     string key = param.attribute("key").value();
-                    if (key == "") throw (string("<command>: missing substitution key."));
+                    if (key.empty()) throw (string("<command>: missing substitution key."));
                     tempstr = param.attribute("value").value();
-                    if (tempstr == "") throw (string("<command>: missing substitution value."));
+                    if (tempstr.empty()) throw (string("<command>: missing substitution value."));
                     mdCmdList[cmdNr].substitutionList.insert(make_pair(key, tempstr));
                 }
             }
@@ -242,7 +242,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
             param = tempnode.child("default_substitute");
             if (param) {
                 tempstr = param.attribute("from").value();
-                if (tempstr == "") throw (string("<command>: default substitute used, but no source given."));
+                if (tempstr.empty()) throw (string("<command>: default substitute used, but no source given."));
 
                 for (int j = 0; j < mdCmdCount; j++) {
                     if (tempstr == mdCmdList[j].mdCmdName) {
@@ -298,11 +298,11 @@ void mdConfig::init(const string &configname, bool &verbose) {
         for (tempnode = mdalconfig.child("blocktype"); tempnode; tempnode = tempnode.next_sibling("blocktype")) {
 
             tempstr = tempnode.attribute("id").value();
-            if (tempstr == "") throw (string("<blocktype>: missing block id."));
+            if (tempstr.empty()) throw (string("<blocktype>: missing block id."));
             blockTypes.emplace_back(tempstr);
 
             tempstr = tempnode.attribute("type").value();
-            if (tempstr == "") blockTypes.back().baseType = GENERIC;
+            if (tempstr.empty()) blockTypes.back().baseType = GENERIC;
             else {
                 if (tempstr == "pattern") blockTypes.back().baseType = PATTERN;
                 else if (tempstr == "table") blockTypes.back().baseType = TABLE;
@@ -319,21 +319,21 @@ void mdConfig::init(const string &configname, bool &verbose) {
             }
 
             tempstr = tempnode.attribute("end").value();
-            if (tempstr != "") {
+            if (!tempstr.empty()) {
                 blockTypes.back().useBlkEnd = true;
                 blockTypes.back().blkEndString = tempstr;
                 if (verbose) cout << "Block end:\t\t" << blockTypes.back().blkEndString << endl;
             }
 
             tempstr = tempnode.attribute("max_length").value();
-            if (tempstr != "") {
+            if (!tempstr.empty()) {
                 if (!isNumber(tempstr)) throw (string("<blocktype>: argument for max_length is not a number."));
                 blockTypes.back().blkMaxLength = strToNum(tempstr);
                 if (verbose) cout << "Max. block length:\t" << blockTypes.back().blkMaxLength << endl;
             }
 
             tempstr = tempnode.attribute("label_prefix").value();
-            if (tempstr != "") {
+            if (!tempstr.empty()) {
                 if (isNumber(tempstr)) throw (string("<blocktype>: argument for label_prefix is not a string."));
                 blockTypes.back().blkLabelPrefix = tempstr;
             }
@@ -354,7 +354,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
 
                 pugi::xml_node param;
                 tempstr = argnode.attribute("size").value();
-                if (tempstr == "") throw (string("<blocktype><field>: no field size specified."));
+                if (tempstr.empty()) throw (string("<blocktype><field>: no field size specified."));
                 if (tempstr == "word") blockTypes.back().blkFieldList[fieldNr].isWord = true;
                 else if (tempstr != "byte") throw ("<blocktype><field>: invalid field size argument \"" + tempstr + "\".");
                 else {
@@ -396,7 +396,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 if (param) {
 
                     tempstr = param.attribute("if").value();
-                    if (tempstr == "") blockTypes.back().blkFieldList[fieldNr].requiredAlways = true;
+                    if (tempstr.empty()) blockTypes.back().blkFieldList[fieldNr].requiredAlways = true;
                     else {
                         if (tempstr.find_first_not_of("()ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!+|") != string::npos)
                             throw ("<blocktype><field>: Invalid argument in <required if=\"" + tempstr + "\"");
@@ -435,10 +435,10 @@ void mdConfig::init(const string &configname, bool &verbose) {
                                 blockTypes.back().blkFieldList[fieldNr].requiredBy[j] = true;
                         } else {
 
-                            while (tempstr != "") {
+                            while (!tempstr.empty()) {
 
                                 bool setNot = false;
-                                string cmdString = "";
+                                string cmdString;
 
                                 if (tempstr.substr(0,1) == "!") {
                                     setNot = true;
@@ -468,7 +468,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 param = argnode.child("set_hi");
                 if (param) {
                     tempstr = param.attribute("from").value();
-                    if (tempstr == "") throw (string("<blocktype><field><set_hi>: missing from= argument"));
+                    if (tempstr.empty()) throw (string("<blocktype><field><set_hi>: missing from= argument"));
                     cmdNr = getCmdNr(tempstr);
                     if (cmdNr == -1) throw ("<blocktype><field><set_hi>: Unknown command \"" + tempstr + "\" in from= argument");
                     if (mdCmdList[cmdNr].mdCmdType != MD_BYTE)
@@ -481,7 +481,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 param = argnode.child("set_lo");
                 if (param) {
                     tempstr = param.attribute("from").value();
-                    if (tempstr == "") throw (string("<blocktype><field><set_lo>: missing from= argument"));
+                    if (tempstr.empty()) throw (string("<blocktype><field><set_lo>: missing from= argument"));
                     cmdNr = getCmdNr(tempstr);
                     if (cmdNr == -1) throw ("<blocktype><field><set_lo>: Unknown command \"" + tempstr + "\" in from= argument");
                     if (mdCmdList[cmdNr].mdCmdType != MD_BYTE)
@@ -494,7 +494,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 param = argnode.child("set");
                 if (param) {
                     tempstr = param.attribute("from").value();
-                    if (tempstr == "") throw (string("<blocktype><field><set>: missing from= argument"));
+                    if (tempstr.empty()) throw (string("<blocktype><field><set>: missing from= argument"));
                     cmdNr = getCmdNr(tempstr);
                     if (cmdNr == -1) throw ("<blocktype><field><set>: Unknown command \"" + tempstr + "\" in from= argument");
                     if (mdCmdList[cmdNr].mdCmdType == MD_BOOL)
@@ -518,14 +518,14 @@ void mdConfig::init(const string &configname, bool &verbose) {
                 for (param = argnode.child("set_bits"); param; param = param.next_sibling("set_bits")) {
 
                     string from = param.attribute("from").value();
-                    if (from == "") throw (string("<blocktype><field><set_bits>: missing from= argument"));
+                    if (from.empty()) throw (string("<blocktype><field><set_bits>: missing from= argument"));
                     cmdNr = getCmdNr(from);
                     if (cmdNr == -1) throw ("<blocktype><field><set_bits>: unknown source command \"" + from);
                     if (mdCmdList[cmdNr].mdCmdType != MD_BOOL)
                         throw ("<blocktype><field><set_bits>: \"" + from + "\" is not boolean command");
 
                     string mask = param.attribute("value").value();
-                    if (mask == "") throw (string("<blocktype><field><set_bits>: missing value= argument"));
+                    if (mask.empty()) throw (string("<blocktype><field><set_bits>: missing value= argument"));
                     if (!isNumber(mask)) throw (string("<blocktype><field><set_bits>: value argument is not a number"));
 
                     blockTypes.back().blkFieldList[fieldNr].setBitsMask[cmdNr] = strToNum(mask);
@@ -534,7 +534,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                     blockTypes.back().blkFieldList[fieldNr].useCmd[cmdNr] = true;
 
                     tempstr = param.attribute("clear").value();
-                    if (tempstr != "") {
+                    if (!tempstr.empty()) {
                         if (tempstr == "all") blockTypes.back().blkFieldList[fieldNr].setBitsClear[cmdNr] = CLEAR_ALL;
                         else if (tempstr == "hi") blockTypes.back().blkFieldList[fieldNr].setBitsClear[cmdNr] = CLEAR_HI;
                         else if (tempstr == "lo") blockTypes.back().blkFieldList[fieldNr].setBitsClear[cmdNr] = CLEAR_LO;
@@ -570,12 +570,12 @@ void mdConfig::init(const string &configname, bool &verbose) {
                         throw (string("<blocktype><field><set_if>: Invalid condition argument"));
 
                     string mask = param.attribute("value").value();
-                    if (mask == "") throw (string("<blocktype><field><set_if>: missing value= argument"));
+                    if (mask.empty()) throw (string("<blocktype><field><set_if>: missing value= argument"));
                     if (!isNumber(mask)) throw (string("<blocktype><field><set_if>: value argument is not a number"));
                     blockTypes.back().blkFieldList[fieldNr].setIfMask[count] = strToNum(mask);
 
                     tempstr = param.attribute("clear").value();
-                    if (tempstr != "") {
+                    if (!tempstr.empty()) {
                         if (tempstr == "all") blockTypes.back().blkFieldList[fieldNr].setIfClear[count] = CLEAR_ALL;
                         else if (tempstr == "hi") blockTypes.back().blkFieldList[fieldNr].setIfClear[count] = CLEAR_HI;
                         else if (tempstr == "lo") blockTypes.back().blkFieldList[fieldNr].setIfClear[count] = CLEAR_LO;
@@ -588,7 +588,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
                             throw (string("<blocktype><field><set_if>: Use of both + and | in condition"));
                     }
 
-                    if (cond == "") blockTypes.back().blkFieldList[fieldNr].setIfAlways[count] = true;
+                    if (cond.empty()) blockTypes.back().blkFieldList[fieldNr].setIfAlways[count] = true;
                     else {
                         //handle global NOT
                         if (cond.size() > 1 && cond.substr(0,2) == "!(") {
@@ -616,9 +616,9 @@ void mdConfig::init(const string &configname, bool &verbose) {
                             for (int j = 0; j < mdCmdCount; j++)
                                 blockTypes.back().blkFieldList[fieldNr].setIfBy[count][j] = true;
                         } else {
-                            while (cond != "") {
+                            while (!cond.empty()) {
                                 bool setNot = false;
-                                string cmdString = "";
+                                string cmdString;
 
                                 if (cond.substr(0,1) == "!") {
                                     setNot = true;
@@ -720,7 +720,7 @@ bool mdConfig::isCompatible(const mdCommand &cmd1, const mdCommand &cmd2) {
     if (cmd1.mdCmdForceString != cmd2.mdCmdForceString) return false;
     if (cmd1.mdCmdForceInt != cmd2.mdCmdForceInt) return false;
     if (cmd1.mdCmdForceSubstitution != cmd2.mdCmdForceSubstitution) return false;
-    else if (cmd1.substitutionList != cmd2.substitutionList) return false;
+    if (cmd1.substitutionList != cmd2.substitutionList) return false;
     if (cmd1.mdCmdForceRepeat != cmd2.mdCmdForceRepeat) return false;
 //	if (cmd1.mdCmdUseLastSet != cmd2.mdCmdUseLastSet) return false;
     if (cmd1.mdCmdGlobalConst != cmd2.mdCmdGlobalConst) return false;

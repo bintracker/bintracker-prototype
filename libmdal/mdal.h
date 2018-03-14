@@ -65,7 +65,8 @@ class mdField {
     void getRequests(bool *requestList, const mdConfig &config, const int &row, bool seqBegin);
     std::string getFieldString(bool *requestList, const mdConfig &config);
     bool checkCondition(const bool *by, const bool *whenSet, bool &byAny, const mdConfig &config);
-    bool checkSetifCondition(const bool *by, const bool *whenSet, bool &byAny, const mdConfig &config, bool *requestList);
+    bool checkSetifCondition(const bool *by, const bool *whenSet, bool &byAny, const mdConfig &config,
+        const bool *requestList);
 
   private:
 
@@ -104,7 +105,7 @@ class mdConfig {
     mdConfig();
     ~mdConfig();
     mdConfig(const mdConfig &config) = delete;
-    void init(const std::string &configfile, bool &verbose);
+    void init(const std::string &configname, bool &verbose);
     void reset();
 
     static bool isCompatible(const mdCommand &cmd1, const mdCommand &cmd2);
@@ -243,7 +244,7 @@ class mdBlockConfig {
     mdField* blkFieldList;
 
     mdBlockConfig(const std::string &id);
-    mdBlockConfig(const mdBlockConfig &blkCfg);
+    mdBlockConfig(const mdBlockConfig &cfg);
     ~mdBlockConfig();
 };
 
@@ -264,7 +265,7 @@ class mdBlock {
     mdBlock(const mdBlock &blk);
     ~mdBlock();
 
-    void read(const std::string *rawData, const int blockLength, const mdConfig &config, const mdBlockConfig &blkConfig,
+    void read(const std::string *rawData, int blockLength, const mdConfig &config, const mdBlockConfig &blkConfig,
               std::vector<mdBlockList> &moduleBlocks);
 
     friend std::ostream& operator<<(std::ostream& os, const mdBlock &blk);

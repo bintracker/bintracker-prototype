@@ -111,7 +111,7 @@ public:
 	Area(const Area &area) = default;
 	Area& operator=(const Area &area);
 	~Area() = default;
-	void set(const Point &top_left, const Point &bottom_right);
+	void set(const Point &_topLeft, const Point &_bottomRight);
 	void clear(const ALLEGRO_COLOR &bgcolor);
 };
 
@@ -138,7 +138,7 @@ public:
 	float xsize;
 	string title;
 
-	Block_Tab(const float &xpos = 0.0f, string title_ = "");
+	Block_Tab(const float &_xpos = 0.0f, string title_ = "");
 	Block_Tab(const Block_Tab &tab);
 	~Block_Tab() = default;
 };

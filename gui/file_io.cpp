@@ -100,9 +100,9 @@ void Main_Window::open_file() {
 
 void Main_Window::save_file() {
 
-    if (!currentTune.hasUnsavedChanges && currentTune.savefilePath != "") return;
+    if (!currentTune.hasUnsavedChanges && !currentTune.savefilePath.empty()) return;
 
-	if (currentTune.savefilePath == "") {
+	if (currentTune.savefilePath.empty()) {
         save_file_as();
         return;
 	}
@@ -139,7 +139,7 @@ void Main_Window::save_file_as() {
 		const char *fp = al_get_native_file_dialog_path(fdialog, 0);
 
 		string path = fp;
-		if (path != "" && ((path.size() <= 5) || (path.compare(path.size() - 5, 5, ".mdal")))) path += ".mdal";
+		if (!path.empty() && ((path.size() <= 5) || (path.compare(path.size() - 5, 5, ".mdal")))) path += ".mdal";
 
 		bool doSave = true;
 		ifstream SAVEFILE(path.data());
@@ -176,7 +176,7 @@ void Main_Window::export_asm(const bool &musicDataOnly) {
 		const char *fp = al_get_native_file_dialog_path(fdialog, 0);
 
 		string path = fp;
-		if (path != "" && ((path.size() <= 4) || (path.compare(path.size() - 4, 4, ".asm")))) path += ".asm";
+		if (!path.empty() && ((path.size() <= 4) || (path.compare(path.size() - 4, 4, ".asm")))) path += ".asm";
 
 		bool doSave = true;
 
@@ -227,7 +227,7 @@ void Main_Window::export_bin(const bool &musicDataOnly) {
 		const char *fp = al_get_native_file_dialog_path(fdialog, 0);
 
 		string path = fp;
-		if (path != "" && ((path.size() <= 4) || (path.compare(path.size() - 4, 4, ".bin")))) path += ".bin";
+		if (!path.empty() && ((path.size() <= 4) || (path.compare(path.size() - 4, 4, ".bin")))) path += ".bin";
 
 		bool doSave = true;
 
@@ -343,7 +343,7 @@ void Main_Window::export_zxspectrum_tap() {
 		const char *fp = al_get_native_file_dialog_path(fdialog, 0);
 
 		string path = fp;
-		if (path != "" && ((path.size() <= 4) || (path.compare(path.size() - 4, 4, ".tap")))) path += ".tap";
+		if (!path.empty() && ((path.size() <= 4) || (path.compare(path.size() - 4, 4, ".tap")))) path += ".tap";
 
 		bool doSave = true;
 

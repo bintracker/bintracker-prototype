@@ -100,9 +100,9 @@ void Virtual_ZX48::load_binary(char *code, const int &codeSize, const int &start
 }
 
 
-void Virtual_ZX48::load_raw_data(const vector<char> &code, const int &orgAddress) {
+void Virtual_ZX48::load_raw_data(const vector<char> &data, const int &orgAddress) {
 
-    for (int i = 0; static_cast<unsigned>(i) < code.size(); i++) memory[i + orgAddress] = code[i] & 0xff;
+    for (int i = 0; static_cast<unsigned>(i) < data.size(); i++) memory[i + orgAddress] = data[i] & 0xff;
 }
 
 

@@ -627,7 +627,7 @@ void Main_Window::receive_data_input(const char &data) {
                 push_changelog();
 				for (unsigned i = status.get_current_cursor_row(); i > 0; i--) {
 
-					if (status.get_current_column_pointer()->columnData[i - 1].dataString != "") {
+					if (!status.get_current_column_pointer()->columnData[i - 1].dataString.empty()) {
 
 						currentField->set(status.get_current_column_pointer()->columnData[i - 1].dataString, settings.hexMode);
 
@@ -684,7 +684,7 @@ void Main_Window::receive_data_input(const char &data) {
 		else if (!status.editLock && currentField->command->allowModifiers
 			&& (data == '+' || data == '-' || data == '*' || data == '/' || data == '|' || data == '&' || data == '^')) {
 
-            if (!(currentField->dataString == "" || currentField->dataString == "rest")) {
+            if (!(currentField->dataString.empty() || currentField->dataString == "rest")) {
 
                 push_changelog();
                 status.editLock = true;
@@ -707,7 +707,7 @@ void Main_Window::receive_data_input(const char &data) {
 			string prevString = currentField->dataString;
             userInputString = receive_string_input();
 
-            if (userInputString != "") currentField->set(userInputString, settings.hexMode);
+            if (!userInputString.empty()) currentField->set(userInputString, settings.hexMode);
             else {
 
                 currentField->set(prevString, settings.hexMode);
@@ -761,7 +761,7 @@ void Main_Window::receive_data_input(const char &data) {
 			else if (data == 'k') noteName << "noise";
 
 			//verify that the given note name actually exists in the asm equates list, ignore input otherwise
-			if (noteName.str() != "" && currentTune.musicdataBinary.equates.count(noteName.str())) {
+			if (!noteName.str().empty() && currentTune.musicdataBinary.equates.count(noteName.str())) {
 
                 push_changelog();
 
@@ -835,14 +835,14 @@ void Main_Window::receive_data_input(const char &data) {
 					if (it.first.compare(0, userInputString.size(), userInputString) == 0) options.push_back(it.first);
 				}
 
-				if (options.size() == 0) {
+				if (options.empty()) {
 
 					userInputString = prevInputString;
 					options.clear();
 
 					for (auto&& it: currentField->command->substitutionList) {
 
-						if (userInputString == "" || it.first.compare(0, userInputString.size(), userInputString) == 0)
+						if (userInputString.empty() || it.first.compare(0, userInputString.size(), userInputString) == 0)
 							options.push_back(it.first);
 					}
 
@@ -881,14 +881,14 @@ void Main_Window::receive_data_input(const char &data) {
 					}
 				}
 
-				if (options.size() == 0) {
+				if (options.empty()) {
 
 					userInputString = prevInputString;
 					options.clear();
 
 					for (auto & block : currentTune.blockTypes[bt].blocks) {
 
-						if (userInputString == ""
+						if (userInputString.empty()
 							|| block.name.compare(0, userInputString.size(), userInputString) == 0)
 							options.push_back(block.name);
 					}
@@ -954,14 +954,14 @@ void Main_Window::receive_data_input(const char &data) {
 
         else {
 
-            if (options.size() == 0) {
+            if (options.empty()) {
 
                 userInputString = previousInputString;
                 options.clear();
 
                 for (auto & block : currentTune.blockTypes[bt].blocks) {
 
-                    if (userInputString == ""
+                    if (userInputString.empty()
                         || block.name.compare(0, userInputString.size(), userInputString) == 0)
                         options.push_back(block.name);
                 }
@@ -977,7 +977,7 @@ void Main_Window::receive_data_input(const char &data) {
 
 string Main_Window::receive_string_input() {
 
-    string outputStr = "";
+    string outputStr;
     if (userInputString != "_") outputStr = userInputString;
 //    soundEmul.stop();
     al_pause_event_queue(eventQueue, true);
@@ -1042,7 +1042,7 @@ string Main_Window::receive_string_input() {
             }
             else if (keyEv.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
 
-                if (outputStr.size() > 0) outputStr = outputStr.substr(0, outputStr.size() - 1);
+                if (!outputStr.empty()) outputStr = outputStr.substr(0, outputStr.size() - 1);
                 userInputString = outputStr + "_";
 
                 if (status.editBlockName) print_block_name();
@@ -1099,7 +1099,7 @@ void Main_Window::rename_block() {
     status.editLock = true;
     userInputString = "_";
 
-    if (receive_string_input() != "") {
+    if (!receive_string_input().empty()) {
 
         complete_data_input();
         if (status.get_current_block_pointer()->name == currentBlkName) {
@@ -1128,9 +1128,9 @@ void Main_Window::erase_data_input() {
         return;
     }
 
-	else if (!status.focusBlock || status.currentTab != 0 || !status.get_current_field_pointer()->command->mdCmdForceString
+	if (!status.focusBlock || status.currentTab != 0 || !status.get_current_field_pointer()->command->mdCmdForceString
 		|| status.get_current_field_pointer()->command->mdCmdForceSubstitution
-		|| status.get_current_field_pointer()->dataString == "")
+		|| status.get_current_field_pointer()->dataString.empty())
 		return;
 
 	status.editLock = true;
@@ -1157,7 +1157,7 @@ void Main_Window::complete_data_input() {
                 }
             }
 
-            if (userInputString != "" && validName) {
+            if (!userInputString.empty() && validName) {
 
                 if (status.get_current_blocktype() == 0) {
                     for (auto&& it: currentTune.sequence) {
@@ -1171,9 +1171,7 @@ void Main_Window::complete_data_input() {
             }
             status.editBlockName = false;
             print_block_name();
-        }
-
-		else if (status.focusBlock) {
+        } else if (status.focusBlock) {
 
             Datablock_Field *field = status.get_current_field_pointer();
 
@@ -1191,16 +1189,11 @@ void Main_Window::complete_data_input() {
                         break;
                     }
                 }
-            }
-
-            else if (field->command->mdCmdForceSubstitution) {
-
+            } else if (field->command->mdCmdForceSubstitution) {
                 if (field->command->substitutionList.count(userInputString))
                     field->set(userInputString, settings.hexMode);
             }
-		}
-
-		else if (!status.focusBlock && status.get_current_blocktype() == 0) {
+		} else if (!status.focusBlock && status.get_current_blocktype() == 0) {
 
             for (auto&& it: currentTune.blockTypes[0].blocks) {
                 if (it.name == userInputString) {
@@ -1670,7 +1663,7 @@ void Main_Window::porous_paste_selection() {
             for (unsigned targetRow = status.get_current_cursor_row();
                 targetRow < status.get_current_block_pointer()->columns[0].columnData.size()
                 && sourceRow < ccol.columnData.size(); targetRow++) {
-                    if (status.get_current_block_pointer()->columns[targetCol].columnData[targetRow].dataString == "")
+                    if (status.get_current_block_pointer()->columns[targetCol].columnData[targetRow].dataString.empty())
                         status.get_current_block_pointer()->columns[targetCol].columnData[targetRow] = ccol.columnData[sourceRow];
                     sourceRow++;
                 }
@@ -1700,7 +1693,7 @@ void Main_Window::inverse_porous_paste_selection() {
             for (unsigned targetRow = status.get_current_cursor_row();
                 targetRow < status.get_current_block_pointer()->columns[0].columnData.size()
                 && sourceRow < ccol.columnData.size(); targetRow++) {
-                    if (ccol.columnData[sourceRow].dataString != "")
+                    if (!ccol.columnData[sourceRow].dataString.empty())
                         status.get_current_block_pointer()->columns[targetCol].columnData[targetRow] = ccol.columnData[sourceRow];
                     sourceRow++;
                 }
@@ -1882,7 +1875,7 @@ unsigned Main_Window::find_next_used_field(const unsigned &col, const unsigned &
     unsigned nextField;
 
     for (nextField = startPosition + 1; nextField <= status.selectionRowLast
-        && status.get_current_block_pointer()->columns[col].columnData[nextField].dataString == ""; nextField++) {}
+        && status.get_current_block_pointer()->columns[col].columnData[nextField].dataString.empty(); nextField++) {}
 
     return nextField;
 }
@@ -1987,7 +1980,7 @@ void Main_Window::fill_data(const unsigned &fillType) {
         for (unsigned pos = status.get_current_cursor_row();
             pos < status.get_current_column_pointer()->columnData.size(); pos++) {
 
-            if (fillType == REPLACE || status.get_current_column_pointer()->columnData[pos].dataString == "")
+            if (fillType == REPLACE || status.get_current_column_pointer()->columnData[pos].dataString.empty())
                 status.get_current_column_pointer()->columnData[pos] = currentTune.clipboard[0].columnData[sourcePos];
             sourcePos++;
             if (sourcePos >= currentTune.clipboard[0].columnData.size()) sourcePos = 0;
@@ -2006,7 +1999,7 @@ void Main_Window::fill_data(const unsigned &fillType) {
 
                 for (unsigned row = status.selectionRowFirst; row <= status.selectionRowLast; row++) {
 
-                    if (fillType == REPLACE || status.get_current_block_pointer()->columns[col].columnData[row].dataString == "")
+                    if (fillType == REPLACE || status.get_current_block_pointer()->columns[col].columnData[row].dataString.empty())
                         status.get_current_block_pointer()->columns[col].columnData[row]
                         = currentTune.clipboard[sourceCol].columnData[sourceRow];
 
@@ -2038,7 +2031,7 @@ void Main_Window::transpose(const int &amount) {
             //check and display message
             for (unsigned row = status.selectionRowFirst; row <= status.selectionRowLast; row++) {
 
-                if (status.get_current_block_pointer()->columns[col].columnData[row].arg1 != ""
+                if (!status.get_current_block_pointer()->columns[col].columnData[row].arg1.empty()
                     && status.get_current_block_pointer()->columns[col].columnData[row].arg1 != "rest"
                     && status.get_current_block_pointer()->columns[col].columnData[row].arg1 != "noise") {
 
@@ -2067,13 +2060,13 @@ void Main_Window::transpose(const int &amount) {
 
             for (unsigned row = status.selectionRowFirst; row <= status.selectionRowLast; row++) {
 
-                if (status.get_current_block_pointer()->columns[col].columnData[row].arg1 != ""
+                if (!status.get_current_block_pointer()->columns[col].columnData[row].arg1.empty()
                     && status.get_current_block_pointer()->columns[col].columnData[row].arg1 != "rest"
                     && status.get_current_block_pointer()->columns[col].columnData[row].arg1 != "noise") {
 
                     int index = static_cast<signed>(currentTune.get_note_index(status.get_current_block_pointer()
                         ->columns[col].columnData[row].arg1)) + amount;
-                    string dataString = "";
+                    string dataString;
                     if (index < 0 || index >= static_cast<int>(currentTune.freqDividers.size())
                         || currentTune.freqDividers[index] == 0)
                         dataString = "rest";

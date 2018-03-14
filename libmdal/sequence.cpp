@@ -18,12 +18,13 @@ void mdSequence::read(string *sequenceBlock, const unsigned &sequenceBlockLength
 		inputString.erase(0, inputString.find_first_not_of(" \t"));
 		inputString.erase(inputString.find_last_not_of(" \t")+1);
 
-		if (inputString != "" && inputString != "[LOOP]") mdSequenceLength++;
+		if (!inputString.empty() && inputString != "[LOOP]") mdSequenceLength++;
 	}
 
 
 	if (!mdSequenceLength) throw (string("Sequence contains no patterns"));
-	if (config.seqMaxLength && mdSequenceLength > config.seqMaxLength) throw (string("Maximum sequence length exceeded."));
+	if (config.seqMaxLength && mdSequenceLength > config.seqMaxLength)
+        throw (string("Maximum sequence length exceeded."));
 
 
 	for (unsigned i = 0; i < config.trackSources.size(); i++) sequenceData.emplace_back(vector<string>());
@@ -35,12 +36,12 @@ void mdSequence::read(string *sequenceBlock, const unsigned &sequenceBlockLength
 
 		if (inputString == "[LOOP]") mdSequenceLoopPosition = pos;
 
-		else if (inputString != "") {
+		else if (!inputString.empty()) {
 
 			for (auto&& it: sequenceData) {
 
 				size_t kpos = inputString.find_first_of(',');
-				if (inputString == "") throw (string("Not enough tracks in sequence"));
+				if (inputString.empty()) throw (string("Not enough tracks in sequence"));
 				it.push_back(inputString.substr(0, kpos));
 				if (kpos != string::npos) inputString.erase(0, kpos + 1);
 			}
@@ -55,8 +56,6 @@ void mdSequence::read(string *sequenceBlock, const unsigned &sequenceBlockLength
 	}
 
 	sequenceString = getSequenceString(config);
-
-	return;
 }
 
 
@@ -71,7 +70,7 @@ string mdSequence::getSequenceString(const mdConfig &config) {
 		seqString += ("\n\t" + config.wordDirective + " ");
 		for (unsigned j = 0; j < config.trackSources.size(); j++) {
 
-			string labelPrefix = "";
+			string labelPrefix;
 			for (auto&& it: config.blockTypes) {
 				if (it.blockConfigID == config.trackSources[j]) {
 					labelPrefix = it.blkLabelPrefix;

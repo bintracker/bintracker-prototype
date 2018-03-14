@@ -144,10 +144,10 @@ Area& Area::operator=(const Area& area) {
 	return *this;
 }
 
-void Area::set(const Point &tl, const Point &br) {
+void Area::set(const Point &_topLeft, const Point &_bottomRight) {
 
-	topLeft = tl;
-	bottomRight = br;
+	topLeft = _topLeft;
+	bottomRight = _bottomRight;
 }
 
 void Area::clear(const ALLEGRO_COLOR &bgcolor) {
@@ -240,9 +240,9 @@ void Panel::create(const Area &total_area, const int &border_mask, const int &sc
 }
 
 
-Block_Tab::Block_Tab(const float &hpos, string title_): title(std::move(title_)) {
+Block_Tab::Block_Tab(const float &_xpos, string title_): title(std::move(title_)) {
 
-	xpos = hpos;
+	xpos = _xpos;
 	xsize = (title.size() * BT_CHAR_WIDTH()) + 2 * DEFAULT_MARGIN();
 }
 
@@ -441,7 +441,7 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
 
 	while (getline(CONFIGLIST, tempstr)) {
 
-		if (tempstr != "") configList.push_back(tempstr);		//TODO: validate entries, ie. check if configs are present
+		if (!tempstr.empty()) configList.push_back(tempstr);		//TODO: validate entries, ie. check if configs are present
 	}
 	CONFIGLIST.close();
 

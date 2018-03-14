@@ -31,7 +31,7 @@ Datablock_Field::Datablock_Field(mdCommand *command_): command(command_), dataSt
 
 void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 
-	if (dataString_ == "") {
+	if (dataString_.empty()) {
 
 		dataString = "";
 		arg1 = "";
@@ -74,7 +74,7 @@ void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 		string argstr2 = dataString_.substr(pos + 1);
 
 
-		if (argstr1 != "") {
+		if (!argstr1.empty()) {
 			if (isNumber(argstr1)) {
 
 				if (getType(argstr1) == MD_DEC) arg1 = argstr1;
@@ -136,8 +136,8 @@ void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 	}
 
 	//TODO: MDAL will currently not accept parameters in form of "xMODy"
-	if (modifier != "" && arg1 == "0" && arg2 == "0") dataString = "0";	//TODO
-	else if (modifier != "" && arg1 == "0") dataString = arg2;		//TODO
+	if (!modifier.empty() && arg1 == "0" && arg2 == "0") dataString = "0";	//TODO
+	else if (!modifier.empty() && arg1 == "0") dataString = arg2;		//TODO
 
 	else dataString = arg1 + modifier + arg2;
 	printString = arg1print + modifier + arg2print;
@@ -145,7 +145,7 @@ void Datablock_Field::set(const string &dataString_, const bool &hexMode) {
 
 void Datablock_Field::remove_modifier() {
 
-	if (arg2 == "") return;
+	if (arg2.empty()) return;
 	modifier = "";
 	arg2 = "";
 	dataString = arg1;
@@ -222,14 +222,14 @@ Work_Tune::~Work_Tune() {
 	engineCodeNoLoop = nullptr;
 }
 
-void Work_Tune::init(const string &infile, const Global_Settings &settings, Display_Status *status_) {
+void Work_Tune::init(const string &infile, const Global_Settings &settings, Display_Status *_status) {
 
     reset();
-    status = status_;
+    status = _status;
 
 	infilePath = infile;
 
-	if (infilePath != "") {
+	if (!infilePath.empty()) {
 
 		savefilePath = infilePath;
 
@@ -241,7 +241,7 @@ void Work_Tune::init(const string &infile, const Global_Settings &settings, Disp
 
 		while (getline(MDFILE, tempstr)) {
 
-			string remains = "";
+			string remains;
 
 			if (tempstr.find("/*", 0, 2) != string::npos) {				//detect and strip block comments
 
@@ -359,7 +359,7 @@ void Work_Tune::init(const string &infile, const Global_Settings &settings, Disp
 
 //	for (auto&& it: freqDividers) cout << it << endl;
 
-	if (infilePath == "") generate_empty_module(settings.defaultBlockLength);
+	if (infilePath.empty()) generate_empty_module(settings.defaultBlockLength);
 	mdModule mod(moduleLines, config, verbose);
 
 	for (auto&& it: globalConstants) it.set(it.command->getValueString(), settings.hexMode);
@@ -392,7 +392,7 @@ void Work_Tune::init(const string &infile, const Global_Settings &settings, Disp
 
 			for (unsigned i = blockBegin; i < blockEnd; i++) {
 
-				if (moduleLines[i] != "") rawBlockData.push_back(trimChars(moduleLines[i], "\t "));
+				if (!moduleLines[i].empty()) rawBlockData.push_back(trimChars(moduleLines[i], "\t "));
 			}
 
 			for (auto&& col: block.columns) {
@@ -507,7 +507,7 @@ void Work_Tune::update_last_used(const unsigned &block, const unsigned &row) {
 
 		for (unsigned j = 0; j < blockTypes[0].commands.size(); j++) {
 
-			if (blockTypes[0].commands[j]->mdCmdUseLastSet && blockTypes[0].blocks[block].columns[j].columnData[i].dataString != "")
+			if (blockTypes[0].commands[j]->mdCmdUseLastSet && !blockTypes[0].blocks[block].columns[j].columnData[i].dataString.empty())
 				lastUsed[j] = blockTypes[0].blocks[block].columns[j].columnData[i];
 		}
 	}
@@ -571,12 +571,12 @@ void Work_Tune::generate_module_lines() {
 
 			for (size_t row = 0; row < blk.columns[0].columnData.size(); row++) {
 
-				string dataString = "";
+				string dataString;
 				bool begin = true;
 
 				for (size_t col = 0; col < blk.columns.size(); col++) {
 
-					if (blk.columns[col].columnData[row].dataString != "") {
+					if (!blk.columns[col].columnData[row].dataString.empty()) {
 
 						if (begin) dataString += "\t";
 						else dataString += ", ";
@@ -586,7 +586,7 @@ void Work_Tune::generate_module_lines() {
 					}
 				}
 
-				if (dataString == "") dataString = "\t.";
+				if (dataString.empty()) dataString = "\t.";
 				moduleLines.push_back(dataString);
 			}
 		}
@@ -614,12 +614,12 @@ void Work_Tune::generate_pattern_lines(unsigned pattern) {
 
 	for (size_t row = 0; row < blockTypes[0].blocks[pattern].columns[0].columnData.size(); row++) {
 
-		string dataString = "";
+		string dataString;
 		bool begin = true;
 
 		for (size_t col = 0; col < blockTypes[0].blocks[pattern].columns.size(); col++) {
 
-			if (blockTypes[0].blocks[pattern].columns[col].columnData[row].dataString != "") {
+			if (!blockTypes[0].blocks[pattern].columns[col].columnData[row].dataString.empty()) {
 
 				if (begin) dataString += "\t";
 				else dataString += ", ";
@@ -631,7 +631,7 @@ void Work_Tune::generate_pattern_lines(unsigned pattern) {
 			}
 		}
 
-		if (dataString == "") dataString = "\t.";
+		if (dataString.empty()) dataString = "\t.";
 		patternLines.push_back(dataString);
 	}
 
@@ -645,12 +645,12 @@ void Work_Tune::generate_pattern_lines(unsigned pattern) {
 
 			for (size_t row = 0; row < blk.columns[0].columnData.size(); row++) {
 
-				string dataString = "";
+				string dataString;
 				bool begin = true;
 
 				for (size_t col = 0; col < blk.columns.size(); col++) {
 
-					if (blk.columns[col].columnData[row].dataString != "") {
+					if (!blk.columns[col].columnData[row].dataString.empty()) {
 
 						if (begin) dataString += "\t";
 						else dataString += ", ";
@@ -661,7 +661,7 @@ void Work_Tune::generate_pattern_lines(unsigned pattern) {
 					}
 				}
 
-				if (dataString == "") dataString = "\t.";
+				if (dataString.empty()) dataString = "\t.";
 				patternLines.push_back(dataString);
 			}
 		}
@@ -672,7 +672,7 @@ void Work_Tune::generate_pattern_lines(unsigned pattern) {
 }
 
 
-vector<string> Work_Tune::generate_lines_from_pos(const unsigned &block, const unsigned &row_, const unsigned &sequencePos) {
+vector<string> Work_Tune::generate_lines_from_pos(const unsigned &block, const unsigned &_row, const unsigned &sequencePos) {
 
     vector<string> mdLines;
 
@@ -691,22 +691,22 @@ vector<string> Work_Tune::generate_lines_from_pos(const unsigned &block, const u
 
 	mdLines.emplace_back(":test_pattern0000");
 
-    string dataString = "";
+    string dataString;
 	bool begin = true;
 
 	for (size_t col = 0; col < blockTypes[0].commands.size(); col++) {
 
-		if (blockTypes[0].blocks[block].columns[col].columnData[row_].dataString != "") {
+		if (!blockTypes[0].blocks[block].columns[col].columnData[_row].dataString.empty()) {
 
 			if (begin) dataString += "\t";
 			else dataString += ", ";
 			if (blockTypes[0].commands[col]->mdCmdAuto) dataString += blockTypes[0].commands[col]->mdCmdName;
 			else dataString += (blockTypes[0].commands[col]->mdCmdName + "="
-				+ blockTypes[0].blocks[block].columns[col].columnData[row_].dataString);
+				+ blockTypes[0].blocks[block].columns[col].columnData[_row].dataString);
 			begin = false;
 		}
 
-		else if (lastUsed[col].dataString != "") {
+		else if (!lastUsed[col].dataString.empty()) {
 //			cout << "trig on cmd " << blockTypes[0].commands[col]->mdCmdName << endl;
 			if (begin) dataString += "\t";
 			else dataString += ", ";
@@ -716,17 +716,17 @@ vector<string> Work_Tune::generate_lines_from_pos(const unsigned &block, const u
 		}
 	}
 
-	if (dataString == "") dataString = "\t.";
+	if (dataString.empty()) dataString = "\t.";
     mdLines.push_back(dataString);
 
-	for (size_t row = row_ + 1; row < blockTypes[0].blocks[block].columns[0].columnData.size(); row++) {
+	for (size_t row = _row + 1; row < blockTypes[0].blocks[block].columns[0].columnData.size(); row++) {
 
         dataString = "";
         begin = true;
 
         for (size_t col = 0; col < blockTypes[0].blocks[block].columns.size(); col++) {
 
-            if (blockTypes[0].blocks[block].columns[col].columnData[row].dataString != "") {
+            if (!blockTypes[0].blocks[block].columns[col].columnData[row].dataString.empty()) {
 
                 if (begin) dataString += "\t";
                 else dataString += ", ";
@@ -737,7 +737,7 @@ vector<string> Work_Tune::generate_lines_from_pos(const unsigned &block, const u
             }
         }
 
-        if (dataString == "") dataString = "\t.";
+        if (dataString.empty()) dataString = "\t.";
         mdLines.push_back(dataString);
 	}
 
@@ -755,7 +755,7 @@ vector<string> Work_Tune::generate_lines_from_pos(const unsigned &block, const u
 
 				for (size_t col = 0; col < blk.columns.size(); col++) {
 
-					if (blk.columns[col].columnData[row].dataString != "") {
+					if (!blk.columns[col].columnData[row].dataString.empty()) {
 
 						if (begin) dataString += "\t";
 						else dataString += ", ";
@@ -765,7 +765,7 @@ vector<string> Work_Tune::generate_lines_from_pos(const unsigned &block, const u
 					}
 				}
 
-				if (dataString == "") dataString = "\t.";
+				if (dataString.empty()) dataString = "\t.";
 				mdLines.push_back(dataString);
 			}
 		}
@@ -790,12 +790,12 @@ void Work_Tune::generate_single_line(const unsigned &block, const unsigned &row)
 	singleLine.emplace_back(":test_pattern0000");
 
 
-	string dataString = "";
+	string dataString;
 	bool begin = true;
 
 	for (size_t col = 0; col < blockTypes[0].commands.size(); col++) {
 
-		if (blockTypes[0].blocks[block].columns[col].columnData[row].dataString != "") {
+		if (!blockTypes[0].blocks[block].columns[col].columnData[row].dataString.empty()) {
 
 			if (begin) dataString += "\t";
 			else dataString += ", ";
@@ -805,7 +805,7 @@ void Work_Tune::generate_single_line(const unsigned &block, const unsigned &row)
 			begin = false;
 		}
 
-		else if (lastUsed[col].dataString != "") {
+		else if (!lastUsed[col].dataString.empty()) {
 //			cout << "trig on cmd " << blockTypes[0].commands[col]->mdCmdName << endl;
 			if (begin) dataString += "\t";
 			else dataString += ", ";
@@ -815,7 +815,7 @@ void Work_Tune::generate_single_line(const unsigned &block, const unsigned &row)
 		}
 	}
 
-	if (dataString == "") dataString = "\t.";
+	if (dataString.empty()) dataString = "\t.";
 //	cout << dataString << endl;
 	singleLine.push_back(dataString);
 
@@ -834,7 +834,7 @@ void Work_Tune::generate_single_line(const unsigned &block, const unsigned &row)
 
 				for (size_t col = 0; col < blk.columns.size(); col++) {
 
-					if (blk.columns[col].columnData[bRow].dataString != "") {
+					if (!blk.columns[col].columnData[bRow].dataString.empty()) {
 
 						if (begin) dataString += "\t";
 						else dataString += ", ";
@@ -845,7 +845,7 @@ void Work_Tune::generate_single_line(const unsigned &block, const unsigned &row)
 					}
 				}
 
-				if (dataString == "") dataString = "\t.";
+				if (dataString.empty()) dataString = "\t.";
 				singleLine.push_back(dataString);
 			}
 		}
@@ -887,12 +887,12 @@ bool Work_Tune::is_block_name_unique(const string &blockName) {
 unsigned Work_Tune::get_frequency_divider(const string &noteName) {
 
     if (musicdataBinary.equates.count(noteName)) return musicdataBinary.equates[noteName];
-    else return 0;
+    return 0;
 }
 
 unsigned Work_Tune::get_note_index(const string &noteName) {
 
-    string sOct = "";
+    string sOct;
     sOct.push_back(noteName.back());
     if (!isNumber(sOct)) throw (string("Invalid note name"));
     unsigned nOct = strToNum(sOct);
@@ -908,7 +908,7 @@ unsigned Work_Tune::get_note_index(const string &noteName) {
 
 string Work_Tune::get_note_data_string(const unsigned &freqDivider) {
 
-    string dataString = "";
+    string dataString;
 
     unsigned index;
     for (index = 0; index < freqDividers.size() && freqDivider >= freqDividers[index]; index++) {};

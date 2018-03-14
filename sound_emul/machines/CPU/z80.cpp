@@ -102,7 +102,8 @@ unsigned z80cpu::get_instruction_timing(int instructionPointer) noexcept {
 
     if (instruction == 0xcb) {
         return 8;
-    } else if (instruction == 0xeb) {
+    }
+    if (instruction == 0xeb) {
         instructionPointer = (instructionPointer + 1) & 0xffff;
         instruction = memory->at(instructionPointer);
         unsigned cycles = 4;
@@ -112,7 +113,8 @@ unsigned z80cpu::get_instruction_timing(int instructionPointer) noexcept {
             if (regB) cycles += 5;
         }
         return cycles + instructionTimingsED[instruction];
-    } else if (instruction == 0xdd || instruction == 0xfd) {
+    }
+    if (instruction == 0xdd || instruction == 0xfd) {
         unsigned cycles = 0;
         do {
             ++instructionPointer;
@@ -208,7 +210,6 @@ void z80cpu::setPC(int startAddress) noexcept {
 
 void z80cpu::setSP(int address) noexcept {
     regSP = address & 0xffff;
-    return;
 }
 
 int z80cpu::getPC() noexcept {
@@ -231,11 +232,10 @@ unsigned z80cpu::acknowledge_interrupt_and_get_timing() noexcept {
     if (interruptMode == 0 || !regIFF1) {
         interruptTypeAcknowledged = Z80InterruptType::NONE;
         return get_instruction_timing(regPC);
-    } else if (interruptMode == 1) {
-        return 13;
-    } else {
-        return 19;
     }
+    if (interruptMode == 1) return 13;
+
+    return 19;
 }
 
 void z80cpu::do_interrupt() noexcept {

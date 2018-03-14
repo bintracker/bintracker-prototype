@@ -28,7 +28,7 @@ class z80cpu {
     void request_non_maskable_interrupt() noexcept;
     void request_maskable_interrupt() noexcept;
 
-    z80cpu(std::array<int, 0x10000> *mem, Z80Type z80Type);
+    z80cpu(std::array<int, 0x10000> *mem, Z80Type z80type);
     z80cpu(const z80cpu &) = delete;
     z80cpu& operator=(const z80cpu &) = delete;
     z80cpu(z80cpu &&) = delete;
@@ -85,9 +85,9 @@ class z80cpu {
     static const std::array<unsigned, 256> instructionTimingsED;
 
     static std::array<int, 256> init_parity_table();
-    void debugger_print_flags(const int flagRegister) noexcept;
+    void debugger_print_flags(int flagRegister) noexcept;
     unsigned get_instruction_timing(int instructionPointer) noexcept;
-    unsigned get_conditional_timing(const int instruction) noexcept;
+    unsigned get_conditional_timing(int instruction) noexcept;
     unsigned acknowledge_interrupt_and_get_timing() noexcept;
     void do_interrupt() noexcept;
 

@@ -258,7 +258,7 @@ void Main_Window::init_track_view() {
 	for (auto&& it: currentTune.config.blockTypes) {
 
 		xpos += (tabPanel.back().xsize + THICK_LINE());
-		tabPanel.emplace_back(Block_Tab(xpos, it.blockConfigID.data()));
+		tabPanel.emplace_back(Block_Tab(xpos, it.blockConfigID));
 	}
 
 	status.init(&currentTune, settings);
@@ -803,7 +803,7 @@ void Main_Window::print_dropdown() {
 				}
 
 				al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
-                    (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
+                    (dropdown.userEntry.empty()) ? "_" : dropdown.userEntry.data());
 			}
 			else {
 
@@ -820,7 +820,7 @@ void Main_Window::print_dropdown() {
 					: (settings.blockDataArea.bottomRight.y - 1.0f), settings.bgColor);
 
 				al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
-                    (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
+                    (dropdown.userEntry.empty()) ? "_" : dropdown.userEntry.data());
 
 				for (unsigned i = 0; i < dropdown.options.size(); i++) {
 
@@ -871,7 +871,7 @@ void Main_Window::print_dropdown() {
 			}
 
 			al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
-                (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
+                (dropdown.userEntry.empty()) ? "_" : dropdown.userEntry.data());
 
 		}
 		else {
@@ -887,7 +887,7 @@ void Main_Window::print_dropdown() {
 				: (settings.referenceDataArea.bottomRight.y - 1.0f), settings.bgColor);
 
 			al_draw_text(font, settings.rowActColor, xpos, ypos, ALLEGRO_ALIGN_LEFT,
-                (dropdown.userEntry == "") ? "_" : dropdown.userEntry.data());
+                (dropdown.userEntry.empty()) ? "_" : dropdown.userEntry.data());
 
 			for (unsigned i = 0; i < dropdown.options.size(); i++) {
 
@@ -907,7 +907,7 @@ void Main_Window::set_display_title() {
     string title = "bintracker - ";
     string trackname;
     if (currentTune.hasUnsavedChanges) trackname = "*";
-    if (currentTune.savefilePath == "") trackname += "unnamed";
+    if (currentTune.savefilePath.empty()) trackname += "unnamed";
     else if (currentTune.savefilePath.size() < 237) trackname += currentTune.savefilePath;
     else trackname += ("..." + currentTune.savefilePath.substr(currentTune.savefilePath.size() - 237, 237));
     title += trackname;
@@ -951,7 +951,6 @@ void Main_Window::shutdown() {
     }
 
     isUp = false;
-    return;
 }
 
 
@@ -962,10 +961,8 @@ void Main_Window::display_about_msg() {
 
 bool Main_Window::display_confirm_overwrite_msg() {
 
-	if (al_show_native_message_box(nullptr, "Overwrite File?", "", "This file already exists. Overwrite it?",
-		nullptr, ALLEGRO_MESSAGEBOX_QUESTION|ALLEGRO_MESSAGEBOX_YES_NO) == 1) return true;
-
-	return false;
+	return al_show_native_message_box(nullptr, "Overwrite File?", "", "This file already exists. Overwrite it?",
+		nullptr, ALLEGRO_MESSAGEBOX_QUESTION|ALLEGRO_MESSAGEBOX_YES_NO) == 1;
 }
 
 bool Main_Window::display_msg_confirm_out_of_range_transpose(const unsigned &outOfRangeCount) {
