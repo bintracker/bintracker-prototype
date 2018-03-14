@@ -5,7 +5,7 @@
 using namespace std;
 
 
-Main_Window::Main_Window(const string &initFile): isUp(false), userInputString("") {
+Main_Window::Main_Window(const string &initFile): userInputString("") {
 
 	mainDisplay = nullptr;
 	eventQueue = nullptr;

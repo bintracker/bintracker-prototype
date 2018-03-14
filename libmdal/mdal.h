@@ -122,8 +122,8 @@ class mdConfig {
 class mdSequence {
 
   public:
-    unsigned mdSequenceLength;
-    unsigned mdSequenceLoopPosition;
+    unsigned mdSequenceLength{0};
+    unsigned mdSequenceLoopPosition{0};
     std::string sequenceString;
     std::vector<std::vector<std::string>> sequenceData;
 

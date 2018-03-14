@@ -6,7 +6,7 @@
 using namespace std;
 
 
-mdSequence::mdSequence(): mdSequenceLength(0), mdSequenceLoopPosition(0), sequenceString("") {}
+mdSequence::mdSequence(): sequenceString("") {}
 
 
 void mdSequence::read(string *sequenceBlock, const unsigned &sequenceBlockLength, const mdConfig &config) {
@@ -26,7 +26,7 @@ void mdSequence::read(string *sequenceBlock, const unsigned &sequenceBlockLength
 	if (config.seqMaxLength && mdSequenceLength > config.seqMaxLength) throw (string("Maximum sequence length exceeded."));
 
 
-	for (unsigned i = 0; i < config.trackSources.size(); i++) sequenceData.push_back(vector<string>());
+	for (unsigned i = 0; i < config.trackSources.size(); i++) sequenceData.emplace_back(vector<string>());
 	unsigned pos = 0;
 	for (unsigned i = 0; i < sequenceBlockLength; i++) {
 

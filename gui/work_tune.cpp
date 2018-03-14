@@ -347,9 +347,9 @@ void Work_Tune::init(const string &infile, const Global_Settings &settings, Disp
 	//generate frequency divider table
 	for (char noct = '0'; noct < '9'; noct++) {
 
-        for (int n = 0; n < 12; n++) {
+        for (const auto & noteName : noteNames) {
 
-            string nname = noteNames[n] + noct;
+            string nname = noteName + noct;
             if (musicdataBinary.equates.count(nname)) freqDividers.push_back(musicdataBinary.equates[nname]);
             else freqDividers.push_back(0);
         }
@@ -376,7 +376,7 @@ void Work_Tune::init(const string &infile, const Global_Settings &settings, Disp
 
 			Datablock block(blk.blkName);
 
-			for (auto&& cmd: blockTypes[btref].commands) block.columns.push_back(Datablock_Column(cmd));
+			for (auto&& cmd: blockTypes[btref].commands) block.columns.emplace_back(Datablock_Column(cmd));
 
 			vector<string> rawBlockData;
 
@@ -498,17 +498,15 @@ void Work_Tune::update_last_used(const unsigned &block, const unsigned &row) {
 	for (auto&& it: blockTypes[0].blocks[block].columns) {
 
 		if (it.command->mdCmdUseLastSet || it.command->mdCmdForceRepeat) lastUsed.push_back(it.columnData[0]);
-		else lastUsed.push_back(Datablock_Field(it.command));
+		else lastUsed.emplace_back(Datablock_Field(it.command));
 	}
 
 	for (unsigned i = 1; i < row; i++) {
 
 		for (unsigned j = 0; j < blockTypes[0].commands.size(); j++) {
 
-//			cout << "checking " <<  blockTypes[0].commands[j]->mdCmdName << " at " << block << ":" << row << endl;
 			if (blockTypes[0].commands[j]->mdCmdUseLastSet && blockTypes[0].blocks[block].columns[j].columnData[i].dataString != "")
 				lastUsed[j] = blockTypes[0].blocks[block].columns[j].columnData[i];
-//				  cout << "updating " << blockTypes[0].commands[j]->mdCmdName << "to " << lastUsed[j].dataString << endl; }
 		}
 	}
 }
@@ -517,14 +515,14 @@ void Work_Tune::update_last_used(const unsigned &block, const unsigned &row) {
 void Work_Tune::generate_empty_module(const unsigned &defaultBlockLength) {
 
 	moduleLines.clear();
-	moduleLines.push_back("CONFIG=" + configName);
-	moduleLines.push_back("");
-	moduleLines.push_back(":SEQUENCE");
-	moduleLines.push_back("pattern00");
-	moduleLines.push_back("");
-	moduleLines.push_back(":pattern00");
-	for (unsigned i = 0; i < defaultBlockLength; i++) moduleLines.push_back(".");
-	moduleLines.push_back("");
+	moduleLines.emplace_back("CONFIG=" + configName);
+	moduleLines.emplace_back("");
+	moduleLines.emplace_back(":SEQUENCE");
+	moduleLines.emplace_back("pattern00");
+	moduleLines.emplace_back("");
+	moduleLines.emplace_back(":pattern00");
+	for (unsigned i = 0; i < defaultBlockLength; i++) moduleLines.emplace_back(".");
+	moduleLines.emplace_back("");
 
 	set<string> defaultBlocks;
 	for (int i = 0; i < config.mdCmdCount; i++) {
@@ -536,9 +534,9 @@ void Work_Tune::generate_empty_module(const unsigned &defaultBlockLength) {
 
 		moduleLines.push_back(":" + it);
 		//TODO temp work-around for PhaseSqueek needing STOP command set in fx0 default table
-		if (configName == "PhaseSqueek" && it == "fx0") moduleLines.push_back("STOP");
-		else moduleLines.push_back(".");
-		moduleLines.push_back("");
+		if (configName == "PhaseSqueek" && it == "fx0") moduleLines.emplace_back("STOP");
+		else moduleLines.emplace_back(".");
+		moduleLines.emplace_back("");
 	}
 }
 
@@ -552,12 +550,12 @@ void Work_Tune::generate_module_lines() {
 		else moduleLines.push_back(it.command->mdCmdName + "=" + it.dataString);
 	}
 //	moduleLines.push_back("");
-	moduleLines.push_back(":SEQUENCE");
+	moduleLines.emplace_back(":SEQUENCE");
 // 	moduleLines.reserve(moduleLines.size() + sequence.size());
 // 	moduleLines.insert(moduleLines.end(), sequence.begin(), sequence.end());
 	for (size_t i = 0; i < sequence.size(); i++) {
 
-		if (i == sequenceLoopPoint) moduleLines.push_back("\t[LOOP]");
+		if (i == sequenceLoopPoint) moduleLines.emplace_back("\t[LOOP]");
 		moduleLines.push_back("\t" + sequence[i]);
 	}
 
@@ -605,11 +603,11 @@ void Work_Tune::generate_pattern_lines(unsigned pattern) {
 		else patternLines.push_back(it.command->mdCmdName + "=" + it.dataString);
 	}
 //	patternLines.push_back("");
-	patternLines.push_back(":SEQUENCE");
-	patternLines.push_back("\t[LOOP]");
-	patternLines.push_back("\ttest_pattern0000");
+	patternLines.emplace_back(":SEQUENCE");
+	patternLines.emplace_back("\t[LOOP]");
+	patternLines.emplace_back("\ttest_pattern0000");
 //	patternLines.push_back("");
-	patternLines.push_back(":test_pattern0000");
+	patternLines.emplace_back(":test_pattern0000");
 
 
 	for (size_t row = 0; row < blockTypes[0].blocks[pattern].columns[0].columnData.size(); row++) {
@@ -682,14 +680,14 @@ vector<string> Work_Tune::generate_lines_from_pos(const unsigned &block, const u
 		else mdLines.push_back(it.command->mdCmdName + "=" + it.dataString);
 	}
 
-    mdLines.push_back(":SEQUENCE");
-    mdLines.push_back("\t[LOOP]");
-    mdLines.push_back("\ttest_pattern0000");
+    mdLines.emplace_back(":SEQUENCE");
+    mdLines.emplace_back("\t[LOOP]");
+    mdLines.emplace_back("\ttest_pattern0000");
 // 	moduleLines.reserve(moduleLines.size() + sequence.size());
 // 	moduleLines.insert(moduleLines.end(), sequence.begin(), sequence.end());
 	for (size_t i = sequencePos + 1; i < sequence.size(); i++) mdLines.push_back("\t" + sequence[i]);
 
-	mdLines.push_back(":test_pattern0000");
+	mdLines.emplace_back(":test_pattern0000");
 
     string dataString = "";
 	bool begin = true;
@@ -784,10 +782,10 @@ void Work_Tune::generate_single_line(const unsigned &block, const unsigned &row)
 		else singleLine.push_back(it.command->mdCmdName + "=" + it.dataString);
 	}
 
-	singleLine.push_back(":SEQUENCE");
-	singleLine.push_back("\t[LOOP]");
-	singleLine.push_back("\ttest_pattern0000");
-	singleLine.push_back(":test_pattern0000");
+	singleLine.emplace_back(":SEQUENCE");
+	singleLine.emplace_back("\t[LOOP]");
+	singleLine.emplace_back("\ttest_pattern0000");
+	singleLine.emplace_back(":test_pattern0000");
 
 
 	string dataString = "";

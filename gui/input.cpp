@@ -873,11 +873,11 @@ void Main_Window::receive_data_input(const char &data) {
                 //determine target blocktype
 				for (; currentField->command->referenceBlkID != currentTune.config.blockTypes[bt].blockConfigID; bt++);
 
-				for (unsigned i = 0; i < currentTune.blockTypes[bt].blocks.size(); i++) {
+				for (auto & block : currentTune.blockTypes[bt].blocks) {
 
-					if (currentTune.blockTypes[bt].blocks[i].name.compare(0, userInputString.size(), userInputString) == 0) {
+					if (block.name.compare(0, userInputString.size(), userInputString) == 0) {
 
-						options.push_back(currentTune.blockTypes[bt].blocks[i].name);
+						options.push_back(block.name);
 					}
 				}
 
@@ -886,11 +886,11 @@ void Main_Window::receive_data_input(const char &data) {
 					userInputString = prevInputString;
 					options.clear();
 
-					for (unsigned i = 0; i < currentTune.blockTypes[bt].blocks.size(); i++) {
+					for (auto & block : currentTune.blockTypes[bt].blocks) {
 
 						if (userInputString == ""
-							|| currentTune.blockTypes[bt].blocks[i].name.compare(0, userInputString.size(), userInputString) == 0)
-							options.push_back(currentTune.blockTypes[bt].blocks[i].name);
+							|| block.name.compare(0, userInputString.size(), userInputString) == 0)
+							options.push_back(block.name);
 					}
 
                     if (options.size() == 1) {
@@ -940,10 +940,10 @@ void Main_Window::receive_data_input(const char &data) {
         vector<string> options;
         unsigned bt = status.get_current_blocktype();
 
-        for (unsigned i = 0; i < currentTune.blockTypes[bt].blocks.size(); i++) {
+        for (auto & block : currentTune.blockTypes[bt].blocks) {
 
-            if (currentTune.blockTypes[bt].blocks[i].name.compare(0, userInputString.size(), userInputString) == 0)
-                options.push_back(currentTune.blockTypes[bt].blocks[i].name);
+            if (block.name.compare(0, userInputString.size(), userInputString) == 0)
+                options.push_back(block.name);
         }
 
         if (options.size() == 1) {
@@ -959,11 +959,11 @@ void Main_Window::receive_data_input(const char &data) {
                 userInputString = previousInputString;
                 options.clear();
 
-                for (unsigned i = 0; i < currentTune.blockTypes[bt].blocks.size(); i++) {
+                for (auto & block : currentTune.blockTypes[bt].blocks) {
 
                     if (userInputString == ""
-                        || currentTune.blockTypes[bt].blocks[i].name.compare(0, userInputString.size(), userInputString) == 0)
-                        options.push_back(currentTune.blockTypes[bt].blocks[i].name);
+                        || block.name.compare(0, userInputString.size(), userInputString) == 0)
+                        options.push_back(block.name);
                 }
             }
 
@@ -1279,7 +1279,7 @@ void Main_Window::add_row() {
 		if (status.currentTab == 0) return;
 
         push_changelog();
-		for (auto&& it: status.get_current_block_pointer()->columns) it.columnData.push_back(Datablock_Field(it.command));
+		for (auto&& it: status.get_current_block_pointer()->columns) it.columnData.emplace_back(Datablock_Field(it.command));
 		print_block_data();
 	}
 
@@ -1294,7 +1294,7 @@ void Main_Window::add_row() {
 		for (auto&& it: currentTune.blockTypes[status.get_current_blocktype()].commands) {
 
 			Datablock_Column newColumn(it);
-			for (unsigned i = 0; i < 16; i++) newColumn.columnData.push_back(Datablock_Field(it));
+			for (unsigned i = 0; i < 16; i++) newColumn.columnData.emplace_back(Datablock_Field(it));
 			newBlock.columns.push_back(newColumn);
 		}
 
@@ -1445,7 +1445,8 @@ void Main_Window::delete_field() {
         push_changelog();
 		status.get_current_column_pointer()->columnData.erase(
 			status.get_current_column_pointer()->columnData.begin() + status.get_current_cursor_row());
-		status.get_current_column_pointer()->columnData.push_back(Datablock_Field(status.get_current_column_pointer()->command));
+		status.get_current_column_pointer()
+            ->columnData.emplace_back(Datablock_Field(status.get_current_column_pointer()->command));
 
 		print_block_data();
 	}
@@ -1475,7 +1476,7 @@ void Main_Window::copy_selection() {
 
         for (unsigned col = status.selectionColumnFirst; col <= status.selectionColumnLast; col++) {
 
-            currentTune.clipboard.push_back(Datablock_Column(status.get_current_block_pointer()->columns[col].command));
+            currentTune.clipboard.emplace_back(Datablock_Column(status.get_current_block_pointer()->columns[col].command));
 
             for (unsigned row = status.selectionRowFirst; row <= status.selectionRowLast; row++)
                 currentTune.clipboard[targetCol].columnData
@@ -1543,7 +1544,7 @@ void Main_Window::delete_selection() {
 
             for (unsigned i = 0; i < status.selectionRowLast + 1 - status.selectionRowFirst; i++)
                 status.get_current_block_pointer()->columns[col].columnData
-                    .push_back(Datablock_Field(status.get_current_block_pointer()->columns[col].command));
+                    .emplace_back(Datablock_Field(status.get_current_block_pointer()->columns[col].command));
         }
 
         print_block_data();
@@ -2100,17 +2101,16 @@ void Main_Window::expand_block() {
     status.cancel_selection();
     push_changelog();
 
-    for (unsigned col = 0; col < status.get_current_block_pointer()->columns.size(); col++) {
+    for (auto & column : status.get_current_block_pointer()->columns) {
 
         unsigned row = 0;
-        Datablock_Field field(status.get_current_block_pointer()->columns[col].command);
+        Datablock_Field field(column.command);
 
         while (row < len) {
 
             row++;
             for (unsigned i = 0; i < status.expandFactor - 1; i++)
-                status.get_current_block_pointer()->columns[col].columnData
-                .insert(status.get_current_block_pointer()->columns[col].columnData.begin() + row, field);
+                column.columnData.insert(column.columnData.begin() + row, field);
             row += status.expandFactor - 1;
         }
     }
@@ -2128,14 +2128,12 @@ void Main_Window::shrink_block() {
     status.cancel_selection();
     push_changelog();
 
-    for (unsigned col = 0; col < status.get_current_block_pointer()->columns.size(); col++) {
+    for (auto & column : status.get_current_block_pointer()->columns) {
 
-        for (unsigned row = 0; status.get_current_block_pointer()->columns[col].columnData.size() >= row + status.expandFactor;
-            row++) {
+        for (unsigned row = 0; column.columnData.size() >= row + status.expandFactor; row++) {
 
-            status.get_current_block_pointer()->columns[col].columnData
-                .erase(status.get_current_block_pointer()->columns[col].columnData.begin() + row + 1,
-                status.get_current_block_pointer()->columns[col].columnData.begin() + row + status.expandFactor);
+            column.columnData.erase(column.columnData.begin() + row + 1,
+                column.columnData.begin() + row + status.expandFactor);
         }
     }
 
@@ -2147,7 +2145,7 @@ void Main_Window::undo() {
 
     if (undoStack.empty()) return;
     if (status.editLock) cancel_data_input();
-    redoStack.push_back(Changelog_Entry(&currentTune, &status));
+    redoStack.emplace_back(Changelog_Entry(&currentTune, &status));
     undoStack.back().retrieve(&currentTune, &status);
     undoStack.pop_back();
 
@@ -2166,7 +2164,7 @@ void Main_Window::redo() {
 
     if (redoStack.empty()) return;
     if (status.editLock) cancel_data_input();
-    undoStack.push_back(Changelog_Entry(&currentTune, &status));
+    undoStack.emplace_back(Changelog_Entry(&currentTune, &status));
     redoStack.back().retrieve(&currentTune, &status);
     redoStack.pop_back();
 
@@ -2186,7 +2184,7 @@ void Main_Window::push_changelog() {
     redoStack.clear();
     //prevent undoStack from growing indefinately
     if (undoStack.size() >= 120) undoStack.erase(undoStack.begin(), undoStack.begin() + 20);
-    undoStack.push_back(Changelog_Entry(&currentTune, &status));
+    undoStack.emplace_back(Changelog_Entry(&currentTune, &status));
 
     if (!currentTune.hasUnsavedChanges) {
 

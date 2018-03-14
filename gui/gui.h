@@ -358,7 +358,7 @@ private:
 class Main_Window {
 
 public:
-	bool isUp;
+	bool isUp{false};
 
 	ALLEGRO_EVENT_QUEUE *eventQueue;	//TODO consider several event queues for mouse, kbd, other
 	ALLEGRO_KEYBOARD_STATE kbdstate;

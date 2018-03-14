@@ -430,8 +430,8 @@ void Main_Window::export_zxspectrum_tap() {
 			basicLoader.push_back(-3);              //CLEAR
 			basicLoader.push_back(-80);             //VAL
 			basicLoader.push_back('"');             //"
-			string adress = numToStr(currentTune.engineInitAddress - 1, 0, false);
-			for (unsigned pos = 0; pos < adress.size(); pos++) basicLoader.push_back(adress.at(pos));
+			string address = numToStr(currentTune.engineInitAddress - 1, 0, false);
+			for (char addressByte : address) basicLoader.push_back(addressByte);
 			basicLoader.push_back('"');             //"
 			basicLoader.push_back(0xd);             //newline
 			basicLoader.push_back(0);               //line no. MSB
@@ -458,8 +458,7 @@ void Main_Window::export_zxspectrum_tap() {
                 basicLoader.push_back('"');             //"
                 basicLoader.push_back(' ');             //_
 
-                for (unsigned pos = 0; pos < currentTune.globalConstants[1].dataString.size(); pos++)
-                    basicLoader.push_back(currentTune.globalConstants[1].dataString.at(pos));
+                for (char pos : currentTune.globalConstants[1].dataString) basicLoader.push_back(pos);
 
                 basicLoader.push_back('"');             //"
 			}
@@ -472,8 +471,7 @@ void Main_Window::export_zxspectrum_tap() {
                 basicLoader.push_back('y');             //y
                 basicLoader.push_back(' ');             //_
 
-                for (unsigned pos = 0; pos < currentTune.globalConstants[0].dataString.size(); pos++)
-                    basicLoader.push_back(currentTune.globalConstants[0].dataString.at(pos));
+                for (char pos : currentTune.globalConstants[0].dataString) basicLoader.push_back(pos);
 
                 basicLoader.push_back('"');             //"
 			}
@@ -490,8 +488,8 @@ void Main_Window::export_zxspectrum_tap() {
             basicLoader.push_back(-64);             //USR
             basicLoader.push_back(-80);             //VAL
 			basicLoader.push_back('"');             //"
-            adress = numToStr(currentTune.engineInitAddress, 0, false);
-			for (unsigned pos = 0; pos < adress.size(); pos++) basicLoader.push_back(adress.at(pos));
+            address = numToStr(currentTune.engineInitAddress, 0, false);
+			for (char addressByte : address) basicLoader.push_back(addressByte);
 			basicLoader.push_back('"');             //"
 			basicLoader.push_back(0xd);             //newline
 

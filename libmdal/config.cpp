@@ -125,7 +125,7 @@ void mdConfig::init(const string &configname, bool &verbose) {
         }
 
         for (tempnode = mdalconfig.child("sequence").child("track"); tempnode; tempnode = tempnode.next_sibling("track"))
-            trackSources.push_back(string(tempnode.attribute("from").value()));
+            trackSources.emplace_back(string(tempnode.attribute("from").value()));
         if (trackSources.size() == 0) throw (string("<sequence>: no <track>s specified."));
 
         tempnode = mdalconfig.child("sequence").child("loop");

@@ -417,7 +417,7 @@ void z80cpu::reset() noexcept {
 
     interruptMode = 0;
     interruptTypeRequested = Z80InterruptType::NONE;
-    interruptTypeRequested = Z80InterruptType::NONE;
+    interruptTypeAcknowledged = Z80InterruptType::NONE;
     regIFF1 = false;
     regIFF2 = false;
 
