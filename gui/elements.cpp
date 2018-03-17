@@ -250,6 +250,7 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
     defaultBlockLength = 64;
     hexMode = true;
     audioChunkSize = 256;
+    audioSampleRate = 44100;
     keyRepeatDelay = 3;
     simpleGfxBuffer = true;
 
@@ -387,6 +388,19 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
             if ((audioChunkSize > 4096) || (audioChunkSize < 128)) {
                 audioChunkSize = 256;
                 cout << "Warning: Invalid CHUNKSIZE specified in settings.ini." << endl;
+            }
+        } else if (it.find("SAMPLERATE=") != string::npos) {
+            tempstr = it.substr(11, string::npos);
+            if (!isNumber(tempstr)) {
+                cout << "Error: Invalid SAMPLERATE argument in settings.ini." << endl;
+            }
+            else {
+                audioSampleRate = static_cast<unsigned>(strToNum(tempstr));
+                if (audioSampleRate < 11025 || audioSampleRate > 96000) {
+                    cout << "Error: Out-of-bounds SAMPLERATE argument in settings.ini "
+                            "ignored (should be between 11025 and 96000.)\n";
+                    audioSampleRate = 44100;
+                }
             }
         } else if (it.find("KEYREPEATDELAY=") != string::npos) {
             tempstr = it.substr(15, string::npos);

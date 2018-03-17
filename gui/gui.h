@@ -197,6 +197,7 @@ class Global_Settings {
     bool hexMode;
     std::string defaultConfig;
     unsigned audioChunkSize;
+    unsigned audioSampleRate;
     unsigned keyRepeatDelay;
     bool simpleGfxBuffer;
 

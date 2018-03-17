@@ -21,11 +21,13 @@ class Sound_Emul {
     int playMode;
 
     Sound_Emul();
-    Sound_Emul(const Sound_Emul &emul) = delete;
-    Sound_Emul& operator=(const Sound_Emul &emul) = delete;
+    Sound_Emul(const Sound_Emul &) = delete;
+    Sound_Emul& operator=(const Sound_Emul &) = delete;
+    Sound_Emul(Sound_Emul &&) = delete;
+    Sound_Emul& operator=(Sound_Emul &&) = delete;
     ~Sound_Emul();
 
-    void init(Work_Tune *tune, const unsigned &_audioChunkSize);
+    void init(Work_Tune *tune, const unsigned &_audioChunkSize, unsigned audioSampleRate);
     void setup_vm();
     void update_audio();
     void start(const int &playMode_);

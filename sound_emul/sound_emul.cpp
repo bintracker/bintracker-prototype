@@ -30,7 +30,7 @@ Sound_Emul::~Sound_Emul() {
 }
 
 
-void Sound_Emul::init(Work_Tune *tune, const unsigned &_audioChunkSize) {
+void Sound_Emul::init(Work_Tune *tune, const unsigned &_audioChunkSize, unsigned /*audioSampleRate*/) {
     currentTune = tune;
     audioChunkSize = _audioChunkSize;
 

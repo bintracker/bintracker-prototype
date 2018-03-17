@@ -178,7 +178,7 @@ Main_Window::Main_Window(const string &initFile): userInputString("") {
 
 
     currentTune.init(initFile, settings, &status);
-    soundEmul.init(&currentTune, settings.audioChunkSize);
+    soundEmul.init(&currentTune, settings.audioChunkSize, settings.audioSampleRate);
 
     al_register_event_source(eventQueue, al_get_audio_stream_event_source(soundEmul.audioStream));
 
