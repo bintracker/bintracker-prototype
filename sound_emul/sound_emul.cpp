@@ -10,6 +10,8 @@
 
 Sound_Emul::Sound_Emul() {
     audioStream = nullptr;
+    audioVoice = nullptr;
+    audioMixer = nullptr;
     engineCode = nullptr;
     engineCodeNoLoop = nullptr;
     currentTune = nullptr;
@@ -19,25 +21,43 @@ Sound_Emul::Sound_Emul() {
     engineSizeNoLoop = 0;
     startAddress = 0;
     audioChunkSize = 256;
+
 }
 
 Sound_Emul::~Sound_Emul() {
     if (al_is_audio_installed()) {
         stop();
+        al_detach_audio_stream(audioStream);
+        al_detach_voice(audioVoice);
         al_destroy_audio_stream(audioStream);
+        al_destroy_mixer(audioMixer);
+        al_destroy_voice(audioVoice);
         al_uninstall_audio();
     }
 }
 
 
-void Sound_Emul::init(Work_Tune *tune, const unsigned &_audioChunkSize, unsigned /*audioSampleRate*/) {
+void Sound_Emul::init(Work_Tune *tune, const unsigned &_audioChunkSize, unsigned audioSampleRate) {
     currentTune = tune;
     audioChunkSize = _audioChunkSize;
 
-    if (!al_install_audio() | !al_reserve_samples(1)) throw (string("Failed to initialize audio system."));
+    if (!al_install_audio()) throw(string("Failed to initialize audio system."));
+    audioVoice = al_create_voice(audioSampleRate, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_2);
+    if (!audioVoice) throw(string("Failed to create audio voice."));
+    if (al_get_voice_frequency(audioVoice) != audioSampleRate) cout << "WARNING: sound driver did not accept sample "
+                                                                       "rate chosen by user." << endl;
+
+    audioMixer = al_create_mixer(al_get_voice_frequency(audioVoice),
+                                 ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_2);
+    if (!audioMixer) throw(string("Failed to create audio mixer."));
+    if (!al_set_default_mixer(audioMixer)) throw(string("Failed to set default mixer."));
+
+    if (!al_attach_mixer_to_voice(audioMixer, audioVoice)) throw(string("Failed to attach mixer to voice."));
+
+    if (!al_reserve_samples(1)) throw (string("Failed to initialize audio system."));
     // TODO(utz): temp solution before fixing emul
     audioStream = al_create_audio_stream(2, audioChunkSize, 45600, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_2);
-    if (audioStream == nullptr) throw (string("Failed to create audio stream."));
+    if (audioStream == nullptr) throw(string("Failed to create audio stream."));
     if (!al_attach_audio_stream_to_mixer(audioStream, al_get_default_mixer()))
         throw(string("Failed to attach audio stream to mixer."));
 

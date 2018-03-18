@@ -35,6 +35,8 @@ class Sound_Emul {
     void render_wav(const std::string &filename, char *songData, const int &dataSize);
 
  private:
+    ALLEGRO_VOICE *audioVoice;
+    ALLEGRO_MIXER *audioMixer;
     char *engineCode;
     char *engineCodeNoLoop;
     int engineSize;
