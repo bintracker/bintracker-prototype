@@ -260,7 +260,6 @@ void Main_Window::export_wav() {
     int fc = al_get_native_file_dialog_count(fdialog);
 
     if (fc) {
-
         const char *fp = al_get_native_file_dialog_path(fdialog, 0);
 
         string path = fp;

@@ -954,17 +954,17 @@ void Main_Window::shutdown() {
 }
 
 
-void Main_Window::display_about_msg() {
+void Main_Window::display_about_msg() const {
     al_show_native_message_box(nullptr, "About Bintracker", "Bintracker 0.1.2",
                                "by utz 2017\nwww.irrlichtproject.de", nullptr, 0);
 }
 
-bool Main_Window::display_confirm_overwrite_msg() {
+bool Main_Window::display_confirm_overwrite_msg() const {
     return al_show_native_message_box(nullptr, "Overwrite File?", "", "This file already exists. Overwrite it?",
                                       nullptr, ALLEGRO_MESSAGEBOX_QUESTION|ALLEGRO_MESSAGEBOX_YES_NO) == 1;
 }
 
-bool Main_Window::display_msg_confirm_out_of_range_transpose(const unsigned &outOfRangeCount) {
+bool Main_Window::display_msg_confirm_out_of_range_transpose(const unsigned &outOfRangeCount) const {
     string message = "This operation will cause " + numToStr(outOfRangeCount, 0, false)
                      + " note" + ((outOfRangeCount == 1) ? "" : "s")
                      + " to fall out of range and be replaced with rests. Continue?";

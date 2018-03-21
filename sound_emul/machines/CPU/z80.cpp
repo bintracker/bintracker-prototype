@@ -136,7 +136,7 @@ unsigned z80cpu::get_instruction_timing(int instructionPointer) noexcept {
 unsigned z80cpu::get_conditional_timing(const int instruction) noexcept {
     switch (instruction) {
         case 0x10:  // djnz
-            if (regB) return 5;
+            if (regB > 1) return 5;
             break;
         case 0x20:  // jr nz
             if (!(regF & 0x40)) return 5;

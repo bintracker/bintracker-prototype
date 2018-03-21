@@ -475,8 +475,8 @@ class Main_Window {
     void export_bin(const bool &musicDataOnly);
     void export_wav();
     void export_zxspectrum_tap();
-    void display_about_msg();
-    bool display_confirm_overwrite_msg();
+    void display_about_msg() const;
+    bool display_confirm_overwrite_msg() const;
     void play_from_start();
     void play_from_current_pos();
     void play_pattern();
@@ -542,7 +542,7 @@ class Main_Window {
 
     void set_display_title();
 
-    bool display_msg_confirm_out_of_range_transpose(const unsigned &outOfRangeCount);
+    bool display_msg_confirm_out_of_range_transpose(const unsigned &outOfRangeCount) const;
     void display_engine_info();
 };
 
