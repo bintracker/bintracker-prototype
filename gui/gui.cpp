@@ -48,7 +48,7 @@ Main_Window::Main_Window(const string &initFile): userInputString("") {
     al_append_menu_item(exportMenu, ".bin...", MENU_FILE_EXPORT_BIN, 0, nullptr, nullptr);
     al_append_menu_item(exportMenu, ".bin (Music Data only)...", MENU_FILE_EXPORT_BIN_MUSICDATA, 0, nullptr, nullptr);
     al_append_menu_item(exportMenu, ".tap...", MENU_FILE_EXPORT_EMULFORMAT, 0, nullptr, nullptr);
-    al_append_menu_item(exportMenu, ".wav...", MENU_FILE_EXPORT_WAV, ALLEGRO_MENU_ITEM_DISABLED, nullptr, nullptr);
+    al_append_menu_item(exportMenu, ".wav...", MENU_FILE_EXPORT_WAV, 0, nullptr, nullptr);
 
     fileMenu = al_create_menu();
     al_append_menu_item(fileMenu, "New...", MENU_FILE_NEW, 0, nullptr, configListMenu);

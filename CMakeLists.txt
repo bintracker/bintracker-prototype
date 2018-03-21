@@ -28,6 +28,23 @@ endif()
 find_package_handle_standard_args(PugiXML REQUIRED_VARS PUGIXML_INCLUDE_DIR PUGIXML_LIBRARIES)
 mark_as_advanced(PUGIXML_INCLUDE_DIR PUGIXML_LIBRARIES)
 
+
+# find libsamplerate
+if(APPLE)
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(PC_LIBSAMPLERATE QUIET libsamplerate)
+	set(LIBSAMPLERATE_DEFINITIONS ${PC_LIBSAMPLERATE_CFLAGS_OTHER})
+
+	find_path(LIBSAMPLERATE_INCLUDE_DIR samplerate.h HINTS ${PC_LIBSAMPLERATE_INCLUDEDIR} ${PC_LIBSAMPLERATE_INCLUDE_DIRS})
+	find_library(LIBSAMPLERATE_LIBRARIES NAMES samplerate libsamplerate HINTS ${PC_LIBSAMPLERATE_LIBDIR} ${PC_LIBSAMPLERATE_LIBRARY_DIRS})
+else()
+    find_path(LIBSAMPLERATE_INCLUDE_DIR NAMES samplerate.h)
+    find_library(LIBSAMPLERATE_LIBRARIES NAMES samplerate libsamplerate)
+endif()
+find_package_handle_standard_args(LIBSAMPLERATE REQUIRED_VARS LIBSAMPLERATE_INCLUDE_DIR LIBSAMPLERATE_LIBRARIES)
+mark_as_advanced(LIBSAMPLERATE_INCLUDE_DIR LIBSAMPLERATE_LIBRARIES)
+
+
 # find Allegro5
 find_path(ALLEGRO5_INCLUDE_DIR allegro5/allegro.h
   /usr/local/include /usr/include $ENV{MINGDIR}/include ${CMAKE_SOURCE_DIR}/allegro/include)
@@ -48,9 +65,9 @@ mark_as_advanced(ALLEGRO5_LIBRARY ALLEGRO5_INCLUDE_DIR)
 
 # set directories and files
 include_directories(. gui libmdal sound_emul sound_emul/machines
-    sound_emul/machines/CPU ${ALLEGRO5_INCLUDE_DIR} ${PUGIXML_INCLUDE_DIR}) # /usr/include
+    sound_emul/machines/CPU ${ALLEGRO5_INCLUDE_DIR} ${LIBSAMPLERATE_INCLUDE_DIR} ${PUGIXML_INCLUDE_DIR})
 if(NOT APPLE)
-link_directories(${ALLEGRO5_LIBRARIES} ${PUGIXML_LIBRARIES})
+link_directories(${ALLEGRO5_LIBRARIES} ${PUGIXML_LIBRARIES} ${LIBSAMPLERATE_LIBRARIES})
 endif()
 
 set(SOURCES data_as/data_as.cpp
@@ -67,11 +84,13 @@ if(APPLE)
         liballegro_font.dylib liballegro_primitives.dylib liballegro_dialog.dylib
         liballegro_audio.dylib)
     set(PUGIXML_LIB "${PUGIXML_LIBRARIES}")
+    set(LIBSAMPLERATE_LIB "${LIBSAMPLERATE_LIBRARIES}")
 else()
     set(AL_LIBS liballegro.so liballegro_main.so liballegro_image.so
         liballegro_font.so liballegro_primitives.so liballegro_dialog.so
         liballegro_audio.so)
     set(PUGIXML_LIB pugixml.so)
+    set(LIBSAMPLERATE_LIB libsamplerate.so)
 endif()
 
 
@@ -118,4 +137,4 @@ endif()
 
 
 add_executable(bintracker ${SOURCES})
-target_link_libraries(bintracker ${AL_LIBS} ${PUGIXML_LIB})
+target_link_libraries(bintracker ${AL_LIBS} ${PUGIXML_LIB} ${LIBSAMPLERATE_LIB})

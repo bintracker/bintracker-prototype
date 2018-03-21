@@ -198,6 +198,7 @@ class Global_Settings {
     std::string defaultConfig;
     unsigned audioChunkSize;
     unsigned audioSampleRate;
+    unsigned recordingLength;
     unsigned keyRepeatDelay;
     bool simpleGfxBuffer;
 

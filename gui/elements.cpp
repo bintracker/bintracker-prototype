@@ -251,6 +251,7 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
     hexMode = true;
     audioChunkSize = 256;
     audioSampleRate = 44100;
+    recordingLength = 180;
     keyRepeatDelay = 3;
     simpleGfxBuffer = true;
 
@@ -393,13 +394,24 @@ Global_Settings::Global_Settings(): kbdLang("EN"), defaultConfig("BetaPhase") {
             tempstr = it.substr(11, string::npos);
             if (!isNumber(tempstr)) {
                 cout << "Error: Invalid SAMPLERATE argument in settings.ini." << endl;
-            }
-            else {
+            } else {
                 audioSampleRate = static_cast<unsigned>(strToNum(tempstr));
                 if (audioSampleRate < 11025 || audioSampleRate > 96000) {
                     cout << "Error: Out-of-bounds SAMPLERATE argument in settings.ini "
                             "ignored (should be between 11025 and 96000.)\n";
                     audioSampleRate = 44100;
+                }
+            }
+        } else if (it.find("RECORDINGLENGTH=") != string::npos) {
+            tempstr = it.substr(16, string::npos);
+            if (!isNumber(tempstr)) {
+                cout << "Error: Invalid RECORDINGLENGTH specified in settings.ini." << endl;
+            } else {
+                recordingLength = static_cast<unsigned>(strToNum(tempstr));
+                if (recordingLength > 15 * 60) {
+                    cout << "Error: Can record at most 900 seconds of audio, but more is "
+                            "specified in settings.ini." << endl;
+                    recordingLength = 180;
                 }
             }
         } else if (it.find("KEYREPEATDELAY=") != string::npos) {

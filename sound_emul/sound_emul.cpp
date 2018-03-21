@@ -2,9 +2,10 @@
 
 #include <iostream>
 #include <fstream>
-// #include <thread>
+#include <sstream>
 #include <cstring>
 #include <memory>
+#include <samplerate.h>
 #include "sound_emul.h"
 
 
@@ -118,50 +119,63 @@ void Sound_Emul::stop() {
 }
 
 
-void Sound_Emul::render_wav(const string & /* filename */, char * /*songData*/, const int & /*dataSize */) {
-//  vm->load_binary(engineCode, engineSize, startAddress);
-//  vm->load_binary(songData, dataSize, startAddress + engineSize);
-//  vm->run_prgm(0xfffb, 0xffff, 180 * 44100, false);       // true = enable debugger
-//
-//
-//  ifstream RAW_IN("music.raw.tmp", ios::binary|ios::ate);
-//  if (!RAW_IN.is_open()) throw (string("Could not read raw data"));
-//
-//  ofstream WAVEFILE(filename.data(), ios::binary|ios::trunc);
-//  if (!WAVEFILE.is_open()) throw (string("Could not write .wav file"));
-//
-//
-//  streampos size = RAW_IN.tellg();
-//
-//  unique_ptr<char[]> rawdata{new char[size]};
-//  RAW_IN.seekg(0, ios::beg);
-//  RAW_IN.read(rawdata.get(), size);
-//  RAW_IN.close();
-//
-//  long long filesize = (size * 2) + 36;
-//  const char nil = 0;
-//
-//  WAVEFILE << "RIFF";
-//  WAVEFILE << static_cast<char>(filesize & 0xff) << static_cast<char>((filesize >> 8) & 0xff)
-//      << static_cast<char>((filesize >> 16) & 0xff) << static_cast<char>((filesize >> 24) & 0xff);
-//  WAVEFILE << "WAVEfmt \x10" << nil << nil << nil << "\x1" << nil << "\x1" << nil << "\x44\xac"
-//      << nil << nil << "\x88\x58\x1" << nil;
-//  filesize -= 36;
-//  WAVEFILE << "\x2" << nil << "\x10" << nil << "data" << static_cast<char>(filesize & 0xff)
-//      << static_cast<char>((filesize >> 8) & 0xff) << static_cast<char>((filesize >> 16) & 0xff)
-//      << static_cast<char>((filesize >> 24) & 0xff);
-//
-//  long previousSmp = 0;
-//
-//  for (long long i = 0; i < size; i++) {
-//
-//      long smp = rawdata[i] & 0xff;
-//      smp = long((((smp - 0x0f) << 4) / 11) * 8 * 15);
-//
-//      // simple LP filter
-//      smp = previousSmp + long(((smp - previousSmp) << 3) / 10);
-//      previousSmp = smp;
-//
-//      WAVEFILE << static_cast<char>(smp & 0xff) << static_cast<char>((smp >> 8) & 0xff);
-//  }
+void Sound_Emul::render_wav(const string &filename, unsigned maxLength, unsigned sampleRate) {
+    if (playMode != PM_STOPPED) stop();
+
+    ofstream WAVEFILE(filename.data(), ios::binary|ios::trunc);
+    if (!WAVEFILE.is_open()) throw (string("Could not write .wav file"));
+
+    vm->load_binary(currentTune->engineCode, currentTune->engineSize, currentTune->orgAddress);
+    vm->load_binary(currentTune->musicdataBinary.binData, currentTune->musicdataBinary.binLength,
+                    currentTune->orgAddress + currentTune->engineSize);
+    vm->set_breakpoints(currentTune->engineInitAddress, 0, currentTune->engineReloadAddress);
+
+    std::ostringstream rawPCM;
+    uint64_t chunkSize = maxLength * static_cast<uint64_t>(vm->get_audio_sample_rate());
+    vm->generate_audio_chunk(rawPCM, chunkSize, PM_SONG);
+
+    rawPCM.seekp(0, ios::end);
+    uint64_t rawsize = static_cast<uint64_t>(rawPCM.tellp());
+
+    int16_t *shortInput;
+    shortInput = new int16_t[rawsize / 2];
+    memcpy(shortInput, rawPCM.str().c_str(), rawsize);
+
+    std::vector<float> floatInput(rawsize / 2, 0.0f);
+    src_short_to_float_array(shortInput, floatInput.data(), rawsize / 2);
+
+    delete[] shortInput;
+
+    std::vector<float> floatOutput(rawsize, 0.0f);
+    std::vector<int16_t> shortOutput(rawsize, 0);
+
+    SRC_DATA resampleData;
+    resampleData.data_in = floatInput.data();
+    resampleData.data_out = floatOutput.data();
+    resampleData.input_frames = rawsize/4;
+    resampleData.output_frames = rawsize/2;
+    resampleData.src_ratio = static_cast<float>(sampleRate) / vm->get_audio_sample_rate();
+    src_simple(&resampleData, SRC_SINC_BEST_QUALITY, 2);
+    src_float_to_short_array(floatOutput.data(), shortOutput.data(), resampleData.output_frames_gen * 2);
+
+    uint64_t filesize = (resampleData.output_frames_gen * 4) + 36;
+    const char nil = 0;
+    const uint64_t byteRate = sampleRate * 4;
+
+    // write PCM WAV file header
+    WAVEFILE << "RIFF";
+    WAVEFILE << static_cast<char>(filesize & 0xff) << static_cast<char>((filesize >> 8) & 0xff)
+             << static_cast<char>((filesize >> 16) & 0xff) << static_cast<char>((filesize >> 24) & 0xff);
+    WAVEFILE << "WAVEfmt \x10" << nil << nil << nil << "\x1" << nil << "\x2" << nil
+             << static_cast<char>(sampleRate & 0xff) << static_cast<char>((sampleRate >> 8) & 0xff)
+             << nil << nil << static_cast<char>(byteRate & 0xff) << static_cast<char>((byteRate >> 8) & 0xff)
+             << static_cast<char>((byteRate >> 16) & 0xff) << nil;
+    filesize -= 36;
+    WAVEFILE << "\x4" << nil << "\x10" << nil << "data" << static_cast<char>(filesize & 0xff)
+             << static_cast<char>((filesize >> 8) & 0xff) << static_cast<char>((filesize >> 16) & 0xff)
+             << static_cast<char>((filesize >> 24) & 0xff);
+
+    for (int64_t i = 0; i < resampleData.output_frames_gen * 2; ++i) {
+        WAVEFILE << static_cast<char>(shortOutput[i] & 0xff) << static_cast<char>((shortOutput[i] >> 8) & 0xff);
+    }
 }

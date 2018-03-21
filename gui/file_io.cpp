@@ -253,53 +253,50 @@ void Main_Window::export_bin(const bool &musicDataOnly) {
 
 
 void Main_Window::export_wav() {
-//    ALLEGRO_FILECHOOSER *fdialog;
-//    fdialog = al_create_native_file_dialog(nullptr, "Export .wav...", "*.wav", ALLEGRO_FILECHOOSER_SAVE);
-//
-//    al_show_native_file_dialog(nullptr, fdialog);
-//    int fc = al_get_native_file_dialog_count(fdialog);
-//
-//    if (fc) {
-//
-//        const char *fp = al_get_native_file_dialog_path(fdialog, 0);
-//
-//        string path = fp;
-//        if (path != "" && ((path.size() <= 4) || (path.compare(path.size() - 4, 4, ".wav")))) path += ".wav";
-//
-//        bool doSave = true;
-//
-//        ifstream PROBE(path.data());
-//        if (PROBE.is_open()) {
-//
-//            PROBE.close();
-//            doSave = display_confirm_overwrite_msg();
-//        }
-//
-//        if (doSave) {
-//
-//            currentTune.generate_module_lines();
-//            bool verbose = false;
-//            mdModule mdf(currentTune.moduleLines, currentTune.config, verbose);
-//
-//            //TODO: TEMP convert sstream to vector
-//            vector<string> asmLines;
-//            istringstream is(mdf.MUSICASM.str());
-//            string tempstr;
-//            while (getline(is, tempstr)) asmLines.push_back(tempstr);
-//
-//            //TODO: looping/no looping
-//            currentTune.musicdataBinary.assemble(asmLines, 0x8000 + currentTune.engineSize, true);
-//
-//            //patch loop point
-//            long lp = currentTune.musicdataBinary.symbols[currentTune.config.seqLoopLabel];
-//            currentTune.engineCode[currentTune.loopPatchAddr] = static_cast<char>(lp);
-//            currentTune.engineCode[currentTune.loopPatchAddr + 1] = static_cast<char>(lp >> 8);
-//
-//            soundEmul.render_wav(path, currentTune.musicdataBinary.binData, currentTune.musicdataBinary.binLength);
-//        }
-//    }
-//
-//    al_destroy_native_file_dialog(fdialog);
+    ALLEGRO_FILECHOOSER *fdialog;
+    fdialog = al_create_native_file_dialog(nullptr, "Export .wav...", "*.wav", ALLEGRO_FILECHOOSER_SAVE);
+
+    al_show_native_file_dialog(nullptr, fdialog);
+    int fc = al_get_native_file_dialog_count(fdialog);
+
+    if (fc) {
+
+        const char *fp = al_get_native_file_dialog_path(fdialog, 0);
+
+        string path = fp;
+        if (path != "" && ((path.size() <= 4) || (path.compare(path.size() - 4, 4, ".wav")))) path += ".wav";
+
+        currentTune.generate_module_lines();
+        bool verbose = false;
+        mdModule mdf(currentTune.moduleLines, currentTune.config, verbose);
+
+        // TODO(utz): TEMP convert sstream to vector
+        vector<string> asmLines;
+        istringstream is(mdf.MUSICASM.str());
+        string tempstr;
+        while (getline(is, tempstr)) asmLines.push_back(tempstr);
+
+        // TODO(utz): looping/no looping
+        currentTune.musicdataBinary.assemble(asmLines, 0x8000 + currentTune.engineSize, true);
+
+        // verify size (TODO(utz): make machine-independent)
+        if (currentTune.orgAddress + currentTune.engineSize + currentTune.musicdataBinary.binLength > 0xfff0) {
+            al_draw_text(font, settings.rowActColor, settings.messagePanelArea.topLeft.x,
+                         settings.messagePanelArea.topLeft.y, ALLEGRO_ALIGN_LEFT, "ERROR: Music data too large.");
+            return;
+        }
+
+        // if a valid loop patch address was registered, patch loop point
+        if (currentTune.loopPatchAddr != -1) {
+            int64_t lp = currentTune.musicdataBinary.symbols.at(currentTune.config.seqLoopLabel);
+            currentTune.engineCode[currentTune.loopPatchAddr] = static_cast<char>(lp);
+            currentTune.engineCode[currentTune.loopPatchAddr + 1] = static_cast<char>(lp >> 8);
+        }
+
+        soundEmul.render_wav(path, settings.recordingLength, settings.audioSampleRate);
+    }
+
+    al_destroy_native_file_dialog(fdialog);
 }
 
 

@@ -15,8 +15,9 @@ class Virtual_ZX48 : public Virtual_Machine {
     void init(Work_Tune *tune = nullptr) override;
     void load_binary(char *code, const int &codeSize, const int &startAddress) override;
     void load_raw_data(const std::vector<char> &data, const int &orgAddress) override;
-    void generate_audio_chunk(std::ostringstream &AUDIOSTREAM, const unsigned &audioChunkSize,
+    void generate_audio_chunk(std::ostringstream &AUDIOSTREAM, const uint64_t &audioChunkSize,
                               const unsigned &playMode) override;
+    float get_audio_sample_rate() override;
     void set_breakpoints(const int64_t &initBP, const int64_t &exitBP, const int64_t &reloadBP) override;
     bool has_stopped() override;
 

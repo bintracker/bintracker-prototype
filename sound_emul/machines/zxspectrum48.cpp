@@ -5,7 +5,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cstdio>
-// #include <samplerate.h>
+#include <samplerate.h>
 // #include <chrono>
 
 #include "zxspectrum48.h"
@@ -78,17 +78,22 @@ void Virtual_ZX48::load_raw_data(const vector<char> &data, const int &orgAddress
 }
 
 
-void Virtual_ZX48::generate_audio_chunk(ostringstream &AUDIOSTREAM, const unsigned &audioChunkSize,
+float Virtual_ZX48::get_audio_sample_rate() {
+    return 3500000.0 / 77.0;
+}
+
+
+void Virtual_ZX48::generate_audio_chunk(ostringstream &AUDIOSTREAM, const uint64_t &audioChunkSize,
                                         const unsigned &playMode) {
     if (!prgmIsInitialized) init_prgm();
 
     int64_t internalSample = 0;
-    int internalSampleCount = 0;
-    unsigned externalSampleCount = 0;
+    unsigned internalSampleCount = 0;
+    uint64_t externalSampleCount = 0;
     int prevPC = cpu.getPC();
 
     while ((cpu.getPC() != bpExit) && (externalSampleCount < audioChunkSize)) {
-        for (int i = 0; (i < 8) && (cpu.getPC() != bpExit); i++) {
+        for (int i = 0; (i < 8) && (cpu.getPC() != bpExit); ++i) {
             if (cpu.getPC() == bpReload && cpu.getPC() != prevPC) {
                 vector<char> data = currentTune->reload_data(playMode);
                 for (int j = 0; static_cast<unsigned>(j) < data.size(); j++)
@@ -109,13 +114,14 @@ void Virtual_ZX48::generate_audio_chunk(ostringstream &AUDIOSTREAM, const unsign
         internalSample += ((cpu.outputPortsShort[0xfe] & 0x10) + ((cpu.outputPortsShort[0xfe] & 0x8) >> 3));
         internalSampleCount++;
 
-        if (internalSampleCount == 11) {    // TODO(utz): with 10 samples, we'd get 43750 Hz (close enough) so why 11?
+        if (internalSampleCount == 11) {
             internalSample = static_cast<int64_t>((((internalSample - 0x0f) << 4) / 11) * 8 * 15);
 
             // simple LP filter
             internalSample = previousSample + static_cast<int64_t>(((internalSample - previousSample) << 3) / 10);
             previousSample = internalSample;
 
+            // duplicate to stereo
             AUDIOSTREAM << static_cast<char>(internalSample & 0xff) << static_cast<char>((internalSample >> 8) & 0xff)
                         << static_cast<char>(internalSample & 0xff) << static_cast<char>((internalSample >> 8) & 0xff);
 

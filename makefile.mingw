@@ -1,6 +1,6 @@
 CXX		= i686-w64-mingw32.static-g++
 CXXFLAGS	= -O2 -std=c++11 -ffast-math -s -static -static-libstdc++ -DALLEGRO_STATICLINK
-LDFLAGS		= -Wl,--subsystem,windows -lpugixml \
+LDFLAGS		= -Wl,--subsystem,windows -lpugixml -lsamplerate \
 		-Lallegro5/lib -L/opt/mxe/usr/i686-w64-mingw32.static/lib -lallegro_dialog-static -lallegro-static \
 		-lallegro_main-static -ljpeg -lpng -lz -lallegro_image-static -lallegro_font-static -lallegro_primitives-static -lallegro_audio-static \
 		-ldsound -lgdiplus -luuid -lkernel32 -lwinmm -lpsapi -lopengl32 -lglu32 -luser32 -lcomdlg32 \

@@ -32,7 +32,7 @@ class Sound_Emul {
     void update_audio();
     void start(const int &playMode_);
     void stop();
-    void render_wav(const std::string &filename, char *songData, const int &dataSize);
+    void render_wav(const std::string &filename, unsigned maxLength, unsigned sampleRate);
 
  private:
     ALLEGRO_VOICE *audioVoice;
