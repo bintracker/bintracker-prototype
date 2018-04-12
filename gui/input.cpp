@@ -1120,7 +1120,11 @@ void Main_Window::complete_data_input() {
 
 
 void Main_Window::cancel_data_input() {
-    dropdown.collapse();
+    if (dropdown.isActive) {
+        dropdown.collapse();
+        print_block_data();
+        print_reference_data();
+    }
 
     if (status.editLock && !undoStack.empty()) {
         undoStack.pop_back();
@@ -1929,8 +1933,8 @@ void Main_Window::shrink_block() {
 
 
 void Main_Window::undo() {
-    if (undoStack.empty()) return;
     if (status.editLock) cancel_data_input();
+    if (undoStack.empty()) return;
     redoStack.emplace_back(Changelog_Entry(&currentTune, &status));
     undoStack.back().retrieve(&currentTune, &status);
     undoStack.pop_back();
@@ -1946,8 +1950,8 @@ void Main_Window::undo() {
 
 
 void Main_Window::redo() {
-    if (redoStack.empty()) return;
     if (status.editLock) cancel_data_input();
+    if (redoStack.empty()) return;
     undoStack.emplace_back(Changelog_Entry(&currentTune, &status));
     redoStack.back().retrieve(&currentTune, &status);
     redoStack.pop_back();
